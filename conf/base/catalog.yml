@@ -41,7 +41,7 @@
 
 pagos:
   type: pandas.CSVDataset
-  filepath: data/01_raw/01_pagos_cuotas.csv
+  filepath: data/01_raw/01_pagos_cuota.csv
 
 mora:
   type: pandas.CSVDataset

@@ -36,6 +36,9 @@ where = [
 ]
 namespaces = false
 
+[tool.poetry]
+version = "0.1.0"
+
 [tool.kedro]
 package_name = "credit_risk_frontier"
 project_name = "credit_risk_frontier"
@@ -43,3 +46,6 @@ kedro_init_version = "1.2.0"
 tools = "['Data Structure']"
 example_pipeline = "True"
 source_dir = "src"
+
+[tool.kedro_telemetry]
+project_id = "86f93a0d69d24e16ae0a48cc70eb32ac"
