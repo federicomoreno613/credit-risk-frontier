@@ -11,6 +11,8 @@ conf/**/*credentials*
 # ignore everything in the following folders
 data/**
 
+!data/credit-risk-frontier/data/03_primary/02_dataset_modelo.csv
+
 # except their sub-folders
 !data/**/
 
