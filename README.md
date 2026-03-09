@@ -1,4 +1,13 @@
-# credit_risk_frontier
+
+# Credit Scoring con Micropréstamos con Función de Evaluación Custom con XGBoost:
+
+**Tesis de Maestría en Data Mining & Knowledge Discovery**
+**Facultad de Ciencias Exactas y Naturales — Universidad de Buenos Aires**
+**Autor: Federico Moreno**
+**Director: [Nombre del Director]**
+**Año: 2026**
+
+
 
 [![Powered by Kedro](https://img.shields.io/badge/powered_by-kedro-ffc900?logo=kedro)](https://kedro.org)
 
