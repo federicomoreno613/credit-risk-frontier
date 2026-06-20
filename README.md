@@ -1,109 +1,71 @@
+# Credit Risk Frontier — Entrega III
 
-# Credit Scoring con Micropréstamos con Función de Evaluación Custom con XGBoost:
+Repositorio de apoyo para la tesis de Maestría en Data Mining & Knowledge Discovery (FCEyN, UBA): **comparación de modelos clásicos de machine learning y LLMs para credit scoring en microfinanzas latinoamericanas**.
 
-**Tesis de Maestría en Data Mining & Knowledge Discovery**
-**Facultad de Ciencias Exactas y Naturales — Universidad de Buenos Aires**
-**Autor: Federico Moreno**
-**Director: [Nombre del Director]**
-**Año: 2026**
+**Autor:** Federico Nicolás Moreno  
+**Director:** Mgs. Boris Dorian Da Silva  
+**Co-director:** Dr. Cristian Bravo  
+**Año:** 2026
 
+## Qué contiene esta versión
 
+Esta carpeta acompaña la Entrega III. Está pensada como evidencia reproducible del análisis. Se publica un **CSV base anonimizado** (`data/dataset_tesis.csv`) porque es el insumo mínimo para reproducir los notebooks; quedan fuera los datos crudos, las claves de anonimización y los caches de inferencia por crédito.
 
-[![Powered by Kedro](https://img.shields.io/badge/powered_by-kedro-ffc900?logo=kedro)](https://kedro.org)
+Estructura curada:
 
-## Overview
-
-This is your new Kedro project, which was generated using `kedro 1.2.0`.
-
-Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
-
-## Rules and guidelines
-
-In order to get the best out of the template:
-
-* Don't remove any lines from the `.gitignore` file we provide
-* Make sure your results can be reproduced by following a [data engineering convention](https://docs.kedro.org/en/stable/faq/faq.html#what-is-data-engineering-convention)
-* Don't commit data to your repository
-* Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
-
-## How to install dependencies
-
-Declare any dependencies in `requirements.txt` for `pip` installation.
-
-To install them, run:
-
+```text
+credit-risk-frontier/
+├── data/dataset_tesis.csv   # base anonimizada usada por scripts/notebooks
+├── notebooks/               # notebooks ejecutables de la entrega
+├── scripts/                 # scripts equivalentes, pensados para pipeline
+├── results/                 # CSVs resumidos de métricas y perfiles
+├── models/                  # modelos clásicos y métricas JSON curadas
+├── figures/                 # figuras finales incluidas en el documento
+├── bibliografia/references.bib
+├── MANIFEST.md              # qué se sube y qué se excluye
+├── requirements.txt
+└── pyproject.toml
 ```
+
+## Notebooks principales
+
+| Notebook | Rol en la entrega |
+|---|---|
+| `notebooks/03_baseline_xgboost.ipynb` | Entrena y evalúa XGBoost con split temporal. |
+| `notebooks/04_baseline_logreg.ipynb` | Baseline lineal interpretable. |
+| `notebooks/05_segmentacion_thin_file.ipynb` | Segmentación por densidad de buró y CV temporal. |
+| `notebooks/06b_llm_prompting.ipynb` | Experimento Qwen3-8B zero-shot con serialización TabLLM. |
+| `notebooks/08_llm_fewshot.ipynb` | Experimentos few-shot con 8/16/32 ejemplos. |
+| `notebooks/07_comparacion_final.ipynb` | Consolida métricas y comparación final. |
+
+## Reproducibilidad
+
+Los scripts en `scripts/` reflejan la misma lógica de los notebooks y exponen funciones reutilizables. El flujo conceptual es:
+
+1. preparar dataset modelable;
+2. entrenar baselines clásicos (`03`, `04`);
+3. evaluar por segmento con `TimeSeriesSplit` (`05`);
+4. correr inferencia LLM local con Ollama (`06b`, `08`);
+5. consolidar métricas y figuras (`07`).
+
+Ejemplo de instalación del entorno:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## How to run your Kedro pipeline
+La inferencia LLM requiere Ollama local y el modelo `qwen3:8b` descargado. Las celdas de inferencia LLM que dependen de caches locales pueden tardar mucho o requerir Ollama; los caches por crédito no se publican.
 
-You can run your Kedro project with:
+## Decisiones metodológicas visibles en la entrega
 
-```
-kedro run
-```
+- El split train/validación/test respeta el orden temporal de `fecha_desembolso`.
+- La comparación principal reporta AUC de test temporal.
+- El desglose por segmento clásico usa `TimeSeriesSplit`, no `StratifiedKFold(shuffle=True)`, para evitar *data leakage* temporal.
+- El LLM usa serialización TabLLM con variables textuales del negocio y top features numéricas.
+- El resultado few-shot del segmento *thin-file* se reporta con cautela porque el test esparso tiene n = 28.
 
-## How to test your Kedro project
+## Qué no se publica
 
-Have a look at the files `tests/test_run.py` and `tests/pipelines/data_science/test_pipeline.py` for instructions on how to write your tests. Run the tests as follows:
-
-```
-pytest
-```
-
-You can configure the coverage threshold in your project's `pyproject.toml` file under the `[tool.coverage.report]` section.
-
-## Project dependencies
-
-To see and update the dependency requirements for your project use `requirements.txt`. You can install the project requirements with `pip install -r requirements.txt`.
-
-[Further information about project dependencies](https://docs.kedro.org/en/stable/kedro_project_setup/dependencies.html#project-specific-dependencies)
-
-## How to work with Kedro and notebooks
-
-> Note: Using `kedro jupyter` or `kedro ipython` to run your notebook provides these variables in scope: `catalog`, `context`, `pipelines` and `session`.
->
-> Jupyter, JupyterLab, and IPython are already included in the project requirements by default, so once you have run `pip install -r requirements.txt` you will not need to take any extra steps before you use them.
-
-### Jupyter
-To use Jupyter notebooks in your Kedro project, you need to install Jupyter:
-
-```
-pip install jupyter
-```
-
-After installing Jupyter, you can start a local notebook server:
-
-```
-kedro jupyter notebook
-```
-
-### JupyterLab
-To use JupyterLab, you need to install it:
-
-```
-pip install jupyterlab
-```
-
-You can also start JupyterLab:
-
-```
-kedro jupyter lab
-```
-
-### IPython
-And if you want to run an IPython session:
-
-```
-kedro ipython
-```
-
-### How to ignore notebook output cells in `git`
-To automatically strip out all output cell contents before committing to `git`, you can use tools like [`nbstripout`](https://github.com/kynan/nbstripout). For example, you can add a hook in `.git/config` with `nbstripout --install`. This will run `nbstripout` before anything is committed to `git`.
-
-> *Note:* Your output cells will be retained locally.
-
-## Package your Kedro project
-
-[Further information about building project documentation and packaging your project](https://docs.kedro.org/en/stable/tutorial/package_a_project.html)
+No subir datos crudos (`data/01_raw/`, `data/03_primary/`), `data/00_keys/`, predicciones `.parquet`, configuraciones de asistentes (`CLAUDE.md`, `.claude/`) ni PDFs bibliográficos completos si el repositorio va a ser público. Los modelos clásicos curados (`models/xgboost_baseline.*`, `models/logreg_baseline.pkl`) sí quedan como evidencia reproducible.
