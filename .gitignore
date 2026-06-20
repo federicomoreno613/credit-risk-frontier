@@ -160,3 +160,48 @@ venv.bak/
 
 # mlflow local runs
 mlruns/*
+
+# Claves de recodificacion PII — NO subir
+data/00_keys/
+
+# Fuente cruda con PII pre-anonimización (nombres, emails, teléfonos, documentos)
+# 114MB, 1146 columnas — NUNCA subir. El dataset anonimizado que usamos es
+# data/04_model_input/dataset_limpio.csv (con credito_id_anon).
+data/03_primary/results_with_clip_clusters_transunion.csv
+
+##########################
+# Entrega III publication hygiene
+
+# Assistant/tooling configs are local only
+CLAUDE.md
+.claude/
+
+# Never publish client data, derived model inputs, keys, caches or model binaries
+/data/**
+!/data/
+!/data/**/
+!/data/**/.gitkeep
+/models/**
+*.parquet
+*.pkl
+*.pickle
+*.joblib
+
+# Bibliography PDFs stay local unless a private repo explicitly allows them
+/bibliografia/*.pdf
+!/bibliografia/references.bib
+
+# Local execution noise
+.venv/
+.env
+*.log
+.ipynb_checkpoints/
+
+# Curated files intentionally published for E3
+!/data/dataset_tesis.csv
+!/models/
+!/models/*.json
+!/models/xgboost_baseline.pkl
+!/models/logreg_baseline.pkl
+!/results/
+!/results/*.csv
