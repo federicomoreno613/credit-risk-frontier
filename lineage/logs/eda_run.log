@@ -1,0 +1,80 @@
+2026-06-20 16:03:32,996 INFO ========================================================================
+2026-06-20 16:03:32,997 INFO EDA linaje — inicio
+2026-06-20 16:03:32,997 INFO Dataset: data/dataset_tesis.csv
+2026-06-20 16:03:33,025 INFO Shape cargado: 5351 filas x 103 columnas
+2026-06-20 16:03:33,025 INFO Bloques de columnas — TU: 20, texto: 4, canales: 12, alianzas: 6, educación: 8, category one-hot: 15
+2026-06-20 16:03:33,025 INFO Cobertura variables de texto (no nulo) — subcategoria_texto: 100.0%, descripcion_negocio: 85.8%, otra_categoria_negocio: 25.7%, tipo_credito: 100.0%
+2026-06-20 16:03:33,025 INFO subcategoria_texto — n valores únicos: 38
+2026-06-20 16:03:33,059 INFO Target — n=5351, no-default=2745 (51.30%), default=2606 (48.70%)
+2026-06-20 16:03:33,158 INFO Rango temporal: 2022-07-05 a 2024-01-15; 19 meses con desembolsos
+2026-06-20 16:03:33,158 INFO Tasa default mensual — min=0.216, max=1.000, primer mes=0.508, último mes=1.000
+2026-06-20 16:03:33,299 INFO Vintage chart — 19 cohortes; primera=2022-07 (n=63), última=2024-01 (n=6); maduración máxima=18 meses
+2026-06-20 16:03:33,366 INFO Missing informativos — 16 variables analizadas
+2026-06-20 16:03:33,367 INFO   shops_daily_incomes: miss=29.9%, rate_with=0.572, rate_without=0.287, delta=-28.5 pp
+2026-06-20 16:03:33,367 INFO   estimated_income: miss=29.9%, rate_with=0.572, rate_without=0.287, delta=-28.5 pp
+2026-06-20 16:03:33,367 INFO   free_cash_flow: miss=13.2%, rate_with=0.523, rate_without=0.251, delta=-27.2 pp
+2026-06-20 16:03:33,367 INFO   shops_monthly_outcomes: miss=13.2%, rate_with=0.523, rate_without=0.252, delta=-27.1 pp
+2026-06-20 16:03:33,367 INFO   shops_shop_age: miss=13.1%, rate_with=0.522, rate_without=0.252, delta=-27.0 pp
+2026-06-20 16:03:33,367 INFO   shops_initial_capital: miss=13.2%, rate_with=0.522, rate_without=0.256, delta=-26.6 pp
+2026-06-20 16:03:33,367 INFO   credits_dependants_amount: miss=13.2%, rate_with=0.522, rate_without=0.257, delta=-26.5 pp
+2026-06-20 16:03:33,367 INFO   credits_family_expenses: miss=13.2%, rate_with=0.522, rate_without=0.257, delta=-26.5 pp
+2026-06-20 16:03:33,367 INFO   appusers_age: miss=1.1%, rate_with=0.490, rate_without=0.246, delta=-24.4 pp
+2026-06-20 16:03:33,367 INFO   relacion_edad_deuda: miss=14.8%, rate_with=0.523, rate_without=0.282, delta=-24.1 pp
+2026-06-20 16:03:33,367 INFO   debts_savings: miss=14.0%, rate_with=0.520, rate_without=0.284, delta=-23.6 pp
+2026-06-20 16:03:33,367 INFO   cost_ingress_ratio: miss=21.8%, rate_with=0.526, rate_without=0.345, delta=-18.1 pp
+2026-06-20 16:03:33,367 INFO   score_debets: miss=19.7%, rate_with=0.521, rate_without=0.349, delta=-17.1 pp
+2026-06-20 16:03:33,367 INFO   shops_monthly_incomes: miss=1.8%, rate_with=0.490, rate_without=0.337, delta=-15.3 pp
+2026-06-20 16:03:33,367 INFO   appusers_score: miss=7.2%, rate_with=0.489, rate_without=0.461, delta=-2.8 pp
+2026-06-20 16:03:33,367 INFO   shops_rent_amount: miss=60.9%, rate_with=0.494, rate_without=0.483, delta=-1.2 pp
+2026-06-20 16:03:33,373 INFO Códigos negativos del buró — top variables por presencia:
+2026-06-20 16:03:33,374 INFO   rle904: neg=99.0% (n=5296), rate_default|neg=0.486, rate_default|≥0=0.600
+2026-06-20 16:03:33,374 INFO   lmd34s: neg=93.1% (n=4983), rate_default|neg=0.472, rate_default|≥0=0.688
+2026-06-20 16:03:33,374 INFO   agg2503: neg=81.0% (n=4333), rate_default|neg=0.436, rate_default|≥0=0.705
+2026-06-20 16:03:33,374 INFO   tranbal09: neg=80.5% (n=4305), rate_default|neg=0.446, rate_default|≥0=0.657
+2026-06-20 16:03:33,374 INFO   aepmag01: neg=74.4% (n=3979), rate_default|neg=0.389, rate_default|≥0=0.770
+2026-06-20 16:03:33,374 INFO   ri27s: neg=70.7% (n=3784), rate_default|neg=0.488, rate_default|≥0=0.485
+2026-06-20 16:03:33,374 INFO   utlmag04: neg=51.4% (n=2748), rate_default|neg=0.362, rate_default|≥0=0.619
+2026-06-20 16:03:33,374 INFO   bi21s: neg=42.9% (n=2296), rate_default|neg=0.388, rate_default|≥0=0.561
+2026-06-20 16:03:33,374 INFO   duemag01: neg=32.7% (n=1748), rate_default|neg=0.238, rate_default|≥0=0.608
+2026-06-20 16:03:33,374 INFO   at34af: neg=24.0% (n=1283), rate_default|neg=0.399, rate_default|≥0=0.515
+2026-06-20 16:03:33,533 INFO Outliers IQR(k=3) sobre log — {'shops_monthly_incomes': '0.6%', 'credits_family_expenses': '5.4%', 'credits_amount_granted': '6.8%'}
+2026-06-20 16:03:33,549 INFO Top 12 correlaciones (point-biserial) con target:
+2026-06-20 16:03:33,549 INFO   g051s: r=-0.482
+2026-06-20 16:03:33,549 INFO   wd81: r=-0.375
+2026-06-20 16:03:33,549 INFO   antiguedad_cliente: r=-0.351
+2026-06-20 16:03:33,549 INFO   wd03: r=-0.340
+2026-06-20 16:03:33,549 INFO   ALIANZA_05: r=+0.337
+2026-06-20 16:03:33,549 INFO   aepmag01: r=+0.331
+2026-06-20 16:03:33,549 INFO   credits_contact_studies_nan: r=-0.320
+2026-06-20 16:03:33,549 INFO   duemag01: r=+0.312
+2026-06-20 16:03:33,549 INFO   at103s: r=+0.295
+2026-06-20 16:03:33,549 INFO   CANAL_07: r=+0.264
+2026-06-20 16:03:33,549 INFO   ALIANZA_02: r=-0.245
+2026-06-20 16:03:33,549 INFO   CANAL_09: r=-0.245
+2026-06-20 16:03:33,591 INFO wd81 — correlación con target: r=-0.375 (inversión del signo esperado)
+2026-06-20 16:03:33,591 INFO wd81 — tasa de default por bin:
+2026-06-20 16:03:33,591 INFO   neg (sin oblig.): n=571, tasa=0.541
+2026-06-20 16:03:33,591 INFO   0 días: n=832, tasa=0.877
+2026-06-20 16:03:33,591 INFO   1-30 días: n=2962, tasa=0.505
+2026-06-20 16:03:33,591 INFO   31-60 días: n=50, tasa=0.220
+2026-06-20 16:03:33,592 INFO   61-90 días: n=66, tasa=0.076
+2026-06-20 16:03:33,592 INFO   91-120 días: n=13, tasa=0.231
+2026-06-20 16:03:33,592 INFO   >120 días: n=857, tasa=0.061
+2026-06-20 16:03:33,641 INFO Information Value por grupo categórico:
+2026-06-20 16:03:33,641 INFO   canal: IV=0.560
+2026-06-20 16:03:33,641 INFO   alianza: IV=0.563
+2026-06-20 16:03:33,641 INFO   educacion: IV=0.435
+2026-06-20 16:03:33,641 INFO   subcategoria_texto: IV=0.251
+2026-06-20 16:03:33,772 INFO Subcategorías n≥15: 34 (de 38 totales) — rango de tasa de default: 54.6 pp
+2026-06-20 16:03:33,772 INFO   más segura: tienda naturista (tasa=0.28, n=32); más riesgosa: maquila (tasa=0.83, n=29)
+2026-06-20 16:03:33,775 INFO Segmentación thin-file — esparso (TU_neg≥6): n=3747 (70.0%), tasa=0.394 | denso: n=1604 (30.0%), tasa=0.704
+2026-06-20 16:03:33,839 INFO ========================================================================
+2026-06-20 16:03:33,839 INFO Conclusiones cuantificadas para la tesis:
+2026-06-20 16:03:33,839 INFO   [1] n=5351, balance target = 51.3%% no-default / 48.7%% default
+2026-06-20 16:03:33,840 INFO   [2] cobertura texto: subcategoria_texto=100%, descripcion_negocio=85.8%, otra_categoria_negocio=25.7%, tipo_credito=100%
+2026-06-20 16:03:33,840 INFO   [3] outliers (IQR k=3 sobre log) — monto solicitado: 6.8%, ingresos: 0.6%, gastos familiares: 5.4%
+2026-06-20 16:03:33,840 INFO   [4] IV — canal: 0.56, alianza: 0.56, educación: 0.44, subcategoria_texto: 0.25
+2026-06-20 16:03:33,840 INFO   [5] headroom subcategoría: 54.6 pp entre 'tienda naturista' (tasa=0.28) y 'maquila' (tasa=0.83); 34/38 niveles con n≥15
+2026-06-20 16:03:33,840 INFO   [6] thin-file (≥6 TU negativas): n=3747 (70.0%); denso: n=1604 (30.0%)
+2026-06-20 16:03:33,840 INFO   [7] wd81 r=-0.375 (signo invertido); tasa(neg)=0.54 vs tasa(>120 días)=0.06
+2026-06-20 16:03:33,840 INFO EDA linaje — fin

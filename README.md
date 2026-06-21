@@ -11,16 +11,20 @@ Repositorio de apoyo para la tesis de Maestría en Data Mining & Knowledge Disco
 
 Esta carpeta acompaña la Entrega III. Está pensada como evidencia reproducible del análisis. Se publica un **CSV base anonimizado** (`data/dataset_tesis.csv`) porque es el insumo mínimo para reproducir los notebooks; quedan fuera los datos crudos, las claves de anonimización y los caches de inferencia por crédito.
 
+También queda guardada la versión final integrada de la entrega en `docs/integrado.md` y `docs/integrado.docx`. El Markdown usa rutas relativas a `figures/` para que se pueda leer desde GitHub sin depender de mi máquina local.
+
 Estructura curada:
 
 ```text
 credit-risk-frontier/
+├── docs/                    # versión final integrada en MD y DOCX
 ├── data/dataset_tesis.csv   # base anonimizada usada por scripts/notebooks
 ├── notebooks/               # notebooks ejecutables de la entrega
 ├── scripts/                 # scripts equivalentes, pensados para pipeline
 ├── results/                 # CSVs resumidos de métricas y perfiles
 ├── models/                  # modelos clásicos y métricas JSON curadas
 ├── figures/                 # figuras finales incluidas en el documento
+├── lineage/                 # scripts de chequeo y trazabilidad del razonamiento
 ├── bibliografia/references.bib
 ├── MANIFEST.md              # qué se sube y qué se excluye
 ├── requirements.txt
@@ -33,7 +37,7 @@ credit-risk-frontier/
 |---|---|
 | `notebooks/03_baseline_xgboost.ipynb` | Entrena y evalúa XGBoost con split temporal. |
 | `notebooks/04_baseline_logreg.ipynb` | Baseline lineal interpretable. |
-| `notebooks/05_segmentacion_thin_file.ipynb` | Segmentación por densidad de buró y CV temporal. |
+| `notebooks/05_segmentacion_thin_file.ipynb` | Segmentación por **buró esparso** y CV temporal. |
 | `notebooks/06b_llm_prompting.ipynb` | Experimento Qwen3-8B zero-shot con serialización TabLLM. |
 | `notebooks/08_llm_fewshot.ipynb` | Experimentos few-shot con 8/16/32 ejemplos. |
 | `notebooks/07_comparacion_final.ipynb` | Consolida métricas y comparación final. |
@@ -46,7 +50,8 @@ Los scripts en `scripts/` reflejan la misma lógica de los notebooks y exponen f
 2. entrenar baselines clásicos (`03`, `04`);
 3. evaluar por segmento con `TimeSeriesSplit` (`05`);
 4. correr inferencia LLM local con Ollama (`06b`, `08`);
-5. consolidar métricas y figuras (`07`).
+5. consolidar métricas y figuras (`07`);
+6. revisar el lineaje de las cifras principales en `lineage/`.
 
 Ejemplo de instalación del entorno:
 
@@ -64,7 +69,7 @@ La inferencia LLM requiere Ollama local y el modelo `qwen3:8b` descargado. Las c
 - La comparación principal reporta AUC de test temporal.
 - El desglose por segmento clásico usa `TimeSeriesSplit`, no `StratifiedKFold(shuffle=True)`, para evitar *data leakage* temporal.
 - El LLM usa serialización TabLLM con variables textuales del negocio y top features numéricas.
-- El resultado few-shot del segmento *thin-file* se reporta con cautela porque el test esparso tiene n = 28.
+- El resultado few-shot del segmento de **buró esparso** se reporta con cautela porque el test esparso tiene n = 28.
 
 ## Qué no se publica
 

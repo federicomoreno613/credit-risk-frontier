@@ -1,0 +1,41 @@
+2026-06-20 16:02:52,646 | INFO | ======================================================================
+2026-06-20 16:02:52,646 | INFO | ML LINEAGE — credit scoring tesis UBA 2026
+2026-06-20 16:02:52,646 | INFO | ======================================================================
+2026-06-20 16:02:52,659 | INFO | Dataset cargado: 5588 filas, 32 columnas (features=21, TU=20).
+2026-06-20 16:02:52,660 | INFO | Rango temporal: 2022-07-05 → 2024-02-20.
+2026-06-20 16:02:52,661 | INFO | Split: train=4568, val=510, test=510 (~82/9/9).
+2026-06-20 16:02:52,661 | INFO | Tasa de default global: 50.0%.
+2026-06-20 16:02:52,742 | INFO | XGBoost — AUC train=0.933 | val=0.788 | test=0.756 | gap train→test=0.176
+2026-06-20 16:02:53,445 | INFO | LogReg — AUC train=0.882 | val=0.759 | test=0.717 | gap train→test=0.166
+2026-06-20 16:02:53,501 | INFO | Segmentos: esparso=3984 (71.3%), denso=1604 (28.7%).
+2026-06-20 16:02:55,822 | INFO | CV shuffled (con leakage temporal):
+2026-06-20 16:02:55,822 | INFO |   esparso  AUC=0.858 ± 0.008
+2026-06-20 16:02:55,822 | INFO |   denso    AUC=0.865 ± 0.018
+2026-06-20 16:02:55,822 | INFO |   total    AUC=0.872 ± 0.006
+2026-06-20 16:02:55,822 | INFO | CV temporal (TimeSeriesSplit, honesto):
+2026-06-20 16:02:55,822 | INFO |   esparso  AUC=0.765 ± 0.047
+2026-06-20 16:02:55,822 | INFO |   denso    AUC=0.831 ± 0.039
+2026-06-20 16:02:55,822 | INFO |   total    AUC=0.792 ± 0.046
+2026-06-20 16:02:55,822 | INFO |   Δ leakage esparso  = 0.093 (shuffled − temporal)
+2026-06-20 16:02:55,822 | INFO |   Δ leakage denso    = 0.034 (shuffled − temporal)
+2026-06-20 16:02:55,822 | INFO |   Δ leakage total    = 0.080 (shuffled − temporal)
+2026-06-20 16:02:56,828 | INFO | Sobreajuste — gap final train(0.991) − test(0.733) = 0.258.
+2026-06-20 16:02:56,871 | INFO | Brier score test — XGBoost=0.274 | LogReg=0.288.
+2026-06-20 16:02:56,919 | INFO | Top 5 features XGBoost (gain):
+2026-06-20 16:02:56,919 | INFO |   wd81                   0.2287
+2026-06-20 16:02:56,919 | INFO |   g051s                  0.1784
+2026-06-20 16:02:56,919 | INFO |   duemag01               0.0903
+2026-06-20 16:02:56,919 | INFO |   aepmag01               0.0781
+2026-06-20 16:02:56,919 | INFO |   wd03                   0.0551
+2026-06-20 16:02:56,919 | INFO | ======================================================================
+2026-06-20 16:02:56,919 | INFO | CONCLUSIONES — números clave de la entrega
+2026-06-20 16:02:56,919 | INFO | ======================================================================
+2026-06-20 16:02:56,919 | INFO | • XGBoost  → AUC train=0.933, val=0.788, test=0.756 (gap 0.176).
+2026-06-20 16:02:56,919 | INFO | • LogReg   → AUC train=0.882, val=0.759, test=0.717 (gap 0.166).
+2026-06-20 16:02:56,919 | INFO | • Leakage temporal (XGBoost): shuffled inflaba AUC por +0.093 (esparso), +0.034 (denso), +0.080 (total).
+2026-06-20 16:02:56,919 | INFO | • CV honesto (TimeSeriesSplit): esparso=0.765±0.047, denso=0.831±0.039, total=0.792±0.046.
+2026-06-20 16:02:56,919 | INFO | • Calibración test: Brier XGBoost=0.274 | LogReg=0.288.
+2026-06-20 16:02:56,919 | INFO | • Top feature XGBoost: wd81 (gain=0.2287).
+2026-06-20 16:02:56,919 | INFO | • Lectura: el informe reporta AUC test 0.820 (XGBoost) y 0.705 (LogReg). Acá obtenemos 0.756 y 0.717 respectivamente; las diferencias se explican porque el dataset entregado contiene solo las 20 vars TU + 1 dummy (no las 94 features del dataset_limpio), pero la jerarquía y la magnitud del leakage se reproducen.
+2026-06-20 16:02:56,919 | INFO | Figuras guardadas en lineage/figures
+2026-06-20 16:02:56,919 | INFO | FIN — ml_lineage.py
