@@ -1,59 +1,105 @@
-# Credit Risk Frontier — Entrega III
+# Credit Risk Frontier — Tesis UBA 2026
 
-Repositorio de apoyo para la tesis de Maestría en Data Mining & Knowledge Discovery (FCEyN, UBA): **comparación de modelos clásicos de machine learning y LLMs para credit scoring en microfinanzas latinoamericanas**.
+Repositorio de trabajo para mi tesis de Maestría en Data Mining & Knowledge Discovery (FCEyN, UBA): **comparación de modelos clásicos de machine learning y modelos de lenguaje para predicción de riesgo crediticio en microfinanzas latinoamericanas**.
 
 **Autor:** Federico Nicolás Moreno  
 **Director:** Mgs. Boris Dorian Da Silva  
 **Co-director:** Dr. Cristian Bravo  
 **Año:** 2026
 
-## Qué contiene esta versión
+## Resumen
 
-Esta carpeta acompaña la Entrega III. Está pensada como evidencia reproducible del análisis. Se publica un **CSV base anonimizado** (`data/dataset_tesis.csv`) porque es el insumo mínimo para reproducir los notebooks; quedan fuera los datos crudos, las claves de anonimización y los caches de inferencia por crédito.
+La pregunta central es simple: en una cartera real de microcréditos, ¿un modelo de lenguaje puede competir con modelos clásicos de *credit scoring* como XGBoost o Regresión Logística?
 
-También queda guardada la versión final integrada de la entrega en `docs/integrado.md` y `docs/integrado.docx`. El Markdown usa rutas relativas a `figures/` para que se pueda leer desde GitHub sin depender de mi máquina local.
+La respuesta que aparece en esta etapa es matizada:
 
-Estructura curada:
+- **XGBoost gana claramente en el promedio**, porque aprovecha mejor la señal tabular del buró y de las variables internas.
+- **El LLM zero-shot no alcanza**, porque llega con reglas generales sobre riesgo crediticio que no siempre aplican a una cartera ya filtrada por aprobación.
+- **El LLM few-shot muestra una señal interesante en clientes con buró esparso**, es decir, casos donde TransUnion aporta menos profundidad histórica y el texto del negocio puede pesar más.
+
+Este repositorio guarda la evidencia reproducible de esa comparación: dataset anonimizado, notebooks, scripts, resultados, figuras, modelos clásicos curados y el documento final integrado.
+
+## Estado actual del repo
+
+Este repo todavía no es un proyecto Kedro terminado. Es la versión de investigación y tesis: notebooks + scripts + resultados curados + lineaje de chequeo.
+
+La próxima etapa natural es **kedrizar todo lo que ya está hecho**: ordenar la preparación de datos, features, entrenamiento, evaluación y generación de figuras en pipelines reproducibles de Kedro. La lógica ya existe; lo que falta es empaquetarla con estructura productiva.
+
+## Qué contiene
 
 ```text
 credit-risk-frontier/
-├── docs/                    # versión final integrada en MD y DOCX
+├── docs/                    # documento final integrado en MD y DOCX
 ├── data/dataset_tesis.csv   # base anonimizada usada por scripts/notebooks
-├── notebooks/               # notebooks ejecutables de la entrega
-├── scripts/                 # scripts equivalentes, pensados para pipeline
-├── results/                 # CSVs resumidos de métricas y perfiles
-├── models/                  # modelos clásicos y métricas JSON curadas
-├── figures/                 # figuras finales incluidas en el documento
-├── lineage/                 # scripts de chequeo y trazabilidad del razonamiento
+├── notebooks/               # notebooks de exploración, modelos y comparación
+├── scripts/                 # versiones ejecutables del flujo experimental
+├── results/                 # métricas y tablas finales en CSV
+├── models/                  # modelos clásicos curados y métricas JSON
+├── figures/                 # figuras usadas en el documento final
+├── lineage/                 # scripts/logs para auditar cifras clave
 ├── bibliografia/references.bib
-├── MANIFEST.md              # qué se sube y qué se excluye
+├── MANIFEST.md              # detalle de qué se sube y qué queda fuera
 ├── requirements.txt
 └── pyproject.toml
 ```
 
-## Notebooks principales
+## Documento final
 
-| Notebook | Rol en la entrega |
+La versión integrada de la entrega está en:
+
+- `docs/integrado.md`
+- `docs/integrado.docx`
+
+El Markdown usa rutas relativas a `figures/`, así que puede leerse desde GitHub sin depender de rutas locales de mi máquina.
+
+## Flujo experimental
+
+Los notebooks principales son:
+
+| Notebook | Rol |
 |---|---|
 | `notebooks/03_baseline_xgboost.ipynb` | Entrena y evalúa XGBoost con split temporal. |
 | `notebooks/04_baseline_logreg.ipynb` | Baseline lineal interpretable. |
-| `notebooks/05_segmentacion_thin_file.ipynb` | Segmentación por **buró esparso** y CV temporal. |
-| `notebooks/06b_llm_prompting.ipynb` | Experimento Qwen3-8B zero-shot con serialización TabLLM. |
-| `notebooks/08_llm_fewshot.ipynb` | Experimentos few-shot con 8/16/32 ejemplos. |
-| `notebooks/07_comparacion_final.ipynb` | Consolida métricas y comparación final. |
+| `notebooks/05_segmentacion_thin_file.ipynb` | Segmentación por buró esparso y CV temporal. |
+| `notebooks/06b_llm_prompting.ipynb` | Qwen3-8B zero-shot con serialización tipo TabLLM. |
+| `notebooks/08_llm_fewshot.ipynb` | Experimentos few-shot con 8, 16 y 32 ejemplos. |
+| `notebooks/07_comparacion_final.ipynb` | Consolidación de métricas y figuras finales. |
 
-## Reproducibilidad
+Los scripts en `scripts/` siguen la misma lógica de los notebooks, pero son más fáciles de correr como pipeline simple.
 
-Los scripts en `scripts/` reflejan la misma lógica de los notebooks y exponen funciones reutilizables. El flujo conceptual es:
+## Resultados principales
 
-1. preparar dataset modelable;
-2. entrenar baselines clásicos (`03`, `04`);
-3. evaluar por segmento con `TimeSeriesSplit` (`05`);
-4. correr inferencia LLM local con Ollama (`06b`, `08`);
-5. consolidar métricas y figuras (`07`);
-6. revisar el lineaje de las cifras principales en `lineage/`.
+Sobre el test temporal más reciente:
 
-Ejemplo de instalación del entorno:
+| Modelo | AUC test | Lectura |
+|---|---:|---|
+| XGBoost | 0,820 | Mejor desempeño global. |
+| Regresión Logística | 0,705 | Baseline lineal razonable, pero inferior. |
+| Qwen3-8B zero-shot | 0,529 | Cerca del azar; falla por priors generales. |
+| Qwen3-8B few-shot 16 | 0,527 | No mejora el agregado, pero sí muestra señal por segmento. |
+
+El resultado más interesante aparece al mirar clientes con **buró esparso**: con 16 ejemplos en contexto, Qwen3-8B alcanza **AUC = 0,738** en ese segmento. Es un hallazgo prometedor, pero debe leerse con cautela porque el test esparso tiene solo **n = 28** casos.
+
+## Decisiones metodológicas importantes
+
+- El split train/validación/test respeta `fecha_desembolso`; no se usa split aleatorio para la comparación principal.
+- La validación por segmento usa `TimeSeriesSplit`, no `StratifiedKFold(shuffle=True)`, para evitar *data leakage* temporal.
+- Los códigos `-1` del buró no se tratan como nulos comunes: representan ausencia de registros específicos y pueden ser informativos.
+- En el texto final uso **buró esparso** en vez de “thin-file” porque describe mejor el problema práctico: no faltan todos los datos, falta profundidad de historial crediticio formal.
+- La inferencia LLM requiere Ollama local y el modelo `qwen3:8b`; los caches por crédito no se publican.
+
+## Lineaje y auditoría de cifras
+
+La carpeta `lineage/` contiene scripts y logs cortos que sirven para auditar los números principales del documento:
+
+- `lineage/eda_lineage.py`
+- `lineage/ml_lineage.py`
+- `lineage/llm_lineage.py`
+- `lineage/logs/*.log`
+
+No reemplazan a los notebooks originales, pero ayudan a seguir el razonamiento: qué dataset se cargó, qué corte se aplicó, qué métrica salió y qué figura se generó.
+
+## Cómo reproducir el entorno base
 
 ```bash
 python -m venv .venv
@@ -61,16 +107,35 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-La inferencia LLM requiere Ollama local y el modelo `qwen3:8b` descargado. Las celdas de inferencia LLM que dependen de caches locales pueden tardar mucho o requerir Ollama; los caches por crédito no se publican.
+Luego, el flujo conceptual es:
 
-## Decisiones metodológicas visibles en la entrega
+1. preparar dataset modelable;
+2. entrenar modelos clásicos;
+3. evaluar por segmento con split temporal;
+4. correr inferencia LLM local con Ollama;
+5. consolidar métricas y figuras;
+6. contrastar cifras con `lineage/`.
 
-- El split train/validación/test respeta el orden temporal de `fecha_desembolso`.
-- La comparación principal reporta AUC de test temporal.
-- El desglose por segmento clásico usa `TimeSeriesSplit`, no `StratifiedKFold(shuffle=True)`, para evitar *data leakage* temporal.
-- El LLM usa serialización TabLLM con variables textuales del negocio y top features numéricas.
-- El resultado few-shot del segmento de **buró esparso** se reporta con cautela porque el test esparso tiene n = 28.
+## Próxima etapa: kedrizar
+
+Lo que queda para una siguiente versión es convertir este trabajo en un proyecto Kedro completo:
+
+- definir `catalog.yml` para datasets, modelos, métricas y figuras;
+- separar nodos de preparación, features, entrenamiento, evaluación y reportes;
+- mover parámetros a `conf/base/parameters.yml`;
+- dejar pipelines independientes para EDA, modelos clásicos, LLM y comparación final;
+- generar resultados y figuras desde `kedro run`, sin depender de ejecutar notebooks manualmente.
+
+En otras palabras: la investigación ya está hecha; la próxima etapa es ordenar el flujo para que quede como pipeline reproducible y mantenible.
 
 ## Qué no se publica
 
-No subir datos crudos (`data/01_raw/`, `data/03_primary/`), `data/00_keys/`, predicciones `.parquet`, configuraciones de asistentes (`CLAUDE.md`, `.claude/`) ni PDFs bibliográficos completos si el repositorio va a ser público. Los modelos clásicos curados (`models/xgboost_baseline.*`, `models/logreg_baseline.pkl`) sí quedan como evidencia reproducible.
+Por privacidad y trazabilidad, quedan fuera:
+
+- datos crudos con PII;
+- claves de anonimización;
+- caches de predicciones por crédito;
+- PDFs bibliográficos completos;
+- configuraciones locales de asistentes o herramientas.
+
+El detalle exacto está en `MANIFEST.md`.
