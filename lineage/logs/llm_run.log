@@ -1,0 +1,64 @@
+2026-06-20 16:02:25,391 | INFO | ========================================================================
+2026-06-20 16:02:25,391 | INFO | Lineaje LLM — inicio
+2026-06-20 16:02:25,391 | INFO | ========================================================================
+2026-06-20 16:02:25,420 | INFO | Dataset cargado: 5351 filas, 104 columnas
+2026-06-20 16:02:25,420 | INFO | Segmentos (total): esparso=1911 (35.7%), denso=3440 (64.3%)
+2026-06-20 16:02:25,420 | INFO | Test set: n=495 | esparso=28 | denso=467
+2026-06-20 16:02:25,420 | INFO | Ejemplo de serializacion (10 features TU del primer caso esparso):
+2026-06-20 16:02:25,420 | INFO |   el numero de sectores economicos distintos con reporte activo: 19.00, la peor calificacion de mora historica (maximo dias en atraso, 81m): 3.00, la peor mora reciente (maximo dias en atraso, 12m): 0.00, la antiguedad promedio de las cuentas activas (meses): sin historial, el numero de consultas al buro en los ultimos 6 meses: sin historial, el numero de cuentas en mora actualmente: sin historial, el porcentaje de creditos pagados a tiempo (ultimos 4 anios): sin historial, el numero de cuentas activas reportadas en el buro: 0.00, el saldo total de deudas vigentes en el buro (ultimos 8 meses): sin historial, la utilizacion promedio del limite de credito (ultimos 4 meses): sin historial
+2026-06-20 16:02:25,425 | INFO | Few-shot 16: balance ejemplos {0.0: 8, 1.0: 8} (esperado {0: 8, 1: 8})
+2026-06-20 16:02:25,425 | INFO | Prompt 16-shot: system=137 chars, user=20817 chars (~5204 tokens approx.)
+2026-06-20 16:02:25,425 | INFO | Fuente de metricas LLM: real
+2026-06-20 16:02:25,425 | INFO | Zero-shot: AUC total=0.529 | esparso=0.460 (n=28) | denso=0.533 (n=467)
+2026-06-20 16:02:25,425 | INFO | Few-shot 8: AUC total=0.503 | esparso=0.564 | denso=0.502
+2026-06-20 16:02:25,425 | INFO | Few-shot 16: AUC total=0.527 | esparso=0.738 | denso=0.516
+2026-06-20 16:02:25,425 | INFO | Few-shot 32: AUC total=0.509 | esparso=0.588 | denso=0.507
+2026-06-20 16:02:25,499 | INFO | Figura guardada: lineage/figures/llm_01_fewshot_curve.png
+2026-06-20 16:02:25,570 | INFO | Figura guardada: lineage/figures/llm_02_comparacion_segmentos.png
+2026-06-20 16:02:25,570 | INFO | Tabla resumen — AUC por modelo y segmento
+2026-06-20 16:02:25,570 | INFO | ----------------------------------------------------------------------
+2026-06-20 16:02:25,570 | INFO | modelo                 | esparso | denso  | total 
+2026-06-20 16:02:25,570 | INFO | ----------------------------------------------------------------------
+2026-06-20 16:02:25,570 | INFO | XGBoost (CV/test)      |  0.704 |  0.739 |  0.820
+2026-06-20 16:02:25,570 | INFO | LogReg (CV/test)       |  0.711 |  0.683 |  0.705
+2026-06-20 16:02:25,570 | INFO | LLM zero-shot          |  0.460 |  0.533 |  0.529
+2026-06-20 16:02:25,570 | INFO | LLM 8-shot             |  0.564 |  0.502 |  0.503
+2026-06-20 16:02:25,570 | INFO | LLM 16-shot            |  0.738 |  0.516 |  0.527
+2026-06-20 16:02:25,570 | INFO | LLM 32-shot            |  0.588 |  0.507 |  0.509
+2026-06-20 16:02:25,570 | INFO | ----------------------------------------------------------------------
+2026-06-20 16:02:25,570 | INFO | n test esparso = 28 | n test denso = 467 | n test total = 495
+2026-06-20 16:02:25,570 | INFO | 
+2026-06-20 16:02:25,570 | INFO | ========================================================================
+2026-06-20 16:02:25,570 | INFO | CONCLUSIONES DEL LINEAJE LLM
+2026-06-20 16:02:25,570 | INFO | ========================================================================
+2026-06-20 16:02:25,570 | INFO | 
+2026-06-20 16:02:25,570 | INFO | Hallazgo central:
+2026-06-20 16:02:25,570 | INFO |   - El AUC del LLM en el segmento esparso pasa de 0.460 (zero-shot)
+2026-06-20 16:02:25,570 | INFO |     a 0.738 con 16 ejemplos in-context (mejora +0.278).
+2026-06-20 16:02:25,570 | INFO |   - Ese 0.738 esparso queda por encima de la referencia de XGBoost esparso
+2026-06-20 16:02:25,570 | INFO |     bajo CV temporal (0.704 ± 0.087).
+2026-06-20 16:02:25,570 | INFO |   - El mecanismo: el few-shot le ensena al LLM que en esta cartera la
+2026-06-20 16:02:25,570 | INFO |     correlacion 'mora alta = riesgo alto' esta invertida (sesgo de seleccion).
+2026-06-20 16:02:25,570 | INFO | 
+2026-06-20 16:02:25,570 | INFO | Tres salvedades duras:
+2026-06-20 16:02:25,570 | INFO |   1. n=28 en test esparso. Intervalo de confianza ancho, falta replicar
+2026-06-20 16:02:25,570 | INFO |      con un test esparso mas grande o validacion externa (e.g. LendingClub).
+2026-06-20 16:02:25,570 | INFO |   2. La curva NO es monotona: 8->16 sube, 16->32 cae a 0.588.
+2026-06-20 16:02:25,570 | INFO |      Sugiere un optimo de saturacion del prompt cerca de N=16.
+2026-06-20 16:02:25,570 | INFO |   3. El efecto vive solo en esparso. En denso el AUC del 16-shot es
+2026-06-20 16:02:25,570 | INFO |      0.516 (esencialmente azar) y el total queda en 0.527.
+2026-06-20 16:02:25,570 | INFO | 
+2026-06-20 16:02:25,570 | INFO | Lectura del lineaje:
+2026-06-20 16:02:25,570 | INFO |   - Zero-shot fracasa porque el LLM aplica la heuristica universal sobre
+2026-06-20 16:02:25,571 | INFO |     una cartera ya filtrada por aprobacion (sesgo de seleccion documentado
+2026-06-20 16:02:25,571 | INFO |     en EDA: r(wd81, target) = -0.40, contraintuitivo).
+2026-06-20 16:02:25,571 | INFO |   - Few-shot permite que el modelo *vea* la inversion en ejemplos reales
+2026-06-20 16:02:25,571 | INFO |     y la senal semantica aparece justo donde el buro numerico es escaso.
+2026-06-20 16:02:25,571 | INFO |   - El LLM no reemplaza a XGBoost a nivel global (0.527 vs 0.820 en total)
+2026-06-20 16:02:25,571 | INFO |     pero sugiere un nicho concreto: thin-file, donde el texto del negocio
+2026-06-20 16:02:25,571 | INFO |     gana peso relativo.
+2026-06-20 16:02:25,571 | INFO | 
+2026-06-20 16:02:25,571 | INFO | Figuras generadas: lineage/figures/llm_01_fewshot_curve.png
+2026-06-20 16:02:25,571 | INFO |                    lineage/figures/llm_02_comparacion_segmentos.png
+2026-06-20 16:02:25,571 | INFO | Fuente de metricas: real
+2026-06-20 16:02:25,571 | INFO | ========================================================================

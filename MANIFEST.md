@@ -7,6 +7,8 @@ Este manifiesto define el recorte del repositorio `credit-risk-frontier` que aco
 | Ruta | Motivo |
 |---|---|
 | `README.md` | Explica el objetivo del repo, el flujo y las limitaciones de reproducibilidad. |
+| `docs/integrado.md` | Versión final integrada en Markdown, con rutas relativas para GitHub. |
+| `docs/integrado.docx` | Versión final integrada en Word, lista para compartir. |
 | `MANIFEST.md` | Deja explícito qué se publica y qué queda fuera. |
 | `requirements.txt` / `pyproject.toml` | Permiten reconstruir el ambiente base. |
 | `data/dataset_tesis.csv` | CSV base anonimizado usado por los notebooks y scripts de E3. |
@@ -16,17 +18,18 @@ Este manifiesto define el recorte del repositorio `credit-risk-frontier` que aco
 | `models/*metrics*.json` | Métricas reproducibles sin predicciones por cliente. |
 | `notebooks/03_baseline_xgboost.ipynb` | Baseline principal y métrica honesta de test. |
 | `notebooks/04_baseline_logreg.ipynb` | Baseline lineal interpretable. |
-| `notebooks/05_segmentacion_thin_file.ipynb` | Segmentación *thin-file* y corrección de leakage temporal. |
+| `notebooks/05_segmentacion_thin_file.ipynb` | Segmentación por **buró esparso** y corrección de leakage temporal. |
 | `notebooks/06b_llm_prompting.ipynb` | Qwen3-8B zero-shot con serialización TabLLM. |
 | `notebooks/08_llm_fewshot.ipynb` | Few-shot 8/16/32 y hallazgo del segmento esparso. |
 | `notebooks/07_comparacion_final.ipynb` | Tabla final y figuras comparativas. |
 | `scripts/03_baseline_xgboost.py` | Versión ejecutable del baseline XGBoost. |
 | `scripts/04_baseline_logreg.py` | Versión ejecutable de regresión logística. |
-| `scripts/05_segmentacion_thin_file.py` | CV temporal por segmento. |
+| `scripts/05_segmentacion_thin_file.py` | CV temporal por segmento de buró. |
 | `scripts/06b_llm_prompting.py` | Inferencia LLM zero-shot. |
 | `scripts/08_llm_fewshot.py` | Inferencia LLM few-shot. |
 | `scripts/07_comparacion_final.py` | Consolidación de métricas. |
 | `figures/*.png` | Figuras y capturas terminal usadas en el documento. |
+| `lineage/*.py` / `lineage/figures/*.png` / `lineage/logs/*.log` | Chequeos de trazabilidad: cómo se verificaron las cifras principales. |
 | `bibliografia/references.bib` | Referencias bibliográficas sin redistribuir PDFs completos. |
 
 ## No subir
