@@ -1,12 +1,29 @@
-model_options:
-  test_size: 0.2
-  random_state: 3
-  features:
-    - engines
-    - passenger_capacity
-    - crew
-    - d_check_complete
-    - moon_clearance_complete
-    - iata_approved
-    - company_rating
-    - review_scores_rating
+classic_models:
+  xgboost:
+    retrain: true
+    n_trials: 50
+    seed: 42
+  logreg:
+    retrain: true
+    seed: 42
+
+segment_analysis:
+  recompute: true
+  seed: 42
+  n_splits: 5
+  segment_cutoff: 6
+
+model_comparison:
+  rebuild: true
+
+llm_zero_shot:
+  run_inference: false
+  ollama_model: qwen3:8b
+  cache_dir: data/07_model_output/llm_cache
+
+llm_few_shot:
+  run_inference: false
+  shots:
+    - 8
+    - 16
+    - 32

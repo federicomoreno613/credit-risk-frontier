@@ -1,0 +1,10 @@
+thesis_reporting:
+  fail_on_missing_files: true
+  required_files:
+    - docs/integrado.md
+    - docs/integrado.docx
+    - results/tabla_comparacion_final.csv
+    - results/metrics_test.csv
+    - figures/22_comparacion_auc_segmentos.png
+    - figures/01_distribucion_target.png
+    - figures/eda_10_semantica_subcategoria.png

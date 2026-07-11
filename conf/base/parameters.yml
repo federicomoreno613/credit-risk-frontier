@@ -1,0 +1,87 @@
+seed: 42
+
+paths:
+  dataset: data/dataset_tesis.csv
+  models_dir: models
+  results_dir: results
+  figures_dir: figures
+  llm_cache_dir: data/07_model_output/llm_cache
+
+dataset_contract:
+  target_col: target
+  set_col: set
+  date_col: fecha_desembolso
+  fail_on_missing_required: true
+  fail_on_expected_mismatch: true
+  meta_cols:
+    - credito_id_anon
+    - fecha_desembolso
+    - target
+    - set
+  text_cols:
+    - subcategoria_texto
+    - descripcion_negocio
+    - otra_categoria_negocio
+    - tipo_credito
+  required_columns:
+    - credito_id_anon
+    - fecha_desembolso
+    - target
+    - set
+    - subcategoria_texto
+    - descripcion_negocio
+    - otra_categoria_negocio
+    - tipo_credito
+    - wd81
+    - lmd34s
+    - rle904
+    - agg2503
+  tu_vars:
+    - agg308
+    - wd81
+    - agg2503
+    - utlmag04
+    - duemag01
+    - aepmag01
+    - bi21s
+    - lmd34s
+    - ri27s
+    - rle904
+    - tel32s
+    - tranbal09
+    - at104s
+    - sa21s
+    - at103s
+    - tel03s
+    - at34af
+    - g051s
+    - agg9316
+    - wd03
+  segment:
+    missing_code: -1
+    cutoff: 6
+    sparse_label: esparso
+    dense_label: denso
+  # E4: dataset deduplicado por credito_id_anon (5351 -> 4897, val/test intactos)
+  # y esparso redefinido como (TU vars < 0) >= 6, que sube el segmento a ~72%.
+  expected_counts:
+    n_rows: 4897
+    segment_esparso_total: 3538
+    segment_denso_total: 1359
+    test_esparso: 204
+    test_denso: 291
+
+eda:
+  target_col: target
+  set_col: set
+  date_col: fecha_desembolso
+  fail_on_missing_figures: true
+  figure_files:
+    - figures/01_distribucion_target.png
+    - figures/02_analisis_temporal.png
+    - figures/e3_vintage_staircase.png
+    - figures/e3_missing_informativos_clean.png
+    - figures/eda_13_outliers.png
+    - figures/eda_09_bivariado_TU_clave.png
+    - figures/eda_10_semantica_subcategoria.png
+    - figures/eda_12_resumen_top_predictores.png
