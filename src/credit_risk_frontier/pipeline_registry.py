@@ -36,4 +36,14 @@ def register_pipelines() -> dict[str, Pipeline]:
     ]
     pipelines["__default__"] = sum(default_parts, Pipeline([]))
     pipelines["public_repro"] = pipelines["__default__"]
+
+    # full_local = todo (máquina con caches LLM + torch para TabFM): data_science
+    # completo (con tabfm y brazos) + tabllm + reporting completo.
+    pipelines["full_local"] = sum(
+        [pipelines.get("data_processing", Pipeline([])),
+         pipelines.get("data_science", Pipeline([])),
+         pipelines.get("tabllm", Pipeline([])),
+         reporting],
+        Pipeline([]),
+    )
     return pipelines
