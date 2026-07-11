@@ -71,7 +71,9 @@ TOP_FEATURES_LLM = [
     "rle904", "at104s", "agg308", "utlmag04",
     # Formulario (top predictores del negocio y solicitante)
     "antiguedad_cliente", "appusers_age",
-    "credits_amount_granted", "credits_fee_month_amount_granted",
+    # NOTA: se excluyen las variables del crédito OTORGADO (monto, cuota, tasa, aval,
+    # gestión digital) por LEAKAGE — son datos post-aprobación no disponibles al decidir.
+    # Coherente con la corrección aplicada a XGBoost/RegLog (mismo criterio a priori).
     "shops_monthly_incomes", "shops_monthly_outcomes",
     "estimated_income", "free_cash_flow",
     "cost_ingress_ratio", "appusers_score",
@@ -111,27 +113,32 @@ NUMERIC_DESC = {
 }
 
 # Variables TransUnion — -1 significa "sin información en el buró"
+# Definiciones OFICIALES del diccionario TransUnion CreditVision V3.8
+# (data/diccionario_tu_oficial.csv). Reemplazan a las etiquetas provisionales/incorrectas
+# anteriores, que le daban al modelo significados equivocados (p. ej. g051s como "sectores
+# económicos" cuando es "% de obligaciones que estuvo en mora"). Los códigos de mora (wd81,
+# wd03) son ÍNDICES ponderados, no "días en atraso".
 TU_DESC = {
-    "agg308":    "el saldo total de deudas vigentes en el buró (últimos 8 meses) en pesos",
-    "wd81":      "la peor calificación de mora histórica — máximo días en atraso (últimos 81 meses)",
-    "agg2503":   "el monto de cartera castigada acumulada (deudas irrecuperables) en pesos",
-    "utlmag04":  "la utilización promedio del límite de crédito en porcentaje (últimos 4 meses)",
-    "duemag01":  "el monto vencido promedio — saldo atrasado (último mes) en pesos",
-    "aepmag01":  "la antigüedad promedio de las cuentas activas en el buró en meses",
-    "bi21s":     "el número de consultas al buró en los últimos 6 meses",
-    "lmd34s":    "la mora de largo plazo — días promedio en mora (últimos 34 meses)",
-    "ri27s":     "el número de cuentas en mora actualmente",
-    "rle904":    "el porcentaje de créditos pagados a tiempo en los últimos 4 años",
-    "tel32s":    "el límite total de crédito disponible en el buró en pesos",
-    "tranbal09": "el balance transaccional (negativo=revolvente, positivo=transactor)",
-    "at104s":    "el número de cuentas activas reportadas en el buró",
-    "sa21s":     "el monto total de la línea de crédito aprobada en pesos",
-    "at103s":    "el número total de cuentas (activas + cerradas) en el buró",
-    "tel03s":    "la suma de límites de crédito en los últimos 3 meses en pesos",
-    "at34af":    "el índice de apertura de nuevas cuentas de financiamiento",
-    "g051s":     "el número de sectores económicos distintos con reporte activo en el buró",
-    "agg9316":   "el saldo promedio de deudas en los últimos 16 trimestres en pesos",
-    "wd03":      "la peor calificación de mora reciente — máximo días en atraso (últimos 12 meses)",
+    "g051s":     "el porcentaje de obligaciones que alguna vez estuvo en mora",
+    "wd81":      "la mora ponderada en créditos financieros en el mes M=01 (índice)",
+    "wd03":      "la mora ponderada en las obligaciones en el mes M=06 (índice)",
+    "at103s":    "el porcentaje de obligaciones vigentes y al día del total de obligaciones",
+    "duemag01":  "la magnitud total de todas las obligaciones en los últimos 24 meses (índice 0–600)",
+    "agg308":    "el monto en mora agregado de obligaciones no hipotecarias en créditos financieros al mes M=08",
+    "tel03s":    "el número de obligaciones de telecomunicaciones vigentes y al día",
+    "agg9316":   "el monto agregado en mora en el mes M=16",
+    "utlmag04":  "la magnitud de utilización de obligaciones retail en los últimos 24 meses (índice 0–600)",
+    "aepmag01":  "la magnitud del exceso de pago inferido agregado no hipotecario en 24 meses (índice 0–600)",
+    "bi21s":     "los meses desde la más reciente apertura bancaria en cuotas",
+    "tranbal09": "el saldo asignado a obligaciones identificadas como transactor al mes 9",
+    "agg2503":   "el plazo inferido agregado (relación de saldo sobre cuota mínima) en el mes M=03",
+    "at104s":    "el porcentaje de obligaciones aperturadas en los últimos 24 meses sobre el total",
+    "tel32s":    "el saldo máximo en obligaciones de telecomunicaciones (últimos 12 meses) en pesos",
+    "sa21s":     "los meses desde la más reciente cuenta de ahorros aperturada",
+    "ri27s":     "el número de obligaciones retail vigentes y al día con 24 meses o más de antigüedad",
+    "rle904":    "el exceso de pago inferido en cuentas hipotecarias en los últimos 6 meses",
+    "at34af":    "la utilización de obligaciones vigentes en créditos financieros (últimos 12 meses)",
+    "lmd34s":    "la utilización de obligaciones bancarias sin garantía de mediano plazo (últimos 12 meses)",
 }
 
 # Mapeos para decodificar one-hot → texto categórico
@@ -219,8 +226,13 @@ def _fmt_val(val, is_tu: bool = False) -> str | None:
         return None
     if isinstance(val, float) and pd.isna(val):
         return None
-    if is_tu and (val == -1 or val == -2 or val == -3):
-        return None  # sin información en el buró
+    if is_tu and val < 0:
+        # Códigos centinela de TransUnion (-1, -2, -3, -4, -6, -7 = sin información /
+        # sin obligaciones del tipo / sin actualización). Las variables TU son todas
+        # no-negativas por definición (porcentajes, conteos, meses, índices, montos);
+        # serializar el código crudo hace que el LLM lo lea como valor real (p. ej.
+        # ri27s=-6 → "6 obligaciones", 36% de los casos).
+        return None
     if isinstance(val, float):
         return f"{val:.2f}"
     return str(val)
@@ -241,19 +253,23 @@ def serialize_tabllm(row: pd.Series, feature_names: list[str]) -> str:
         desc = all_desc.get(col, col)
         parts.append(f"{desc}: {fv}" if fv is not None else f"{desc}: sin historial")
 
-    parts.append(f"categoría negocio: {_decode_onehot(row, CATEGORY_MAP, 'categoría')}")
-    parts.append(f"objetivo crédito: {_decode_onehot(row, GOAL_MAP, 'objetivo')}")
-    parts.append(f"educación: {_decode_onehot(row, EDUCATION_MAP, 'educación')}")
-    parts.append(f"canal: {_decode_canal(row)}")
+    # Switches de módulo para la ablación de fuentes (experimento E4): permiten armar
+    # variantes solo-buró / buró+semántica / sin-buró sin tocar la lógica de serialización.
+    if globals().get("INCLUDE_CATEGORICALS", True):
+        parts.append(f"categoría negocio: {_decode_onehot(row, CATEGORY_MAP, 'categoría')}")
+        parts.append(f"objetivo crédito: {_decode_onehot(row, GOAL_MAP, 'objetivo')}")
+        parts.append(f"educación: {_decode_onehot(row, EDUCATION_MAP, 'educación')}")
+        parts.append(f"canal: {_decode_canal(row)}")
 
-    for text_col, label in [
-        ("subcategoria_texto", "subcategoría"),
-        ("descripcion_negocio", "negocio"),
-        ("tipo_credito", "tipo crédito"),
-    ]:
-        v = row.get(text_col, "")
-        if v and not (isinstance(v, float) and pd.isna(v)):
-            parts.append(f"{label}: {v}")
+    if globals().get("INCLUDE_TEXT", True):
+        for text_col, label in [
+            ("subcategoria_texto", "subcategoría"),
+            ("descripcion_negocio", "negocio"),
+            ("tipo_credito", "tipo crédito"),
+        ]:
+            v = row.get(text_col, "")
+            if v and not (isinstance(v, float) and pd.isna(v)):
+                parts.append(f"{label}: {v}")
     return ", ".join(parts)
 
 
@@ -340,7 +356,7 @@ def check_ollama() -> None:
 def load_segmented(dataset_path: str) -> pd.DataFrame:
     """Carga el dataset y agrega columnas de segmentación por densidad de bureau."""
     df = pd.read_csv(dataset_path, parse_dates=["fecha_desembolso"])
-    df["n_tu_missing"] = (df[TU_VARS] == -1).sum(axis=1)
+    df["n_tu_missing"] = (df[TU_VARS] < 0).sum(axis=1)
     df["segmento"] = (df["n_tu_missing"] >= CORTE_ESPARSO).map({True: "esparso", False: "denso"})
     return df
 
