@@ -15,11 +15,22 @@ dependencies = [
     "ipython>=8.10",
     "jupyterlab>=3.0",
     "notebook",
+    "jupytext>=1.16",
     "kedro[jupyter]~=1.2.0",
     "kedro-datasets[pandas-csvdataset, pandas-exceldataset, pandas-parquetdataset, plotly-plotlydataset, plotly-jsondataset, matplotlib-matplotlibdataset]>=3.0",
     "kedro-viz>=6.7.0",
-    "scikit-learn~=1.5.1",
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "scikit-learn==1.5.2",
+    "xgboost==2.1.4",
+    "optuna==4.1.0",
+    "matplotlib>=3.8",
     "seaborn~=0.12.1",
+    "scipy>=1.12",
+    "joblib>=1.4",
+    "requests>=2.32",
+    "shap>=0.46",
+    "pytest>=8.0",
 ]
 
 [project.scripts]
@@ -44,8 +55,13 @@ package_name = "credit_risk_frontier"
 project_name = "credit_risk_frontier"
 kedro_init_version = "1.2.0"
 tools = "['Data Structure']"
-example_pipeline = "True"
+example_pipeline = "False"
 source_dir = "src"
 
 [tool.kedro_telemetry]
 project_id = "86f93a0d69d24e16ae0a48cc70eb32ac"
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src",
+]
