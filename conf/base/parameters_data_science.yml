@@ -1,29 +1,46 @@
-classic_models:
-  xgboost:
-    retrain: true
-    n_trials: 50
-    seed: 42
-  logreg:
-    retrain: true
-    seed: 42
+# Parámetros de data_science — claves namespaced anidadas (regla spaceflights).
+# Cada namespace tiene su `model_options`; `params:model_options` dentro del template
+# resuelve a `<namespace>.model_options` automáticamente.
+#
+# feature_arm:
+#   noleak  → baseline citable sin filtración (test AUC XGB 0.7516 / LogReg 0.6605)
+#   leak    → baseline con crédito otorgado (0.7776 / 0.6910), solo para la tabla
+#   all_*/llm_* → brazos de la ablación ML de fuentes (script 12)
 
-segment_analysis:
-  recompute: true
+# --- Clásicos citables (sin leakage) ---
+xgb:
+  model_options: {estimator: xgb, feature_arm: noleak, seed: 42, n_trials: 50}
+logreg:
+  model_options: {estimator: logreg, feature_arm: noleak, seed: 42, C: 1.0, max_iter: 3000}
+
+# --- Variantes con leakage (transparencia en la tabla, NO citables) ---
+xgb_leak:
+  model_options: {estimator: xgb, feature_arm: leak, seed: 42, n_trials: 50}
+logreg_leak:
+  model_options: {estimator: logreg, feature_arm: leak, seed: 42, C: 0.1, max_iter: 1000}
+
+# --- TabFM (foundation model tabular; requiere el extra `tabfoundation`) ---
+tabfm:
+  model_options: {estimator: tabfm, feature_arm: noleak, seed: 42}
+
+# --- Brazos de la ablación ML de fuentes ---
+arm_all_tu:
+  model_options: {estimator: xgb, feature_arm: all_tu, seed: 42, n_trials: 50}
+arm_all_sin_tu:
+  model_options: {estimator: xgb, feature_arm: all_sin_tu, seed: 42, n_trials: 50}
+arm_all_full:
+  model_options: {estimator: xgb, feature_arm: all_full, seed: 42, n_trials: 50}
+arm_llm_tu:
+  model_options: {estimator: xgb, feature_arm: llm_tu, seed: 42, n_trials: 50}
+arm_llm_tu_sem:
+  model_options: {estimator: xgb, feature_arm: llm_tu_sem, seed: 42, n_trials: 50}
+arm_llm_sin_tu:
+  model_options: {estimator: xgb, feature_arm: llm_sin_tu, seed: 42, n_trials: 50}
+arm_llm_full:
+  model_options: {estimator: xgb, feature_arm: llm_full, seed: 42, n_trials: 50}
+
+# --- CV temporal por segmento (nodo cross-model, script 05) ---
+segment_cv:
   seed: 42
   n_splits: 5
-  segment_cutoff: 6
-
-model_comparison:
-  rebuild: true
-
-llm_zero_shot:
-  run_inference: false
-  ollama_model: qwen3:8b
-  cache_dir: data/07_model_output/llm_cache
-
-llm_few_shot:
-  run_inference: false
-  shots:
-    - 8
-    - 16
-    - 32
+  min_seg_casos: 20

@@ -26,6 +26,7 @@ from __future__ import annotations
 import json
 import re
 import time
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -35,6 +36,11 @@ from sklearn.metrics import (
     roc_auc_score,
     roc_curve,
 )
+
+# Raíz del repo (src/credit_risk_frontier/utils.py → ../../.. = repo root). Solo la
+# usan los nodos de validación de artefactos, que legítimamente chequean existencia
+# de figuras/docs publicados en disco (desviación menor documentada en el plan).
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 # ---------------------------------------------------------------------------
 # Constantes de columnas (fuente: scripts 03/04/06b/12)
@@ -223,14 +229,16 @@ def credit_metrics(y_true, y_prob) -> dict:
 def feature_columns(df: pd.DataFrame, *, exclude_leak: bool = True) -> list[str]:
     """Columnas de features del dataset.
 
-    ``exclude_leak=True`` (baseline citable, sin filtración) descarta también las
-    5 ``LEAK_COLS`` y las 3 ``TU_DERIVADAS`` derivadas del buró, además de META,
-    TEXT y las columnas derivadas por la segmentación. ``exclude_leak=False``
-    reproduce el baseline con leakage de los scripts 03/04 (solo excluye META+TEXT).
+    ``exclude_leak=True`` (baseline citable, sin filtración = brazo ``all_full`` de
+    la ablación ML, test AUC 0.7516) descarta las 5 ``LEAK_COLS`` (crédito otorgado,
+    post-aprobación), META, TEXT y las columnas derivadas por la segmentación. Las
+    ``TU_DERIVADAS`` NO se excluyen: son señal de buró legítima disponible al decidir
+    (solo se sacan del brazo ``all_sin_tu`` para no contaminar la fuente "sin buró").
+    ``exclude_leak=False`` reproduce el baseline con leakage de 03/04 (solo META+TEXT).
     """
     banned = set(META + TEXT + DERIVED)
     if exclude_leak:
-        banned |= set(LEAK_COLS + TU_DERIVADAS)
+        banned |= set(LEAK_COLS)
     return [c for c in df.columns if c not in banned]
 
 

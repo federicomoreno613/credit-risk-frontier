@@ -1,53 +1,35 @@
-"""Project pipelines."""
+"""Registro de pipelines (canónico: find_pipelines + __default__ offline).
+
+``find_pipelines()`` descubre por carpeta cada pipeline bajo ``pipelines/`` con un
+``create_pipeline()`` (data_processing, data_science, tabllm, reporting). Las
+variantes namespaced viven DENTRO de cada ``create_pipeline()``, así que cada
+carpeta es una sola clave de registry.
+
+``__default__`` debe correr offline y en CPU: se excluye ``tabllm`` (necesita
+transportes ollama/openai) y las variantes de ``data_science`` que requieren torch
+o son opcionales (TabFM y los brazos de ablación) — para eso se reconstruye
+``data_science`` con solo ``DEFAULT_VARIANTS`` (xgb, logreg) en el default.
+"""
 
 from __future__ import annotations
 
+from kedro.framework.project import find_pipelines
 from kedro.pipeline import Pipeline
 
-from credit_risk_frontier.pipelines import (
-    classic_models,
-    data_preparation,
-    eda,
-    llm_few_shot,
-    llm_zero_shot,
-    model_comparison,
-    segment_analysis,
-    thesis_reporting,
-)
+from credit_risk_frontier.pipelines import data_science
 
 
 def register_pipelines() -> dict[str, Pipeline]:
-    """Register safe public pipelines separately from local/LLM pipelines."""
-    data_preparation_pipeline = data_preparation.create_pipeline()
-    eda_pipeline = eda.create_pipeline()
-    classic_models_pipeline = classic_models.create_pipeline()
-    segment_analysis_pipeline = segment_analysis.create_pipeline()
-    model_comparison_pipeline = model_comparison.create_pipeline()
-    thesis_reporting_pipeline = thesis_reporting.create_pipeline()
-    llm_zero_shot_pipeline = llm_zero_shot.create_pipeline()
-    llm_few_shot_pipeline = llm_few_shot.create_pipeline()
+    pipelines = find_pipelines()
 
-    public_repro = (
-        data_preparation_pipeline
-        + eda_pipeline
-        + classic_models_pipeline
-        + segment_analysis_pipeline
-        + model_comparison_pipeline
-        + thesis_reporting_pipeline
-    )
-    llm_local = llm_zero_shot_pipeline + llm_few_shot_pipeline
+    # data_science offline = solo los clásicos citables (xgb, logreg no-leak).
+    ds_offline = data_science.create_pipeline(variants=data_science.DEFAULT_VARIANTS)
 
-    return {
-        "__default__": public_repro,
-        "public_repro": public_repro,
-        "data_preparation": data_preparation_pipeline,
-        "eda": eda_pipeline,
-        "classic_models": classic_models_pipeline,
-        "segment_analysis": segment_analysis_pipeline,
-        "model_comparison": model_comparison_pipeline,
-        "thesis_reporting": thesis_reporting_pipeline,
-        "llm_zero_shot": llm_zero_shot_pipeline,
-        "llm_few_shot": llm_few_shot_pipeline,
-        "llm_local": llm_local,
-        "full_local": public_repro + llm_local,
-    }
+    default_parts = [
+        pipelines.get("data_processing", Pipeline([])),
+        ds_offline,
+        pipelines.get("reporting", Pipeline([])),
+    ]
+    pipelines["__default__"] = sum(default_parts, Pipeline([]))
+    pipelines["public_repro"] = pipelines["__default__"]
+    return pipelines

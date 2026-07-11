@@ -1,3 +1,8 @@
+# Catálogo único (huella spaceflights). Regla dura: TODO output persistido está acá;
+# ningún nodo hace I/O propio. Factories para lo que generamos, entradas explícitas
+# para rutas publicadas históricas (models/*.json, results/*.csv) y evidencia frozen.
+
+# --- Entrada e intermedios de datos ---
 credit_dataset:
   type: pandas.CSVDataset
   filepath: data/dataset_tesis.csv
@@ -5,8 +10,11 @@ credit_dataset:
     parse_dates:
       - fecha_desembolso
 
-# Kedro v1 reports. The historical thesis artifacts remain in models/, results/ and figures/;
-# these datasets provide a reproducible Kedro trace without moving published files.
+model_input_table:
+  type: pandas.ParquetDataset
+  filepath: data/04_feature/model_input_table.parquet
+
+# --- Reportes de data_processing ---
 dataset_validation_report:
   type: json.JSONDataset
   filepath: data/08_reporting/kedro/dataset_validation_report.json
@@ -15,36 +23,25 @@ eda_report:
   type: json.JSONDataset
   filepath: data/08_reporting/kedro/eda_report.json
 
-xgboost_metrics_kedro:
-  type: json.JSONDataset
-  filepath: data/08_reporting/kedro/xgboost_metrics.json
+# --- data_science: modelos (factory sobre el namespace) ---
+"{namespace}.classifier":
+  type: pickle.PickleDataset
+  filepath: data/06_models/{namespace}_classifier.pkl
 
-logreg_metrics_kedro:
+# Métricas de los clásicos citables → rutas PUBLICADAS históricas (paridad E4).
+xgb.metrics:
   type: json.JSONDataset
-  filepath: data/08_reporting/kedro/logreg_metrics.json
-
-segment_metrics_kedro:
+  filepath: models/xgboost_metrics.json
+logreg.metrics:
   type: json.JSONDataset
-  filepath: data/08_reporting/kedro/cv_seg_metrics.json
+  filepath: models/logreg_metrics.json
 
-llm_zero_shot_nothink_metrics_kedro:
+# Resto de métricas de modelos (leak, tabfm, brazos) → factory bajo reporting.
+"{namespace}.metrics":
   type: json.JSONDataset
-  filepath: data/08_reporting/kedro/llm_metrics_tabllm_nothink.json
+  filepath: data/08_reporting/models/{namespace}_metrics.json
 
-llm_zero_shot_think_metrics_kedro:
+# CV temporal por segmento → ruta publicada.
+cv_seg_metrics:
   type: json.JSONDataset
-  filepath: data/08_reporting/kedro/llm_metrics_tabllm_think.json
-
-llm_few_shot_metrics_kedro:
-  type: json.JSONDataset
-  filepath: data/08_reporting/kedro/llm_metrics_fewshot.json
-
-comparison_table_kedro:
-  type: pandas.CSVDataset
-  filepath: data/08_reporting/kedro/tabla_comparacion_final.csv
-  save_args:
-    index: false
-
-thesis_artifact_report:
-  type: json.JSONDataset
-  filepath: data/08_reporting/kedro/thesis_artifact_report.json
+  filepath: models/cv_seg_metrics.json
