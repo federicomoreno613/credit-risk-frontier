@@ -9,8 +9,8 @@ Documento final: `E4-G1-MORENO-FEDERICO-2026.docx` (raíz de TESIS).
 | Script | Rol |
 |---|---|
 | `scripts/01_preparar_dataset.py` | Construcción del dataset (n = 4.897), partición temporal train/val/test. |
-| `scripts/03_baseline_xgboost.py` | Baseline XGBoost (AUC test 0,7515). |
-| `scripts/04_baseline_logreg.py` | Baseline Regresión Logística (AUC test 0,6605). |
+| `scripts/03_baseline_xgboost.py` | XGBoost. Baseline citable **sin filtración: AUC test 0,7516** (ver nota de baseline). |
+| `scripts/04_baseline_logreg.py` | Regresión Logística. Baseline citable **sin filtración: AUC test 0,6605**. |
 | `scripts/05_segmentacion_thin_file.py` | Segmentación historial escaso / denso. |
 | `scripts/06b_llm_prompting.py` | Serialización TabLLM y prompting base del modelo de lenguaje. |
 | `scripts/07_comparacion_final.py` | Integración de métricas y tabla comparativa. |
@@ -21,6 +21,31 @@ Documento final: `E4-G1-MORENO-FEDERICO-2026.docx` (raíz de TESIS).
 | `scripts/09d_f1_posthoc.py` | Cálculo de F1 post-hoc sobre las probabilidades guardadas. |
 | `scripts/10_figuras_llm.py` | Figuras de resultados del modelo de lenguaje. |
 | `scripts/12_ablacion_fuentes_ml.py` | Ablación de fuentes de variables en los modelos clásicos. |
+
+## Nota de baseline (con / sin filtración)
+
+La cifra citable de los modelos clásicos es la **sin filtración (leakage)**: excluye las
+cinco variables de crédito *otorgado* (monto, cuota, intereses, aval, instrumentación
+digital), que son posteriores a la aprobación y no están disponibles al decidir. El
+modelo de lenguaje tampoco las ve, de modo que la comparación es simétrica.
+
+- **Sin filtración (citable):** XGBoost **0,7516**, Regresión Logística **0,6605**.
+  Es el control `all_full` de `scripts/12_ablacion_fuentes_ml.py` y lo que reproduce el
+  pipeline Kedro (`models/xgboost_metrics.json`, `models/logreg_metrics.json`).
+- **Con filtración (solo transparencia):** XGBoost 0,7776, Regresión Logística 0,6910.
+  Corresponde a la configuración previa (variables de otorgamiento incluidas), etiquetada
+  `con_leakage_previo` en `models/baseline_metrics_noleak.json`. Se conserva como fixture
+  y como variantes `xgb_leak`/`logreg_leak` del pipeline, y aparece en la tabla comparativa
+  a título de contraste; **no es la cifra citable**.
+
+## Pipeline Kedro (reproducibilidad)
+
+El repositorio kedriza toda la evidencia siguiendo la organización canónica de Kedro
+(cuatro pipelines: `data_processing`, `data_science`, `tabllm`, `reporting`; ver README).
+`kedro run` reproduce offline los modelos clásicos, la tabla comparativa y las figuras;
+`kedro run --pipeline tabllm` recomputa las métricas del modelo de lenguaje **desde los
+caches de predicciones** (evidencia congelada) sin re-inferir. La integridad de esos
+caches está registrada en `lineage/llm_cache_manifest.sha256`.
 
 ## Figuras del documento
 

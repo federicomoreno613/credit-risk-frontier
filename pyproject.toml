@@ -17,7 +17,7 @@ dependencies = [
     "notebook",
     "jupytext>=1.16",
     "kedro[jupyter]~=1.2.0",
-    "kedro-datasets[pandas-csvdataset, pandas-exceldataset, pandas-parquetdataset, plotly-plotlydataset, plotly-jsondataset, matplotlib-matplotlibdataset]>=3.0",
+    "kedro-datasets[pandas-csvdataset, pandas-exceldataset, pandas-parquetdataset, plotly-plotlydataset, plotly-jsondataset, matplotlib-matplotlibdataset, json-jsondataset, pickle-pickledataset]>=3.0",
     "kedro-viz>=6.7.0",
     "pandas>=2.2",
     "numpy>=1.26",
@@ -31,6 +31,20 @@ dependencies = [
     "requests>=2.32",
     "shap>=0.46",
     "pytest>=8.0",
+]
+
+[project.optional-dependencies]
+# Backends LLM: solo necesarios para re-puntuar variantes descongeladas (allow_infer: true).
+# El default offline y el pipeline tabllm con caches completos NO los requieren.
+llm = [
+    "openai>=1.40",
+]
+# TabFM (foundation model tabular, Google): modelo re-corrible del benchmark. Pesos
+# con licencia non-commercial (uso académico). NO va en el env base; se instala solo
+# para correr la variante neural.tabfm de data_science. Fallback: TabPFN v2.
+tabfoundation = [
+    "tabfm[pytorch]>=1.0",
+    "torch>=2.12",
 ]
 
 [project.scripts]
