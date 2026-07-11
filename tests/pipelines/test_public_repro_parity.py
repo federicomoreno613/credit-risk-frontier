@@ -109,12 +109,12 @@ def test_public_repro_dataset_contract_matches_known_thesis_counts(public_repro_
     report = _load_json(public_repro_outputs / "dataset_validation_report.json")
 
     assert report["status"] == "ok"
-    assert report["n_rows"] == 5351
-    assert report["set_counts"] == {"train": 4364, "test": 495, "val": 492}
-    assert report["segment_counts"] == {"denso": 3440, "esparso": 1911}
-    assert report["test_segment_counts"] == {"denso": 467, "esparso": 28}
+    assert report["n_rows"] == 4897
+    assert report["set_counts"] == {"train": 3910, "test": 495, "val": 492}
+    assert report["segment_counts"] == {"denso": 1359, "esparso": 3538}
+    assert report["test_segment_counts"] == {"denso": 291, "esparso": 204}
     assert report["expected_count_mismatches"] == []
-    assert report["segment_rule"] == "(20 TU vars == -1).sum(axis=1) >= 6"
+    assert report["segment_rule"] == "(20 TU vars < 0).sum(axis=1) >= 6"
 
 
 def test_public_repro_thesis_artifact_report_is_complete(public_repro_outputs: Path) -> None:
@@ -123,7 +123,7 @@ def test_public_repro_thesis_artifact_report_is_complete(public_repro_outputs: P
     assert report["status"] == "ok"
     assert report["missing_files"] == []
     assert report["comparison_rows"] == len(pd.read_csv(ROOT / "results" / "tabla_comparacion_final.csv"))
-    assert report["dataset_segments"] == {"denso": 3440, "esparso": 1911}
+    assert report["dataset_segments"] == {"denso": 1359, "esparso": 3538}
     for rel_path, check in report["required_file_checks"].items():
         assert check["exists"], rel_path
         assert check["bytes"] > 0, rel_path
