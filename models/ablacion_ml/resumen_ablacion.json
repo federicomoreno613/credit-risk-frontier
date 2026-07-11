@@ -1,0 +1,45 @@
+{
+  "fecha": "2026-07-06T21:19:02",
+  "dataset": "/Users/federicomoreno/Documents/TESIS/credit-risk-frontier/data/dataset_tesis.csv",
+  "n_filas": 4897,
+  "n_test": 495,
+  "seed": 42,
+  "n_trials": 50,
+  "leakage_excluido": [
+    "credits_amount_granted",
+    "credits_fee_month_amount_granted",
+    "credits_interest_amount",
+    "credits_surety_bond_amount",
+    "credits_digital_instrumentation_amount"
+  ],
+  "tu_derivadas_excluidas_de_all_sin_tu": [
+    "debts_savings",
+    "score_debets",
+    "relacion_edad_deuda"
+  ],
+  "criterio_esparso": ">= 6 vars TU < 0",
+  "brazos": {
+    "llm_tu": {
+      "n_features": 10
+    },
+    "llm_tu_sem": {
+      "n_features": 52
+    },
+    "llm_sin_tu": {
+      "n_features": 50
+    },
+    "llm_full": {
+      "n_features": 60
+    },
+    "all_tu": {
+      "n_features": 20
+    },
+    "all_sin_tu": {
+      "n_features": 66
+    },
+    "all_full": {
+      "n_features": 89
+    }
+  },
+  "logreg_config": "C=1.0, lbfgs, max_iter=3000 (config del baseline noleak, no la de scripts/04)"
+}
