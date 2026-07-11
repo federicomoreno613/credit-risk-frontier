@@ -1,82 +1,50 @@
-# Here you can define all your data sets by using simple YAML syntax.
-#
-# Documentation for this file format can be found in "The Data Catalog"
-# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
-#
-# We support interacting with a variety of data stores including local file systems, cloud, network and HDFS
-#
-# An example data set definition can look as follows:
-#
-#bikes:
-#  type: pandas.CSVDataset
-#  filepath: "data/01_raw/bikes.csv"
-#
-#weather:
-#  type: spark.SparkDataset
-#  filepath: s3a://your_bucket/data/01_raw/weather*
-#  file_format: csv
-#  credentials: dev_s3
-#  load_args:
-#    header: True
-#    inferSchema: True
-#  save_args:
-#    sep: '|'
-#    header: True
-#
-#scooters:
-#  type: pandas.SQLTableDataset
-#  credentials: scooters_credentials
-#  table_name: scooters
-#  load_args:
-#    index_col: ['name']
-#    columns: ['name', 'gear']
-#  save_args:
-#    if_exists: 'replace'
-#    # if_exists: 'fail'
-#    # if_exists: 'append'
-#
-# The Data Catalog supports being able to reference the same file using two different Dataset implementations
-# (transcoding), templating and a way to reuse arguments that are frequently repeated. See more here:
-# https://docs.kedro.org/en/stable/data/data_catalog.html
-
-pagos:
+credit_dataset:
   type: pandas.CSVDataset
-  filepath: data/01_raw/01_pagos_cuota.csv
+  filepath: data/dataset_tesis.csv
+  load_args:
+    parse_dates:
+      - fecha_desembolso
 
-mora:
+# Kedro v1 reports. The historical thesis artifacts remain in models/, results/ and figures/;
+# these datasets provide a reproducible Kedro trace without moving published files.
+dataset_validation_report:
+  type: json.JSONDataset
+  filepath: data/08_reporting/kedro/dataset_validation_report.json
+
+eda_report:
+  type: json.JSONDataset
+  filepath: data/08_reporting/kedro/eda_report.json
+
+xgboost_metrics_kedro:
+  type: json.JSONDataset
+  filepath: data/08_reporting/kedro/xgboost_metrics.json
+
+logreg_metrics_kedro:
+  type: json.JSONDataset
+  filepath: data/08_reporting/kedro/logreg_metrics.json
+
+segment_metrics_kedro:
+  type: json.JSONDataset
+  filepath: data/08_reporting/kedro/cv_seg_metrics.json
+
+llm_zero_shot_nothink_metrics_kedro:
+  type: json.JSONDataset
+  filepath: data/08_reporting/kedro/llm_metrics_tabllm_nothink.json
+
+llm_zero_shot_think_metrics_kedro:
+  type: json.JSONDataset
+  filepath: data/08_reporting/kedro/llm_metrics_tabllm_think.json
+
+llm_few_shot_metrics_kedro:
+  type: json.JSONDataset
+  filepath: data/08_reporting/kedro/llm_metrics_fewshot.json
+
+comparison_table_kedro:
   type: pandas.CSVDataset
-  filepath: data/01_raw/01_pagos_mora.csv
+  filepath: data/08_reporting/kedro/tabla_comparacion_final.csv
+  save_args:
+    index: false
 
-model_input_table:
-  type: pandas.CSVDataset
-  filepath: data/03_primary/02_dataset_modelo.csv
-
-# regressor:
-#   type: pickle.PickleDataset
-#   filepath: data/06_models/regressor.pickle
-#   versioned: true
-
-# shuttle_passenger_capacity_plot_exp:
-#   type: plotly.PlotlyDataset
-#   filepath: data/08_reporting/shuttle_passenger_capacity_plot_exp.json
-#   versioned: true
-#   plotly_args:
-#     type: bar
-#     fig:
-#       x: shuttle_type
-#       y: passenger_capacity
-#       orientation: h
-#     layout:
-#       xaxis_title: Shuttles
-#       yaxis_title: Average passenger capacity
-#       title: Shuttle Passenger capacity
-
-# shuttle_passenger_capacity_plot_go:
-#   type: plotly.JSONDataset
-#   filepath: data/08_reporting/shuttle_passenger_capacity_plot_go.json
-#   versioned: true
-
-# dummy_confusion_matrix:
-#   type: matplotlib.MatplotlibDataset
-#   filepath: data/08_reporting/dummy_confusion_matrix.png
-#   versioned: true
+thesis_artifact_report:
+  type: json.JSONDataset
+  filepath: data/08_reporting/kedro/thesis_artifact_report.json

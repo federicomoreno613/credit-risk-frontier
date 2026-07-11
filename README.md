@@ -21,9 +21,9 @@ Este repositorio guarda la evidencia reproducible de esa comparación: dataset a
 
 ## Estado actual del repo
 
-Este repo todavía no es un proyecto Kedro terminado. Es la versión de investigación y tesis: notebooks + scripts + resultados curados + lineaje de chequeo.
+El repo ya tiene una primera capa Kedro real para ordenar la versión de investigación: mantiene notebooks + scripts + resultados curados, pero ahora agrega pipelines reproducibles para validar el dataset, auditar EDA, orquestar modelos clásicos, segmentación, comparación y chequeos de artefactos de tesis.
 
-La próxima etapa natural es **kedrizar todo lo que ya está hecho**: ordenar la preparación de datos, features, entrenamiento, evaluación y generación de figuras en pipelines reproducibles de Kedro. La lógica ya existe; lo que falta es empaquetarla con estructura productiva.
+La kedrización v1 prioriza **no romper la evidencia publicada**. Por defecto reutiliza métricas y modelos ya curados en `models/` y `results/`; si se quiere recalcular, los parámetros permiten activar entrenamiento o inferencia local de forma explícita.
 
 ## Qué contiene
 
@@ -33,6 +33,9 @@ credit-risk-frontier/
 ├── data/dataset_tesis.csv   # base anonimizada usada por scripts/notebooks
 ├── notebooks/               # notebooks de exploración, modelos y comparación
 ├── scripts/                 # versiones ejecutables del flujo experimental
+├── src/credit_risk_frontier/ # pipelines Kedro v1
+├── conf/base/               # catálogo y parámetros Kedro
+├── tests/                   # checks de contrato del dataset y buró esparso
 ├── results/                 # métricas y tablas finales en CSV
 ├── models/                  # modelos clásicos curados y métricas JSON
 ├── figures/                 # figuras usadas en el documento final
@@ -116,17 +119,32 @@ Luego, el flujo conceptual es:
 5. consolidar métricas y figuras;
 6. contrastar cifras con `lineage/`.
 
-## Próxima etapa: kedrizar
+## Kedro v1
 
-Lo que queda para una siguiente versión es convertir este trabajo en un proyecto Kedro completo:
+La primera versión Kedro separa el flujo en pipelines nombrados:
 
-- definir `catalog.yml` para datasets, modelos, métricas y figuras;
-- separar nodos de preparación, features, entrenamiento, evaluación y reportes;
-- mover parámetros a `conf/base/parameters.yml`;
-- dejar pipelines independientes para EDA, modelos clásicos, LLM y comparación final;
-- generar resultados y figuras desde `kedro run`, sin depender de ejecutar notebooks manualmente.
+| Pipeline | Rol |
+|---|---|
+| `public_repro` | Validación del dataset, EDA liviano, métricas clásicas, segmentación, comparación y chequeo de artefactos. Es el default seguro. |
+| `classic_models` | XGBoost y Regresión Logística. Por defecto reutiliza artefactos existentes; puede recalcularse por parámetros. |
+| `segment_analysis` | Validación temporal por clientes con buró esparso/denso. |
+| `llm_local` | Zero-shot y few-shot con Ollama/cache local. Queda fuera del default. |
+| `full_local` | Todo lo anterior, incluyendo LLM local si se activan los parámetros. |
 
-En otras palabras: la investigación ya está hecha; la próxima etapa es ordenar el flujo para que quede como pipeline reproducible y mantenible.
+Comandos básicos:
+
+```bash
+kedro registry list
+kedro catalog describe-datasets --pipeline public_repro
+kedro run --pipeline public_repro
+pytest -q
+```
+
+Para recalcular modelos clásicos o LLM local, cambiar parámetros en `conf/base/parameters_data_science.yml` o usar overrides de Kedro. La idea es que `kedro run` no dispare Ollama ni entrenamientos largos por accidente.
+
+Los tests de `pytest -q` no sólo chequean funciones sueltas: también corren `public_repro` y `llm_local` de punta a punta y comparan los outputs Kedro contra los artefactos curados del repo normal (`models/` y `results/`).
+
+La etapa siguiente de tesis no es volver a rehacer esta entrega, sino extender sobre esta base: dataset público/control, TabPFN, LLM frontier/cloud, thinking on/off, QLoRA, calibración, interpretabilidad y costos.
 
 ## Qué no se publica
 
