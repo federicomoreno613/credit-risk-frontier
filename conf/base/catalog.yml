@@ -81,3 +81,42 @@ prompt_v3.cache:         {type: pandas.ParquetDataset, filepath: models/ablacion
 #     data/08_reporting/models/). NO sobrescriben los models/*.json publicados
 #     (evidencia frozen); la paridad se verifica comparando la traza vs el publicado.
 #     El factory {namespace}.metrics ya está definido arriba (compartido con data_science).
+
+# =====================================================================
+# reporting — lecturas de evidencia frozen (métricas LLM publicadas) que
+# alimentan la tabla comparativa y las figuras, sin recalcular.
+# =====================================================================
+published_llm_nothink_metrics:      {type: json.JSONDataset, filepath: models/llm_metrics_tabllm_nothink.json}
+published_llm_fewshot_metrics:      {type: json.JSONDataset, filepath: models/llm_metrics_fewshot.json}
+published_llm_think_zero_metrics:   {type: json.JSONDataset, filepath: models/llm_metrics_thinking_zero_test.json}
+published_llm_think_few16_metrics:  {type: json.JSONDataset, filepath: models/llm_metrics_thinking_few16_test.json}
+published_llm_think_few32_metrics:  {type: json.JSONDataset, filepath: models/llm_metrics_thinking_few32_test.json}
+
+# --- Salidas de reporting (rutas publicadas) ---
+comparison_table:
+  type: pandas.CSVDataset
+  filepath: results/tabla_comparacion_final.csv
+  save_args:
+    index: false
+
+thesis_artifact_report:
+  type: json.JSONDataset
+  filepath: data/08_reporting/kedro/thesis_artifact_report.json
+
+gpt_zero_f1:
+  type: json.JSONDataset
+  filepath: models/gpt/gpt_f1_zero_test.json
+
+# --- Figuras de tesis (nodos que retornan Figure → PNG publicado) ---
+fig_22_comparacion_auc_segmentos:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/22_comparacion_auc_segmentos.png
+  save_args: {bbox_inches: tight}
+fig3_auc_ejemplos:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/fig3_auc_ejemplos.png
+  save_args: {bbox_inches: tight}
+fig4_comparacion_modelos:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/fig4_comparacion_modelos.png
+  save_args: {bbox_inches: tight}
