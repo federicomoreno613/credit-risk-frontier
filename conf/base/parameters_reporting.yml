@@ -1,3 +1,10 @@
+model_comparison:
+  # Mapa de nombres de modelo → etiqueta legible (usado por build_comparison_table).
+  best_fewshot_rule: max_auc_total
+
+f1_posthoc:
+  threshold: 0.5
+
 thesis_reporting:
   fail_on_missing_files: true
   required_files:
@@ -6,5 +13,8 @@ thesis_reporting:
     - results/tabla_comparacion_final.csv
     - results/metrics_test.csv
     - figures/22_comparacion_auc_segmentos.png
+    - figures/fig3_auc_ejemplos.png
+    - figures/fig4_comparacion_modelos.png
+    - figures/11_roc_xgboost.png
     - figures/01_distribucion_target.png
     - figures/eda_10_semantica_subcategoria.png

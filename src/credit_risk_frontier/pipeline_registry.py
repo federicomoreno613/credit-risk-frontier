@@ -25,10 +25,14 @@ def register_pipelines() -> dict[str, Pipeline]:
     # data_science offline = solo los clásicos citables (xgb, logreg no-leak).
     ds_offline = data_science.create_pipeline(variants=data_science.DEFAULT_VARIANTS)
 
+    # reporting offline = sin los nodos que dependen de caches LLM (f1 posthoc).
+    reporting = pipelines.get("reporting", Pipeline([]))
+    reporting_offline = reporting - reporting.only_nodes_with_tags("requires_caches")
+
     default_parts = [
         pipelines.get("data_processing", Pipeline([])),
         ds_offline,
-        pipelines.get("reporting", Pipeline([])),
+        reporting_offline,
     ]
     pipelines["__default__"] = sum(default_parts, Pipeline([]))
     pipelines["public_repro"] = pipelines["__default__"]
