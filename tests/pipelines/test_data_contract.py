@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from credit_risk_frontier.pipelines.data_preparation.nodes import validate_credit_dataset
+from credit_risk_frontier.pipelines.data_processing.nodes import validate_credit_dataset
 
 ROOT = Path(__file__).resolve().parents[2]
 TU_VARS = [

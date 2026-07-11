@@ -1,12 +1,5 @@
 seed: 42
 
-paths:
-  dataset: data/dataset_tesis.csv
-  models_dir: models
-  results_dir: results
-  figures_dir: figures
-  llm_cache_dir: data/07_model_output/llm_cache
-
 dataset_contract:
   target_col: target
   set_col: set
