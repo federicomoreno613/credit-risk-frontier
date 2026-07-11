@@ -119,32 +119,55 @@ Luego, el flujo conceptual es:
 5. consolidar métricas y figuras;
 6. contrastar cifras con `lineage/`.
 
-## Kedro v1
+## Kedro (canónico, huella spaceflights)
 
-La primera versión Kedro separa el flujo en pipelines nombrados:
+El proyecto sigue la organización canónica del tutorial *spaceflights* de Kedro:
+`find_pipelines()` autodescubre cuatro carpetas bajo `src/credit_risk_frontier/pipelines/`,
+cada una con `nodes.py` + `pipeline.py`; el código compartido vive en un único
+`src/credit_risk_frontier/utils.py` (hermano de `pipelines/`, invisible al descubrimiento);
+un solo `conf/base/catalog.yml` con *dataset factories*; y las variantes de un mismo
+modelo son **instancias namespaced** de un pipeline base (patrón active/candidate), no
+carpetas separadas.
 
 | Pipeline | Rol |
 |---|---|
-| `public_repro` | Validación del dataset, EDA liviano, métricas clásicas, segmentación, comparación y chequeo de artefactos. Es el default seguro. |
-| `classic_models` | XGBoost y Regresión Logística. Por defecto reutiliza artefactos existentes; puede recalcularse por parámetros. |
-| `segment_analysis` | Validación temporal por clientes con buró esparso/denso. |
-| `llm_local` | Zero-shot y few-shot con Ollama/cache local. Queda fuera del default. |
-| `full_local` | Todo lo anterior, incluyendo LLM local si se activan los parámetros. |
+| `data_processing` | Valida el dataset, construye la `model_input_table` (única segmentación) y arma el reporte EDA. |
+| `data_science` | Clásicos + TabFM + ablación ML como namespaces de un template `split→train→evaluate`. Variantes: `xgb`/`logreg` (no-leak, citables), `xgb_leak`/`logreg_leak`, `tabfm`, siete brazos `arm_*`, y el nodo `segment.cv` (CV temporal). |
+| `tabllm` | 17 variantes LLM (Qwen zero/few, thinking, Gemma, GPT-5.4, ablaciones de fuentes y de prompt) como namespaces de un template `select→score→canonicalize→evaluate`, **cache-first**. |
+| `reporting` | Tabla comparativa, figuras de tesis (fig3/fig4, comparación por segmento) y validación de artefactos. |
+| `__default__` / `public_repro` | Offline y CPU: `data_processing` + clásicos citables + `reporting`. No dispara Ollama/OpenAI ni requiere torch. |
+| `full_local` | Todo, para una máquina con los caches LLM y torch (TabFM). |
 
-Comandos básicos:
+**Baseline clásica citable = sin filtración (leakage):** `xgb`/`logreg` excluyen las
+cinco variables de crédito otorgado (post-aprobación). Test AUC **0,7516 (XGBoost)** y
+**0,6605 (Regresión Logística)**. Las variantes `*_leak` conservan esas variables
+(0,7776 / 0,6910) solo para transparencia en la tabla; no son las cifras citables.
+
+**Restricción dura — los experimentos LLM no se re-corren.** Los caches de predicciones
+por crédito (parquet) son la única copia de horas de GPU/API. `tabllm` los adopta como
+entradas del catálogo y hace *pass-through* offline: recomputa las métricas sin tocar la
+red. Solo con `allow_infer: true` (y el backend disponible) puntúa ids pendientes.
+
+Comandos:
 
 ```bash
 kedro registry list
-kedro catalog describe-datasets --pipeline public_repro
-kedro run --pipeline public_repro
+kedro run                                            # default offline (clásicos + reporting)
+kedro run --pipeline reporting --tags reporting.figures   # solo figuras, sin reentrenar
+kedro run --pipeline tabllm                          # recomputa métricas LLM desde caches (offline)
+kedro run --pipeline data_science                    # todos los clásicos + TabFM + brazos
+kedro run --pipeline full_local                      # todo
 pytest -q
 ```
 
-Para recalcular modelos clásicos o LLM local, cambiar parámetros en `conf/base/parameters_data_science.yml` o usar overrides de Kedro. La idea es que `kedro run` no dispare Ollama ni entrenamientos largos por accidente.
+**TabFM** (foundation model tabular de Google) entra como un `estimator` más de
+`data_science` (namespace `tabfm`), re-corrible como XGBoost. Requiere el extra opcional
+`poetry install --extras tabfoundation` (torch + `tabfm[pytorch]`, pesos
+`google/tabfm-1.0.0-pytorch`). **La licencia de los pesos de TabFM es non-commercial**
+(uso académico); se declara en la metodología. Fallback documentado: TabPFN v2.
 
-Los tests de `pytest -q` no sólo chequean funciones sueltas: también corren `public_repro` y `llm_local` de punta a punta y comparan los outputs Kedro contra los artefactos curados del repo normal (`models/` y `results/`).
-
-La etapa siguiente de tesis no es volver a rehacer esta entrega, sino extender sobre esta base: dataset público/control, TabPFN, LLM frontier/cloud, thinking on/off, QLoRA, calibración, interpretabilidad y costos.
+La etapa siguiente de tesis no es rehacer esta entrega, sino extender sobre esta base:
+dataset público/control, fine-tuning (QLoRA), LLM frontier/cloud, calibración e interpretabilidad.
 
 ## Qué no se publica
 
