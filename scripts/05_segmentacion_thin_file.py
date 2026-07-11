@@ -107,7 +107,7 @@ def load_segmented(dataset_path: str) -> tuple:
     df = pd.read_csv(dataset_path, parse_dates=["fecha_desembolso"])
     df = df.sort_values("fecha_desembolso").reset_index(drop=True)
     features = [c for c in df.columns if c not in META + TEXT]
-    df["n_tu_missing"] = (df[TU_ALL] == -1).sum(axis=1)
+    df["n_tu_missing"] = (df[TU_ALL] < 0).sum(axis=1)
     df["segmento"] = (df["n_tu_missing"] >= CORTE_ESPARSO).map({True: "esparso", False: "denso"})
     return df, features
 

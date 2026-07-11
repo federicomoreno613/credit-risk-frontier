@@ -214,7 +214,21 @@ for gname, gcols in groups.items():
         print(f"    {gname}: {len(gcols_exist)} cols | {total_null:,} nulos totales")
 
 
-# ── 5. Guardar ───────────────────────────────────────────────────────────────
+# ── 5. Deduplicar por crédito (fix E4) ──────────────────────────────────────
+# La fuente `dataset_limpio.csv` arrastra 454 filas full-row idénticas (todas en
+# `train`): 5.351 filas / 4.897 `credito_id_anon` únicos. Sin deduplicar, esos
+# créditos quedan sobre-ponderados en el entrenamiento e inflan las métricas.
+# Se deduplica por identificador de crédito (val/test quedan intactos: los dups
+# caen todos en train). Ver evidence build2-crf-rebaseline.md.
+
+n_pre = len(df)
+df = df.drop_duplicates("credito_id_anon").reset_index(drop=True)
+n_post = len(df)
+print(f"\n  Deduplicado por credito_id_anon: {n_pre:,} → {n_post:,} filas "
+      f"({n_pre - n_post:,} duplicados eliminados)")
+
+
+# ── 6. Guardar ───────────────────────────────────────────────────────────────
 
 df.to_csv(OUTPUT, index=False)
 
