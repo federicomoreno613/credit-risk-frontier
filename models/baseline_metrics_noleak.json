@@ -1,0 +1,39 @@
+{
+  "sin_leakage": true,
+  "leakage_removed": [
+    "credits_amount_granted",
+    "credits_fee_month_amount_granted",
+    "credits_interest_amount",
+    "credits_surety_bond_amount",
+    "credits_digital_instrumentation_amount"
+  ],
+  "n_features": 89,
+  "test": {
+    "XGBoost": {
+      "AUC": 0.7515,
+      "Brier": 0.4851
+    },
+    "LogReg": {
+      "AUC": 0.6605,
+      "Brier": 0.4654
+    }
+  },
+  "con_leakage_previo": {
+    "XGBoost_AUC": 0.7776,
+    "LogReg_AUC": 0.691
+  },
+  "best_params_xgb": {
+    "n_estimators": 524,
+    "max_depth": 3,
+    "learning_rate": 0.25071782989036534,
+    "subsample": 0.9163421350645893,
+    "colsample_bytree": 0.5605245542633412,
+    "min_child_weight": 1,
+    "reg_lambda": 1.4526762722182611,
+    "reg_alpha": 0.3526912354759574,
+    "gamma": 3.560693843012895,
+    "objective": "binary:logistic",
+    "eval_metric": "auc",
+    "random_state": 42
+  }
+}
