@@ -1,0 +1,52 @@
+# Parámetros de tabllm — un `variant` por namespace (regla spaceflights).
+# `allow_infer: false` en todas: los caches son evidencia frozen y el pipeline corre
+# offline (pass-through). Poner true (con el backend disponible) solo para completar
+# ids pendientes de una variante nueva.
+#
+# `params:variant` dentro del template resuelve a `<namespace>.variant`.
+
+# --- Qwen3-8B directo (TabLLM zero-shot) y few-shot random ---
+qwen_nothink:
+  variant: {name: qwen_nothink, transport: ollama, model: "qwen3:8b", mode: nothink, scope: test, allow_infer: false}
+qwen_few8:
+  variant: {name: qwen_few8, transport: ollama, model: "qwen3:8b", mode: few, selection: random, n_shots: 8, scope: test, allow_infer: false}
+qwen_few16:
+  variant: {name: qwen_few16, transport: ollama, model: "qwen3:8b", mode: few, selection: random, n_shots: 16, scope: test, allow_infer: false}
+qwen_few32:
+  variant: {name: qwen_few32, transport: ollama, model: "qwen3:8b", mode: few, selection: random, n_shots: 32, scope: test, allow_infer: false}
+
+# --- Qwen3-8B razonamiento (thinking) zero/few kNN ---
+qwen_think_zero:
+  variant: {name: qwen_think_zero, transport: ollama, model: "qwen3:8b", mode: think, scope: test, allow_infer: false}
+qwen_think_few16:
+  variant: {name: qwen_think_few16, transport: ollama, model: "qwen3:8b", mode: think, selection: knn, n_shots: 16, scope: test, allow_infer: false}
+qwen_think_few32:
+  variant: {name: qwen_think_few32, transport: ollama, model: "qwen3:8b", mode: think, selection: knn, n_shots: 32, scope: test, allow_infer: false}
+
+# --- Gemma 4 12B razonamiento (thinking inducido por prompt, no nativo) ---
+gemma_zero:
+  variant: {name: gemma_zero, transport: ollama, model: "gemma4:12b", mode: think, think_native: false, scope: test, allow_infer: false}
+gemma_few16:
+  variant: {name: gemma_few16, transport: ollama, model: "gemma4:12b", mode: think, think_native: false, selection: knn, n_shots: 16, scope: test, allow_infer: false}
+
+# --- Gemma 4 12B ablación de fuentes (subset n=200) ---
+gemma_abl_tu:
+  variant: {name: gemma_abl_tu, transport: ollama, model: "gemma4:12b", mode: think, think_native: false, features: tu, scope: cached, allow_infer: false}
+gemma_abl_tusem:
+  variant: {name: gemma_abl_tusem, transport: ollama, model: "gemma4:12b", mode: think, think_native: false, features: tu-sem, scope: cached, allow_infer: false}
+gemma_abl_sintu:
+  variant: {name: gemma_abl_sintu, transport: ollama, model: "gemma4:12b", mode: think, think_native: false, features: sin-tu, scope: cached, allow_infer: false}
+
+# --- GPT-5.4 (OpenAI API) ---
+gpt_zero:
+  variant: {name: gpt_zero, transport: openai, model: "gpt-5.4-2026-03-05", mode: zero, scope: test, allow_infer: false}
+gpt_few16:
+  variant: {name: gpt_few16, transport: openai, model: "gpt-5.4-2026-03-05", mode: few, selection: knn, n_shots: 16, scope: test, allow_infer: false}
+
+# --- Ablación de prompt (Qwen3-8B thinking, distintas variantes de prompt) ---
+prompt_v0:
+  variant: {name: prompt_v0, transport: ollama, model: "qwen3:8b", mode: think, prompt: v0_minimo, scope: test, allow_infer: false}
+prompt_v2:
+  variant: {name: prompt_v2, transport: ollama, model: "qwen3:8b", mode: think, prompt: v2_rol_fuerte, scope: test, allow_infer: false}
+prompt_v3:
+  variant: {name: prompt_v3, transport: ollama, model: "qwen3:8b", mode: think, prompt: v3_explicativo, scope: test, allow_infer: false}

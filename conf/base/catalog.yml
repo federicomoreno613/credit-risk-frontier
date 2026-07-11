@@ -45,3 +45,39 @@ logreg.metrics:
 cv_seg_metrics:
   type: json.JSONDataset
   filepath: models/cv_seg_metrics.json
+
+# =====================================================================
+# tabllm — caches frozen (entradas EXPLÍCITAS a rutas legacy heterogéneas;
+# no se mueve evidencia) + predicciones (factory) + métricas.
+# =====================================================================
+
+# Predicciones (contrato) de todas las variantes → factory.
+"{namespace}.predictions":
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/tabllm/{namespace}_predictions.parquet
+  save_args:
+    index: false
+
+# --- Caches frozen por variante (input <namespace>.cache) ---
+qwen_nothink.cache:      {type: pandas.ParquetDataset, filepath: models/llm_probs_tabllm_nothink.parquet}
+qwen_few8.cache:         {type: pandas.ParquetDataset, filepath: models/llm_probs_fewshot_8.parquet}
+qwen_few16.cache:        {type: pandas.ParquetDataset, filepath: models/llm_probs_fewshot_16.parquet}
+qwen_few32.cache:        {type: pandas.ParquetDataset, filepath: models/llm_probs_fewshot_32.parquet}
+qwen_think_zero.cache:   {type: pandas.ParquetDataset, filepath: models/llm_probs_thinking_zero_test.parquet}
+qwen_think_few16.cache:  {type: pandas.ParquetDataset, filepath: models/llm_probs_thinking_few16_test.parquet}
+qwen_think_few32.cache:  {type: pandas.ParquetDataset, filepath: models/llm_probs_thinking_few32_test.parquet}
+gemma_zero.cache:        {type: pandas.ParquetDataset, filepath: models/gemma_fix/llm_probs_thinking_zero_test.parquet}
+gemma_few16.cache:       {type: pandas.ParquetDataset, filepath: models/gemma_fix/llm_probs_thinking_few16_test.parquet}
+gemma_abl_tu.cache:      {type: pandas.ParquetDataset, filepath: models/gemma_abl_tu/llm_probs_thinking_zero_test.parquet}
+gemma_abl_tusem.cache:   {type: pandas.ParquetDataset, filepath: models/gemma_abl_tusem/llm_probs_thinking_zero_test.parquet}
+gemma_abl_sintu.cache:   {type: pandas.ParquetDataset, filepath: models/gemma_abl_sintu/llm_probs_thinking_zero_test.parquet}
+gpt_zero.cache:          {type: pandas.ParquetDataset, filepath: models/gpt/gpt_probs_zero_test.parquet}
+gpt_few16.cache:         {type: pandas.ParquetDataset, filepath: models/gpt/gpt_probs_few16_test.parquet}
+prompt_v0.cache:         {type: pandas.ParquetDataset, filepath: models/ablacion_prompt/probs_v0_minimo_test.parquet}
+prompt_v2.cache:         {type: pandas.ParquetDataset, filepath: models/ablacion_prompt/probs_v2_rol_fuerte_test.parquet}
+prompt_v3.cache:         {type: pandas.ParquetDataset, filepath: models/ablacion_prompt/probs_v3_explicativo_test.parquet}
+
+# --- Métricas de tabllm: TODAS a la traza kedro (factory {namespace}.metrics →
+#     data/08_reporting/models/). NO sobrescriben los models/*.json publicados
+#     (evidencia frozen); la paridad se verifica comparando la traza vs el publicado.
+#     El factory {namespace}.metrics ya está definido arriba (compartido con data_science).

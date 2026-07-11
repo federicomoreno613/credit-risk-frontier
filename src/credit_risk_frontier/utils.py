@@ -272,6 +272,17 @@ def annotate_segments(df: pd.DataFrame) -> pd.DataFrame:
 # Evaluación sobre test / general por segmento (fuente: 06b y 08)
 # ---------------------------------------------------------------------------
 
+def _seg_metrics(y, probs, n) -> dict:
+    """Métricas de un segmento, con guard si hay una sola clase (AUC indefinido).
+
+    Las corridas de prueba con una sola clase presente (p. ej. un subset ordenado
+    por target) no producen AUC; se reporta la nota en vez de crashear.
+    """
+    if len(np.unique(y)) < 2:
+        return {"n": int(n), "note": "una sola clase presente, AUC indefinido"}
+    return {**credit_metrics(y, probs), "n": int(n)}
+
+
 def evaluate_on_test(df: pd.DataFrame, probs) -> dict:
     """Evalúa ``probs`` sobre el test, total y por segmento (esparso/denso).
 
@@ -283,13 +294,11 @@ def evaluate_on_test(df: pd.DataFrame, probs) -> dict:
     y = df["target"].values
     segmentos = df["segmento"].values
 
-    summary = {}
-    summary["total"] = {**credit_metrics(y[test_mask], probs[test_mask]),
-                        "n": int(test_mask.sum())}
+    summary = {"total": _seg_metrics(y[test_mask], probs[test_mask], test_mask.sum())}
     for seg in ("esparso", "denso"):
         mask = test_mask & (segmentos == seg)
         if mask.sum() >= MIN_SEG_CASOS:
-            summary[seg] = {**credit_metrics(y[mask], probs[mask]), "n": int(mask.sum())}
+            summary[seg] = _seg_metrics(y[mask], probs[mask], mask.sum())
         else:
             summary[seg] = {"n": int(mask.sum()), "note": "insuficiente para AUC confiable"}
     return summary
@@ -306,11 +315,11 @@ def evaluate_general(df: pd.DataFrame, probs) -> dict:
     y = df["target"].values
     seg = df["segmento"].values
 
-    summary = {"total": {**credit_metrics(y[valid], probs[valid]), "n": int(valid.sum())}}
+    summary = {"total": _seg_metrics(y[valid], probs[valid], valid.sum())}
     for s in ("esparso", "denso"):
         mask = valid & (seg == s)
         if mask.sum() >= MIN_SEG_CASOS:
-            summary[s] = {**credit_metrics(y[mask], probs[mask]), "n": int(mask.sum())}
+            summary[s] = _seg_metrics(y[mask], probs[mask], mask.sum())
         else:
             summary[s] = {"n": int(mask.sum()), "note": "insuficiente para AUC confiable"}
     return summary
