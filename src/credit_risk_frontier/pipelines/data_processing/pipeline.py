@@ -1,28 +1,33 @@
-from kedro.pipeline import Node, Pipeline
+"""Pipeline de procesamiento de datos (huella spaceflights: data_processing)."""
 
-from .nodes import create_model_input_table, preprocess_companies, preprocess_shuttles
+from kedro.pipeline import Pipeline, node
+
+from .nodes import build_eda_report, create_model_input_table, validate_credit_dataset
 
 
 def create_pipeline(**kwargs) -> Pipeline:
     return Pipeline(
         [
-            Node(
-                func=preprocess_companies,
-                inputs="companies",
-                outputs="preprocessed_companies",
-                name="preprocess_companies_node",
+            node(
+                func=validate_credit_dataset,
+                inputs=["credit_dataset", "params:dataset_contract"],
+                outputs="dataset_validation_report",
+                name="validate_credit_dataset_node",
+                tags=["data", "public"],
             ),
-            Node(
-                func=preprocess_shuttles,
-                inputs="shuttles",
-                outputs="preprocessed_shuttles",
-                name="preprocess_shuttles_node",
-            ),
-            Node(
+            node(
                 func=create_model_input_table,
-                inputs=["preprocessed_shuttles", "preprocessed_companies", "reviews"],
+                inputs=["credit_dataset", "params:dataset_contract"],
                 outputs="model_input_table",
                 name="create_model_input_table_node",
+                tags=["data", "public"],
+            ),
+            node(
+                func=build_eda_report,
+                inputs=["credit_dataset", "params:eda"],
+                outputs="eda_report",
+                name="build_eda_report_node",
+                tags=["eda", "public"],
             ),
         ]
     )

@@ -21,9 +21,9 @@ Este repositorio guarda la evidencia reproducible de esa comparación: dataset a
 
 ## Estado actual del repo
 
-Este repo todavía no es un proyecto Kedro terminado. Es la versión de investigación y tesis: notebooks + scripts + resultados curados + lineaje de chequeo.
+El repo ya tiene una primera capa Kedro real para ordenar la versión de investigación: mantiene notebooks + scripts + resultados curados, pero ahora agrega pipelines reproducibles para validar el dataset, auditar EDA, orquestar modelos clásicos, segmentación, comparación y chequeos de artefactos de tesis.
 
-La próxima etapa natural es **kedrizar todo lo que ya está hecho**: ordenar la preparación de datos, features, entrenamiento, evaluación y generación de figuras en pipelines reproducibles de Kedro. La lógica ya existe; lo que falta es empaquetarla con estructura productiva.
+La kedrización v1 prioriza **no romper la evidencia publicada**. Por defecto reutiliza métricas y modelos ya curados en `models/` y `results/`; si se quiere recalcular, los parámetros permiten activar entrenamiento o inferencia local de forma explícita.
 
 ## Qué contiene
 
@@ -33,6 +33,9 @@ credit-risk-frontier/
 ├── data/dataset_tesis.csv   # base anonimizada usada por scripts/notebooks
 ├── notebooks/               # notebooks de exploración, modelos y comparación
 ├── scripts/                 # versiones ejecutables del flujo experimental
+├── src/credit_risk_frontier/ # pipelines Kedro v1
+├── conf/base/               # catálogo y parámetros Kedro
+├── tests/                   # checks de contrato del dataset y buró esparso
 ├── results/                 # métricas y tablas finales en CSV
 ├── models/                  # modelos clásicos curados y métricas JSON
 ├── figures/                 # figuras usadas en el documento final
@@ -116,17 +119,55 @@ Luego, el flujo conceptual es:
 5. consolidar métricas y figuras;
 6. contrastar cifras con `lineage/`.
 
-## Próxima etapa: kedrizar
+## Kedro (canónico, huella spaceflights)
 
-Lo que queda para una siguiente versión es convertir este trabajo en un proyecto Kedro completo:
+El proyecto sigue la organización canónica del tutorial *spaceflights* de Kedro:
+`find_pipelines()` autodescubre cuatro carpetas bajo `src/credit_risk_frontier/pipelines/`,
+cada una con `nodes.py` + `pipeline.py`; el código compartido vive en un único
+`src/credit_risk_frontier/utils.py` (hermano de `pipelines/`, invisible al descubrimiento);
+un solo `conf/base/catalog.yml` con *dataset factories*; y las variantes de un mismo
+modelo son **instancias namespaced** de un pipeline base (patrón active/candidate), no
+carpetas separadas.
 
-- definir `catalog.yml` para datasets, modelos, métricas y figuras;
-- separar nodos de preparación, features, entrenamiento, evaluación y reportes;
-- mover parámetros a `conf/base/parameters.yml`;
-- dejar pipelines independientes para EDA, modelos clásicos, LLM y comparación final;
-- generar resultados y figuras desde `kedro run`, sin depender de ejecutar notebooks manualmente.
+| Pipeline | Rol |
+|---|---|
+| `data_processing` | Valida el dataset, construye la `model_input_table` (única segmentación) y arma el reporte EDA. |
+| `data_science` | Clásicos + TabFM + ablación ML como namespaces de un template `split→train→evaluate`. Variantes: `xgb`/`logreg` (no-leak, citables), `xgb_leak`/`logreg_leak`, `tabfm`, siete brazos `arm_*`, y el nodo `segment.cv` (CV temporal). |
+| `tabllm` | 17 variantes LLM (Qwen zero/few, thinking, Gemma, GPT-5.4, ablaciones de fuentes y de prompt) como namespaces de un template `select→score→canonicalize→evaluate`, **cache-first**. |
+| `reporting` | Tabla comparativa, figuras de tesis (fig3/fig4, comparación por segmento) y validación de artefactos. |
+| `__default__` / `public_repro` | Offline y CPU: `data_processing` + clásicos citables + `reporting`. No dispara Ollama/OpenAI ni requiere torch. |
+| `full_local` | Todo, para una máquina con los caches LLM y torch (TabFM). |
 
-En otras palabras: la investigación ya está hecha; la próxima etapa es ordenar el flujo para que quede como pipeline reproducible y mantenible.
+**Baseline clásica citable = sin filtración (leakage):** `xgb`/`logreg` excluyen las
+cinco variables de crédito otorgado (post-aprobación). Test AUC **0,7516 (XGBoost)** y
+**0,6605 (Regresión Logística)**. Las variantes `*_leak` conservan esas variables
+(0,7776 / 0,6910) solo para transparencia en la tabla; no son las cifras citables.
+
+**Restricción dura — los experimentos LLM no se re-corren.** Los caches de predicciones
+por crédito (parquet) son la única copia de horas de GPU/API. `tabllm` los adopta como
+entradas del catálogo y hace *pass-through* offline: recomputa las métricas sin tocar la
+red. Solo con `allow_infer: true` (y el backend disponible) puntúa ids pendientes.
+
+Comandos:
+
+```bash
+kedro registry list
+kedro run                                            # default offline (clásicos + reporting)
+kedro run --pipeline reporting --tags reporting.figures   # solo figuras, sin reentrenar
+kedro run --pipeline tabllm                          # recomputa métricas LLM desde caches (offline)
+kedro run --pipeline data_science                    # todos los clásicos + TabFM + brazos
+kedro run --pipeline full_local                      # todo
+pytest -q
+```
+
+**TabFM** (foundation model tabular de Google) entra como un `estimator` más de
+`data_science` (namespace `tabfm`), re-corrible como XGBoost. Requiere el extra opcional
+`poetry install --extras tabfoundation` (torch + `tabfm[pytorch]`, pesos
+`google/tabfm-1.0.0-pytorch`). **La licencia de los pesos de TabFM es non-commercial**
+(uso académico); se declara en la metodología. Fallback documentado: TabPFN v2.
+
+La etapa siguiente de tesis no es rehacer esta entrega, sino extender sobre esta base:
+dataset público/control, fine-tuning (QLoRA), LLM frontier/cloud, calibración e interpretabilidad.
 
 ## Qué no se publica
 

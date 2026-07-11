@@ -205,6 +205,13 @@ CLAUDE.md
 !/models/logreg_baseline.pkl
 !/results/
 !/results/*.csv
+# Agregados de ablacion (E4): solo CSV/JSON sin texto de clientes; los parquet siguen ignorados
+!/models/ablacion_ml/
+!/models/ablacion_ml/*.csv
+!/models/ablacion_ml/*.json
+!/models/ablacion_prompt/
+!/models/ablacion_prompt/*.csv
+!/models/ablacion_prompt/*.json
 # Logs cortos de lineaje que sí forman parte de la evidencia reproducible
 !/lineage/logs/
 !/lineage/logs/*.log
