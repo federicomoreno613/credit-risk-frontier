@@ -1,0 +1,13 @@
+corte,valor,n_creditos,n_mora,tasa_mora
+tiene_descripcion,False,711,574,0.8073136427566807
+tiene_descripcion,True,2649,1781,0.672329180822952
+etiqueta_emergente,bar · bar licores · licores · cerveza,259,177,0.6833976833976834
+etiqueta_emergente,calzado · ropa calzado · dama · calzado dama,113,70,0.6194690265486725
+etiqueta_emergente,comidas · rapidas · comidas rapidas · almuerzos,290,212,0.7310344827586207
+etiqueta_emergente,productos · belleza · aseo · productos aseo,520,329,0.6326923076923077
+etiqueta_emergente,ropa · deportiva · ropa deportiva · dama,349,229,0.6561604584527221
+etiqueta_emergente,sin_descripcion,711,574,0.8073136427566807
+etiqueta_emergente,todo · relacionado · todo relacionado · vendo,553,390,0.705244122965642
+etiqueta_emergente,venta · accesorios · mayor · servicio,565,374,0.6619469026548672
+segmento,denso,521,258,0.4952015355086372
+segmento,esparso,2128,1523,0.7156954887218046

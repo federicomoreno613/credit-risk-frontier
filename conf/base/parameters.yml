@@ -1,5 +1,20 @@
 seed: 42
 
+outcome_definition:
+  horizon_days: 150
+  default_dpd: 60
+  good_dpd: 30
+  observation_cutoff: null  # fallback conservador: max(fecha_pago) del extracto local
+  train_fraction: 0.8
+  validation_fraction: 0.1
+  sensitivity_horizons: [120, 180, 210]
+
+split_contract:
+  target_positive_class: default
+  target_positive_value: 1
+  primary_horizon_days: 150
+  gray_zone_excluded: [31, 60]
+
 dataset_contract:
   target_col: target
   set_col: set
@@ -55,26 +70,11 @@ dataset_contract:
     cutoff: 6
     sparse_label: esparso
     dense_label: denso
-  # E4: dataset deduplicado por credito_id_anon (5351 -> 4897, val/test intactos)
-  # y esparso redefinido como (TU vars < 0) >= 6, que sube el segmento a ~72%.
+  # Universo contractual anonimizado. La cohorte analítica madura se reconstruye
+  # después de vincular pagos y aplicar la ventana de 150 días.
   expected_counts:
     n_rows: 4897
     segment_esparso_total: 3538
     segment_denso_total: 1359
     test_esparso: 204
     test_denso: 291
-
-eda:
-  target_col: target
-  set_col: set
-  date_col: fecha_desembolso
-  fail_on_missing_figures: true
-  figure_files:
-    - figures/01_distribucion_target.png
-    - figures/02_analisis_temporal.png
-    - figures/e3_vintage_staircase.png
-    - figures/e3_missing_informativos_clean.png
-    - figures/eda_13_outliers.png
-    - figures/eda_09_bivariado_TU_clave.png
-    - figures/eda_10_semantica_subcategoria.png
-    - figures/eda_12_resumen_top_predictores.png

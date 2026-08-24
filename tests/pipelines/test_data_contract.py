@@ -2,21 +2,15 @@ from pathlib import Path
 
 import pandas as pd
 
+from credit_risk_frontier import utils
 from credit_risk_frontier.pipelines.data_processing.nodes import validate_credit_dataset
 
 ROOT = Path(__file__).resolve().parents[2]
-TU_VARS = [
-    "agg308", "wd81", "agg2503", "utlmag04", "duemag01", "aepmag01",
-    "bi21s", "lmd34s", "ri27s", "rle904", "tel32s", "tranbal09",
-    "at104s", "sa21s", "at103s", "tel03s", "at34af", "g051s", "agg9316", "wd03",
-]
-
-
 def test_buro_esparso_counts_match_thesis_dataset():
-    # E4: dataset deduplicado (n=4897) y regla de segmentación por código negativo (< 0),
-    # no solo == -1 (los centinelas TU incluyen -2/-3/-4/-6/-7 = sin información).
-    df = pd.read_csv(ROOT / "data" / "dataset_tesis.csv")
-    n_tu_missing = (df[TU_VARS] < 0).sum(axis=1)
+    # Universo contractual anonimizado (n=4897). Los centinelas TU negativos
+    # representan ausencia de información, no solamente el valor -1.
+    df = pd.read_csv(ROOT / "data" / "01_raw" / "credit_applications_anonymized.csv")
+    n_tu_missing = (df[utils.TU_VARS] < 0).sum(axis=1)
     segmento = n_tu_missing.ge(6).map({True: "esparso", False: "denso"})
 
     assert len(df) == 4897
@@ -27,12 +21,12 @@ def test_buro_esparso_counts_match_thesis_dataset():
 
 
 def test_validate_credit_dataset_report_has_expected_contract():
-    df = pd.read_csv(ROOT / "data" / "dataset_tesis.csv")
+    df = pd.read_csv(ROOT / "data" / "01_raw" / "credit_applications_anonymized.csv")
     params = {
         "required_columns": ["credito_id_anon", "fecha_desembolso", "target", "set", "wd81"],
         "meta_cols": ["credito_id_anon", "fecha_desembolso", "target", "set"],
         "text_cols": ["subcategoria_texto", "descripcion_negocio", "otra_categoria_negocio", "tipo_credito"],
-        "tu_vars": TU_VARS,
+        "tu_vars": utils.TU_VARS,
         "segment": {"missing_code": -1, "cutoff": 6},
         "expected_counts": {
             "n_rows": 4897,

@@ -1,0 +1,4 @@
+par,n_ambos,n_iguales_plegados,n_uno_contiene_al_otro,proporcion_iguales,proporcion_contencion,jaccard_mediano
+descripcion_negocio vs otra_categoria_negocio,1216,708,728,0.5822368421052632,0.5986842105263158,1.0
+descripcion_negocio vs subcategoria_texto,3480,9,99,0.002586206896551724,0.028448275862068967,0.0
+otra_categoria_negocio vs subcategoria_texto,1238,6,23,0.004846526655896607,0.018578352180936994,0.0

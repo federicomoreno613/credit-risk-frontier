@@ -1,122 +1,218 @@
-# Catálogo único (huella spaceflights). Regla dura: TODO output persistido está acá;
-# ningún nodo hace I/O propio. Factories para lo que generamos, entradas explícitas
-# para rutas publicadas históricas (models/*.json, results/*.csv) y evidencia frozen.
+# Catálogo mínimo de la cohorte y de la entrega intermedia vigente.
 
-# --- Entrada e intermedios de datos ---
+# ---------------------------------------------------------------------
+# Reconstrucción de la cohorte
+# ---------------------------------------------------------------------
 credit_dataset:
   type: pandas.CSVDataset
-  filepath: data/dataset_tesis.csv
+  filepath: data/01_raw/credit_applications_anonymized.csv
   load_args:
-    parse_dates:
-      - fecha_desembolso
+    parse_dates: [fecha_desembolso]
+
+legacy_model_dataset:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/02_dataset_modelo.csv
+
+payment_schedule:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/01_pagos_cuota.csv
+  load_args:
+    parse_dates: [fecha_desembolso, fecha_t_pago, fecha_pago]
+
+credit_bridge:
+  type: pandas.ParquetDataset
+  filepath: data/02_intermediate/credit_bridge.parquet
+
+credit_outcomes_150d:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/credit_outcomes_150d.parquet
 
 model_input_table:
   type: pandas.ParquetDataset
-  filepath: data/04_feature/model_input_table.parquet
+  filepath: data/05_model_input/model_input_table.parquet
 
-# --- Reportes de data_processing ---
+bridge_coverage_report:
+  type: json.JSONDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/bridge_coverage.json
+
+split_manifest:
+  type: json.JSONDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/split_manifest.json
+
+outcome_sensitivity_report:
+  type: json.JSONDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/outcome_sensitivity.json
+
 dataset_validation_report:
   type: json.JSONDataset
-  filepath: data/08_reporting/kedro/dataset_validation_report.json
+  filepath: data/08_reporting/intermedia_20260714_redesign/dataset_validation_report.json
 
-eda_report:
-  type: json.JSONDataset
-  filepath: data/08_reporting/kedro/eda_report.json
-
-# --- data_science: modelos (factory sobre el namespace) ---
-"{namespace}.classifier":
-  type: pickle.PickleDataset
-  filepath: data/06_models/{namespace}_classifier.pkl
-
-# Métricas de los clásicos citables → rutas PUBLICADAS históricas (paridad E4).
-xgb.metrics:
-  type: json.JSONDataset
-  filepath: models/xgboost_metrics.json
-logreg.metrics:
-  type: json.JSONDataset
-  filepath: models/logreg_metrics.json
-
-# Resto de métricas de modelos (leak, tabfm, brazos) → factory bajo reporting.
-"{namespace}.metrics":
-  type: json.JSONDataset
-  filepath: data/08_reporting/models/{namespace}_metrics.json
-
-# CV temporal por segmento → ruta publicada.
-cv_seg_metrics:
-  type: json.JSONDataset
-  filepath: models/cv_seg_metrics.json
-
-# =====================================================================
-# tabllm — caches frozen (entradas EXPLÍCITAS a rutas legacy heterogéneas;
-# no se mueve evidencia) + predicciones (factory) + métricas.
-# =====================================================================
-
-# Predicciones (contrato) de todas las variantes → factory.
-"{namespace}.predictions":
-  type: pandas.ParquetDataset
-  filepath: data/07_model_output/tabllm/{namespace}_predictions.parquet
-  save_args:
-    index: false
-
-# --- Caches frozen por variante (input <namespace>.cache) ---
-qwen_nothink.cache:      {type: pandas.ParquetDataset, filepath: models/llm_probs_tabllm_nothink.parquet}
-qwen_few8.cache:         {type: pandas.ParquetDataset, filepath: models/llm_probs_fewshot_8.parquet}
-qwen_few16.cache:        {type: pandas.ParquetDataset, filepath: models/llm_probs_fewshot_16.parquet}
-qwen_few32.cache:        {type: pandas.ParquetDataset, filepath: models/llm_probs_fewshot_32.parquet}
-qwen_think_zero.cache:   {type: pandas.ParquetDataset, filepath: models/llm_probs_thinking_zero_test.parquet}
-qwen_think_few16.cache:  {type: pandas.ParquetDataset, filepath: models/llm_probs_thinking_few16_test.parquet}
-qwen_think_few32.cache:  {type: pandas.ParquetDataset, filepath: models/llm_probs_thinking_few32_test.parquet}
-gemma_zero.cache:        {type: pandas.ParquetDataset, filepath: models/gemma_fix/llm_probs_thinking_zero_test.parquet}
-gemma_few16.cache:       {type: pandas.ParquetDataset, filepath: models/gemma_fix/llm_probs_thinking_few16_test.parquet}
-gemma_abl_tu.cache:      {type: pandas.ParquetDataset, filepath: models/gemma_abl_tu/llm_probs_thinking_zero_test.parquet}
-gemma_abl_tusem.cache:   {type: pandas.ParquetDataset, filepath: models/gemma_abl_tusem/llm_probs_thinking_zero_test.parquet}
-gemma_abl_sintu.cache:   {type: pandas.ParquetDataset, filepath: models/gemma_abl_sintu/llm_probs_thinking_zero_test.parquet}
-gpt_zero.cache:          {type: pandas.ParquetDataset, filepath: models/gpt/gpt_probs_zero_test.parquet}
-gpt_few16.cache:         {type: pandas.ParquetDataset, filepath: models/gpt/gpt_probs_few16_test.parquet}
-prompt_v0.cache:         {type: pandas.ParquetDataset, filepath: models/ablacion_prompt/probs_v0_minimo_test.parquet}
-prompt_v2.cache:         {type: pandas.ParquetDataset, filepath: models/ablacion_prompt/probs_v2_rol_fuerte_test.parquet}
-prompt_v3.cache:         {type: pandas.ParquetDataset, filepath: models/ablacion_prompt/probs_v3_explicativo_test.parquet}
-
-# --- Métricas de tabllm: TODAS a la traza kedro (factory {namespace}.metrics →
-#     data/08_reporting/models/). NO sobrescriben los models/*.json publicados
-#     (evidencia frozen); la paridad se verifica comparando la traza vs el publicado.
-#     El factory {namespace}.metrics ya está definido arriba (compartido con data_science).
-
-# =====================================================================
-# reporting — lecturas de evidencia frozen (métricas LLM publicadas) que
-# alimentan la tabla comparativa y las figuras, sin recalcular.
-# =====================================================================
-published_llm_nothink_metrics:      {type: json.JSONDataset, filepath: models/llm_metrics_tabllm_nothink.json}
-published_llm_fewshot_metrics:      {type: json.JSONDataset, filepath: models/llm_metrics_fewshot.json}
-published_llm_think_zero_metrics:   {type: json.JSONDataset, filepath: models/llm_metrics_thinking_zero_test.json}
-published_llm_think_few16_metrics:  {type: json.JSONDataset, filepath: models/llm_metrics_thinking_few16_test.json}
-published_llm_think_few32_metrics:  {type: json.JSONDataset, filepath: models/llm_metrics_thinking_few32_test.json}
-
-# --- Salidas de reporting (rutas publicadas) ---
-comparison_table:
+# ---------------------------------------------------------------------
+# Contrato del estudio: TransUnion 20, formulario directo 9 y descripción
+# ---------------------------------------------------------------------
+tu_dictionary_official:
   type: pandas.CSVDataset
-  filepath: results/tabla_comparacion_final.csv
-  save_args:
-    index: false
+  filepath: data/diccionario_tu_oficial.csv
 
-thesis_artifact_report:
+intermediate_feature_contract:
   type: json.JSONDataset
-  filepath: data/08_reporting/kedro/thesis_artifact_report.json
+  filepath: data/08_reporting/intermedia_20260714_redesign/feature_contract.json
 
-gpt_zero_f1:
+intermediate_classic_predictions:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/intermediate_20260714/classic_predictions.parquet
+  save_args: {index: false}
+
+intermediate_classic_metrics:
   type: json.JSONDataset
-  filepath: models/gpt/gpt_f1_zero_test.json
+  filepath: data/08_reporting/intermedia_20260714_redesign/classic_metrics.json
 
-# --- Figuras de tesis (nodos que retornan Figure → PNG publicado) ---
-fig_22_comparacion_auc_segmentos:
+intermediate_logreg_coefficients:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/logreg_coeficientes.csv
+  save_args: {index: false}
+
+intermediate_xgb_shap_summary:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/xgboost_shap_resumen.csv
+  save_args: {index: false}
+
+# ---------------------------------------------------------------------
+# Cuatro caches de Qwen ya finalizados: 29 variables y 29 más descripción
+# ---------------------------------------------------------------------
+qwen_intermediate_tu_form_zero_cache:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/intermediate_20260714/qwen/qwen3_8b_tu_form_test_minimum_few0.parquet
+
+qwen_intermediate_tu_form_few8_cache:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/intermediate_20260714/qwen/qwen3_8b_tu_form_test_minimum_few8.parquet
+
+qwen_intermediate_tu_form_description_zero_cache:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/intermediate_20260714/qwen/qwen3_8b_tu_form_description_test_minimum_few0.parquet
+
+qwen_intermediate_tu_form_description_few8_cache:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/intermediate_20260714/qwen/qwen3_8b_tu_form_description_test_minimum_few8.parquet
+
+qwen_intermediate_run_summary:
+  type: json.JSONDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/qwen_run_summary.json
+
+# ---------------------------------------------------------------------
+# Resultados de la entrega
+# ---------------------------------------------------------------------
+intermediate_predictions:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/intermediate_20260714/combined_predictions_private.parquet
+  save_args: {index: false}
+
+intermediate_metrics_table:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/metrics.csv
+  save_args: {index: false}
+
+intermediate_qwen_description_comparisons:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/paired_qwen_description_delta_auc.csv
+  save_args: {index: false}
+
+intermediate_results_table:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/resultados_principales.csv
+  save_args: {index: false}
+
+intermediate_text_summary:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/resumen_campos_textuales.csv
+  save_args: {index: false}
+
+intermediate_tu_dictionary:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/atributos_transunion.csv
+  save_args: {index: false}
+
+intermediate_real_serialization_example:
+  type: json.JSONDataset
+  filepath: data/08_reporting/intermedia_20260714_redesign/ejemplo_serializacion_real.json
+
+fig_intermediate_target:
   type: matplotlib.MatplotlibDataset
-  filepath: figures/22_comparacion_auc_segmentos.png
-  save_args: {bbox_inches: tight}
-fig3_auc_ejemplos:
+  filepath: figures/intermedia_20260714_redesign/01_distribucion_mora.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_temporal:
   type: matplotlib.MatplotlibDataset
-  filepath: figures/fig3_auc_ejemplos.png
-  save_args: {bbox_inches: tight}
-fig4_comparacion_modelos:
+  filepath: figures/intermedia_20260714_redesign/02_cambio_temporal.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_text_fields:
   type: matplotlib.MatplotlibDataset
-  filepath: figures/fig4_comparacion_modelos.png
-  save_args: {bbox_inches: tight}
+  filepath: figures/intermedia_20260714_redesign/03_campos_textuales.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_subcategory:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/04_subcategorias.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_bureau:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/05_bivariado_buro.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_predictors:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/06_asociaciones_entrenamiento.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_outliers:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/07_valores_extremos.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_history:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/08_historial_buro.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_feature_missingness:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/09_faltantes_variables.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_segment_rates:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/10_segmentos_por_particion.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_logreg_coefficients:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/11_coeficientes_logistica.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_xgb_shap:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/12_shap_xgboost.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_roc_classics:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/13_roc_clasicos.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_roc_qwen:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/14_roc_qwen.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_auc:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/15_auc_modelos.png
+  save_args: {bbox_inches: tight, dpi: 200}
+
+fig_intermediate_delta:
+  type: matplotlib.MatplotlibDataset
+  filepath: figures/intermedia_20260714_redesign/16_delta_descripcion_qwen.png
+  save_args: {bbox_inches: tight, dpi: 200}

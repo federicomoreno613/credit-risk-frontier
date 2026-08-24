@@ -1,23 +1,260 @@
-"""Nodos de procesamiento de datos.
-
-Análogo canónico del ``data_processing`` de spaceflights: valida el dataset curado,
-construye la ``model_input_table`` (única segmentación autoritativa) y arma un
-reporte EDA liviano. Los helpers de un solo dueño viven acá; los cross-pipeline
-(segmentación, constantes) vienen de ``credit_risk_frontier.utils``.
-"""
+"""Nodos que reconstruyen y validan la cohorte analítica vigente."""
 
 from __future__ import annotations
 
+import hashlib
+import json
+
+import numpy as np
 import pandas as pd
 
 from credit_risk_frontier import utils
 
 
+_BRIDGE_EXCLUDED = {"credito_id_anon", "target", "set"}
+
+
+def _canonical_signature_value(value) -> str:
+    if value is None or pd.isna(value):
+        return "<NA>"
+    if isinstance(value, (pd.Timestamp,)):
+        return value.strftime("%Y-%m-%d")
+    if isinstance(value, (int, float, np.integer, np.floating)):
+        return format(float(value), ".12g")
+    text = str(value).strip()
+    try:
+        return format(float(text), ".12g")
+    except ValueError:
+        return text
+
+
+def _row_signatures(df: pd.DataFrame, columns: list[str]) -> pd.Series:
+    def signature(row) -> str:
+        payload = [_canonical_signature_value(row[c]) for c in columns]
+        return hashlib.sha256(json.dumps(payload, ensure_ascii=False).encode()).hexdigest()
+
+    return df[columns].apply(signature, axis=1)
+
+
+def build_exact_credit_bridge(legacy_dataset: pd.DataFrame,
+                              current_dataset: pd.DataFrame,
+                              params: dict | None = None) -> pd.DataFrame:
+    """Une IDs legacy/current solo por firmas de features únicas en ambos lados."""
+    params = params or {}
+    requested = params.get("signature_columns")
+    common = [c for c in legacy_dataset.columns if c in current_dataset.columns]
+    columns = requested or [c for c in common if c not in _BRIDGE_EXCLUDED]
+    columns = [c for c in columns if c not in _BRIDGE_EXCLUDED]
+    if not columns:
+        raise ValueError("No hay columnas válidas para construir la firma del puente")
+
+    legacy = legacy_dataset.copy()
+    current = current_dataset.copy()
+    legacy["_signature"] = _row_signatures(legacy, columns)
+    current["_signature"] = _row_signatures(current, columns)
+    legacy_counts = legacy["_signature"].value_counts()
+    current_counts = current["_signature"].value_counts()
+    unique = set(legacy_counts[legacy_counts.eq(1)].index) & set(
+        current_counts[current_counts.eq(1)].index
+    )
+    bridge = (
+        legacy.loc[legacy["_signature"].isin(unique), ["credito_id_anon", "_signature"]]
+        .rename(columns={"credito_id_anon": "legacy_credito_id_anon"})
+        .merge(
+            current.loc[current["_signature"].isin(unique), ["credito_id_anon", "_signature"]],
+            on="_signature",
+            validate="one_to_one",
+        )
+        .rename(columns={"_signature": "signature"})
+        .sort_values("credito_id_anon")
+        .reset_index(drop=True)
+    )
+    bridge.attrs["signature_columns"] = columns
+    return bridge
+
+
+def build_bridge_coverage_report(current_dataset: pd.DataFrame,
+                                 credit_bridge: pd.DataFrame) -> dict:
+    """Compara vinculados y excluidos por fecha, segmento y variables centrales."""
+    data = utils.annotate_segments(current_dataset)
+    linked = set(credit_bridge["credito_id_anon"])
+    data["bridge_group"] = np.where(data["credito_id_anon"].isin(linked),
+                                    "linked", "excluded")
+    columns = [c for c in ["fecha_desembolso", "segmento", "agg308", "wd81",
+                            "agg2503", "appusers_gender_male"] if c in data]
+    report = {"counts": data.bridge_group.value_counts().to_dict(), "variables": {}}
+    for column in columns:
+        if column == "fecha_desembolso":
+            values = pd.to_datetime(data[column], errors="coerce")
+            report["variables"][column] = {
+                group: {"min": str(values[data.bridge_group.eq(group)].min().date()),
+                        "max": str(values[data.bridge_group.eq(group)].max().date())}
+                for group in ("linked", "excluded")}
+        elif not pd.api.types.is_numeric_dtype(data[column]):
+            report["variables"][column] = {
+                group: data.loc[data.bridge_group.eq(group), column].value_counts(
+                    normalize=True).to_dict() for group in ("linked", "excluded")}
+        else:
+            a = pd.to_numeric(data.loc[data.bridge_group.eq("linked"), column], errors="coerce")
+            b = pd.to_numeric(data.loc[data.bridge_group.eq("excluded"), column], errors="coerce")
+            pooled = np.sqrt((a.var() + b.var()) / 2)
+            report["variables"][column] = {
+                "linked_mean": float(a.mean()), "excluded_mean": float(b.mean()),
+                "standardized_mean_difference": float((a.mean() - b.mean()) / pooled)
+                if pooled and not np.isnan(pooled) else None}
+    return utils.json_safe(report)
+
+
+def _assign_temporal_splits(outcomes: pd.DataFrame, train_fraction: float,
+                            validation_fraction: float) -> pd.Series:
+    ordered = outcomes.sort_values(["fecha_desembolso", "credito_id_anon"], kind="stable")
+    n = len(ordered)
+    n_train = int(n * train_fraction)
+    n_val = int(n * validation_fraction)
+    labels = pd.Series("test", index=ordered.index, dtype=object)
+    labels.iloc[:n_train] = "train"
+    labels.iloc[n_train:n_train + n_val] = "val"
+    return labels.reindex(outcomes.index)
+
+
+def build_credit_outcomes(current_dataset: pd.DataFrame, payments: pd.DataFrame,
+                          credit_bridge: pd.DataFrame, params: dict) -> pd.DataFrame:
+    """Construye el desenlace a horizonte fijo, con ``1 = mora``."""
+    horizon = int(params.get("horizon_days", 150))
+    default_dpd = int(params.get("default_dpd", 60))
+    good_dpd = int(params.get("good_dpd", 30))
+    cutoff_value = params.get("observation_cutoff")
+
+    pay = payments.rename(columns={"credito_id_anon": "legacy_credito_id_anon"}).merge(
+        credit_bridge[["legacy_credito_id_anon", "credito_id_anon"]],
+        on="legacy_credito_id_anon",
+        validate="many_to_one",
+    )
+    pay["fecha_t_pago"] = pd.to_datetime(pay["fecha_t_pago"], errors="coerce")
+    pay["dias_retraso"] = pd.to_numeric(pay["dias_retraso"], errors="coerce").fillna(0).clip(lower=0)
+    # La fecha canónica viene del dataset actual; el archivo de pagos conserva otra
+    # copia histórica que generaría sufijos y no debe gobernar la elegibilidad.
+    pay = pay.drop(columns=["fecha_desembolso"], errors="ignore")
+
+    base = current_dataset[["credito_id_anon", "fecha_desembolso"]].drop_duplicates().copy()
+    base["fecha_desembolso"] = pd.to_datetime(base["fecha_desembolso"], errors="coerce")
+    if cutoff_value:
+        cutoff = pd.Timestamp(cutoff_value)
+    elif "fecha_pago" in pay.columns:
+        cutoff = pd.to_datetime(pay["fecha_pago"], errors="coerce").max()
+    else:
+        raise ValueError("Falta observation_cutoff y no existe fecha_pago para inferirlo")
+    if pd.isna(cutoff):
+        raise ValueError("No se pudo determinar el corte de observación")
+
+    base["horizon_end"] = base["fecha_desembolso"] + pd.to_timedelta(horizon, unit="D")
+    base = base[base["horizon_end"].le(cutoff)]
+    pay = pay.merge(base[["credito_id_anon", "fecha_desembolso", "horizon_end"]],
+                    on="credito_id_anon", how="inner")
+    pay = pay[
+        pay["fecha_t_pago"].ge(pay["fecha_desembolso"]) &
+        pay["fecha_t_pago"].le(pay["horizon_end"])
+    ]
+    available = (pay["horizon_end"] - pay["fecha_t_pago"]).dt.days.clip(
+        lower=0, upper=horizon)
+    pay["dpd_at_horizon"] = np.minimum(pay["dias_retraso"], available)
+    max_dpd = pay.groupby("credito_id_anon")["dpd_at_horizon"].max()
+
+    outcomes = base.merge(max_dpd.rename("max_dpd_horizon"), on="credito_id_anon", how="inner")
+    outcomes = outcomes[
+        outcomes["max_dpd_horizon"].le(good_dpd) |
+        outcomes["max_dpd_horizon"].gt(default_dpd)
+    ].copy()
+    outcomes["target"] = outcomes["max_dpd_horizon"].gt(default_dpd).astype(int)
+    outcomes["target_definition"] = f"default_dpd_gt_{default_dpd}_within_{horizon}d"
+    outcomes["horizon_days"] = horizon
+    outcomes["observation_cutoff"] = cutoff.strftime("%Y-%m-%d")
+    outcomes["set"] = _assign_temporal_splits(
+        outcomes,
+        float(params.get("train_fraction", 0.8)),
+        float(params.get("validation_fraction", 0.1)),
+    )
+    return outcomes.sort_values(["fecha_desembolso", "credito_id_anon"]).reset_index(drop=True)
+
+
+def create_model_input(current_dataset: pd.DataFrame, outcomes: pd.DataFrame,
+                       params: dict | None = None) -> pd.DataFrame:
+    """Reemplaza target/set heredados y elimina toda variable prohibida."""
+    del params
+    forbidden = set(utils.LEAK_COLS + utils.SCORES_INTERNOS + utils.TEMPORAL_PROXY_COLS)
+    base = current_dataset.drop(columns=["target", "set", *forbidden], errors="ignore")
+    outcome_cols = ["credito_id_anon", "target", "set"]
+    merged = base.merge(outcomes[outcome_cols], on="credito_id_anon", how="inner", validate="one_to_one")
+    merged["fecha_desembolso"] = pd.to_datetime(merged["fecha_desembolso"], errors="coerce")
+    if all(column in merged.columns for column in utils.TU_VARS):
+        merged = utils.annotate_segments(merged)
+    return merged.sort_values(
+        ["fecha_desembolso", "credito_id_anon"], kind="stable").reset_index(drop=True)
+
+
+def build_split_manifest(current_dataset: pd.DataFrame, credit_bridge: pd.DataFrame,
+                         outcomes: pd.DataFrame, model_input: pd.DataFrame,
+                         params: dict | None = None) -> dict:
+    """Manifiesto congelable de la cohorte y su partición temporal."""
+    params = params or {}
+    stable = model_input.sort_values("credito_id_anon").copy()
+    digest = hashlib.sha256(
+        pd.util.hash_pandas_object(stable, index=False).values.tobytes()
+    ).hexdigest()
+    forbidden = utils.LEAK_COLS + utils.SCORES_INTERNOS + utils.TEMPORAL_PROXY_COLS
+    set_counts = model_input["set"].value_counts().to_dict()
+    target_by_set = model_input.groupby("set")["target"].agg(["count", "mean"]).to_dict("index")
+    segment_counts = model_input.get("segmento", pd.Series(dtype=str)).value_counts().to_dict()
+    ids_by_set = {split: sorted(group["credito_id_anon"].astype(str).tolist())
+                  for split, group in model_input.groupby("set")}
+    split_sha256 = {split: hashlib.sha256("\n".join(ids).encode()).hexdigest()
+                    for split, ids in ids_by_set.items()}
+    return utils.json_safe({
+        "contract": "target_60dpd_150d_temporal_80_10_10",
+        "dataset_sha256": digest,
+        "source_rows": len(current_dataset),
+        "bridge_rows": len(credit_bridge),
+        "bridge_coverage": len(credit_bridge) / len(current_dataset) if len(current_dataset) else 0,
+        "outcome_rows": len(outcomes),
+        "model_input_rows": len(model_input),
+        "target_definition": outcomes["target_definition"].iloc[0] if len(outcomes) else None,
+        "observation_cutoff": outcomes["observation_cutoff"].iloc[0] if len(outcomes) else None,
+        "set_counts": set_counts,
+        "target_by_set": target_by_set,
+        "segment_counts": segment_counts,
+        "n_columns": model_input.shape[1],
+        "columns": model_input.columns.tolist(),
+        "ids_by_set": ids_by_set,
+        "ids_sha256_by_set": split_sha256,
+        "forbidden_columns_present": [c for c in forbidden if c in model_input.columns],
+        "signature_columns": credit_bridge.attrs.get("signature_columns", []),
+        "parameters": params,
+    })
+
+
+def build_outcome_sensitivity(current_dataset: pd.DataFrame, payments: pd.DataFrame,
+                              credit_bridge: pd.DataFrame, params: dict) -> dict:
+    """Conteos/tasas para horizontes predefinidos; no entrena ni mira el test."""
+    horizons = params.get("sensitivity_horizons", [120, 180, 210])
+    summaries = {}
+    for horizon in horizons:
+        variant = {**params, "horizon_days": int(horizon)}
+        outcomes = build_credit_outcomes(current_dataset, payments, credit_bridge, variant)
+        summaries[str(horizon)] = {
+            "n": len(outcomes),
+            "default_rate": float(outcomes["target"].mean()) if len(outcomes) else None,
+            "set_counts": outcomes["set"].value_counts().to_dict(),
+            "date_min": str(outcomes["fecha_desembolso"].min().date()) if len(outcomes) else None,
+            "date_max": str(outcomes["fecha_desembolso"].max().date()) if len(outcomes) else None,
+        }
+    return utils.json_safe({"primary_horizon": params.get("horizon_days", 150), "sensitivity": summaries})
+
+
 def validate_credit_dataset(dataset: pd.DataFrame, params: dict) -> dict:
     """Valida el dataset curado y devuelve un reporte compacto de reproducibilidad.
 
-    Preservado del scaffold WIP (nodo puro: df + params → dict, sin I/O). E4: el
-    segmento ``esparso`` cuenta cualquier código TU ``< 0`` (no solo ``-1``).
+    El segmento ``esparso`` cuenta cualquier código TU ``< 0`` y no solamente
+    el centinela ``-1``.
     """
     df = dataset.copy()
     required = params.get("required_columns", [])
@@ -83,65 +320,4 @@ def validate_credit_dataset(dataset: pd.DataFrame, params: dict) -> dict:
     report["expected_count_mismatches"] = mismatches
     if mismatches and params.get("fail_on_expected_mismatch", True):
         raise ValueError(f"No coinciden conteos esperados del dataset: {mismatches}")
-    return report
-
-
-def create_model_input_table(dataset: pd.DataFrame, params: dict) -> pd.DataFrame:
-    """Construye la tabla de entrada del modelo — ÚNICA segmentación autoritativa.
-
-    Parsea ``fecha_desembolso``, ordena temporalmente y agrega ``n_tu_missing`` y
-    ``segmento`` (via ``utils.annotate_segments``). Todos los pipelines consumen
-    esta tabla; nadie vuelve a segmentar. Consolida los dos ``load_segmented``
-    incompatibles de los scripts 05 y 06b en una sola fuente.
-    """
-    df = dataset.copy()
-    date_col = params.get("date_col", "fecha_desembolso")
-    if date_col in df.columns:
-        df[date_col] = pd.to_datetime(df[date_col], errors="coerce")
-        df = df.sort_values(date_col, kind="stable").reset_index(drop=True)
-    return utils.annotate_segments(df)
-
-
-def build_eda_report(dataset: pd.DataFrame, params: dict) -> dict:
-    """Reporte EDA compacto + verificación de disponibilidad de figuras de tesis.
-
-    Preservado del scaffold WIP; usa ``utils.PROJECT_ROOT`` en vez de ``_utils``.
-    """
-    df = dataset.copy()
-    target_col = params.get("target_col", "target")
-    set_col = params.get("set_col", "set")
-    date_col = params.get("date_col", "fecha_desembolso")
-    figure_files = params.get("figure_files", [])
-
-    report = {
-        "n_rows": int(len(df)),
-        "n_columns": int(df.shape[1]),
-        "target_distribution": {},
-        "set_target_rate": {},
-        "top_missing_columns": {},
-        "figure_checks": {},
-    }
-    if target_col in df.columns:
-        report["target_distribution"] = {
-            str(k): int(v) for k, v in df[target_col].value_counts(dropna=False).sort_index().to_dict().items()
-        }
-    if target_col in df.columns and set_col in df.columns:
-        report["set_target_rate"] = {
-            str(k): float(v) for k, v in df.groupby(set_col)[target_col].mean().to_dict().items()
-        }
-    if date_col in df.columns:
-        dates = pd.to_datetime(df[date_col], errors="coerce")
-        report["monthly_rows"] = {
-            str(k): int(v) for k, v in dates.dt.to_period("M").value_counts().sort_index().to_dict().items()
-        }
-    missing = df.isna().mean().sort_values(ascending=False).head(15)
-    report["top_missing_columns"] = {str(k): float(v) for k, v in missing.to_dict().items()}
-
-    for rel in figure_files:
-        path = utils.PROJECT_ROOT / rel
-        report["figure_checks"][rel] = {
-            "exists": path.exists(), "bytes": path.stat().st_size if path.exists() else 0}
-    missing_figures = [rel for rel, check in report["figure_checks"].items() if not check["exists"]]
-    if missing_figures and params.get("fail_on_missing_figures", True):
-        raise FileNotFoundError(f"Faltan figuras EDA esperadas: {missing_figures}")
     return report

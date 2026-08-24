@@ -1,0 +1,16 @@
+{
+  "model": "gpt-5.4",
+  "configurations": [
+    "zero_shot",
+    "few_shot"
+  ],
+  "profile": "tu_form",
+  "n_features": 29,
+  "few_shot_examples_source": "train",
+  "few_shot_n": 8,
+  "rows_processed": 2,
+  "requests": 4,
+  "valid_results": 4,
+  "required_output": "PROBABILIDAD_DE_MORA: <0-100>",
+  "mock_calls": 4
+}

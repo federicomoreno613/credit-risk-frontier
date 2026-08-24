@@ -1,0 +1,5 @@
+modelo,configuracion,n,criterio,umbral,TP,TN,FP,FN,accuracy,precision,recall,f1,costo
+logreg,29vars,631,umbral_0.5,0.5,129,306,77,119,0.6894,0.6262,0.5202,0.5683,672.0
+logreg,29vars,631,costo_minimo,0.19,238,82,301,10,0.5071,0.4416,0.9597,0.6048,351.0
+xgboost,29vars_optuna,631,umbral_0.5,0.5,30,370,13,218,0.6339,0.6977,0.121,0.2062,1103.0
+xgboost,29vars_optuna,631,costo_minimo,0.01,237,99,284,11,0.5325,0.4549,0.9556,0.6164,339.0
