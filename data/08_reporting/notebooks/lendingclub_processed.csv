@@ -1,0 +1,201 @@
+target,set,issue_d,loan_amnt,int_rate,installment,grade,sub_grade,emp_length,home_ownership,annual_inc,verification_status,purpose,dti,delinq_2yrs,open_acc,pub_rec,revol_bal,revol_util,total_acc,fico_range_low,fico_range_high,inq_last_6mths,emp_title,title,fuente
+0,train,2014-01-01,34932,24.47,820.91,F,C1,< 1 year,OWN,21201.13,Not Verified,home_improvement,26.87,4,13,2,15874,74.71,59,745,691,2,synthetic,synthetic loan,smoke
+0,train,2014-01-02,27431,8.36,979.59,B,F1,1 year,RENT,73780.79,Verified,credit_card,38.42,4,18,1,42136,13.08,57,743,668,2,synthetic,synthetic loan,smoke
+1,train,2014-01-03,11894,18.4,1016.32,C,F4,1 year,MORTGAGE,147601.73,Not Verified,home_improvement,14.84,0,5,2,1764,80.69,20,690,751,5,synthetic,synthetic loan,smoke
+0,train,2014-01-04,34042,17.86,573.85,C,C2,1 year,MORTGAGE,154267.82,Not Verified,debt_consolidation,17.0,4,19,0,22319,93.69,45,770,759,4,synthetic,synthetic loan,smoke
+0,train,2014-01-05,17976,26.44,591.49,B,A5,< 1 year,OWN,42132.65,Not Verified,debt_consolidation,32.48,1,27,0,40048,60.65,14,756,772,3,synthetic,synthetic loan,smoke
+1,train,2014-01-06,18025,16.57,887.86,B,G2,< 1 year,RENT,143893.74,Not Verified,home_improvement,20.23,1,4,2,47648,71.04,29,765,797,2,synthetic,synthetic loan,smoke
+0,train,2014-01-07,15745,14.63,373.32,C,B1,< 1 year,MORTGAGE,38512.67,Not Verified,debt_consolidation,29.46,1,10,0,12570,71.36,15,725,733,4,synthetic,synthetic loan,smoke
+0,train,2014-01-08,5892,20.99,927.63,G,E1,1 year,RENT,82410.01,Verified,debt_consolidation,18.39,3,21,0,32539,99.28,30,784,780,4,synthetic,synthetic loan,smoke
+0,train,2014-01-09,32768,11.66,563.79,A,B4,< 1 year,OWN,179777.52,Not Verified,home_improvement,8.62,3,18,1,9484,34.15,52,714,764,2,synthetic,synthetic loan,smoke
+0,train,2014-01-10,1473,8.49,162.81,B,A5,10+ years,MORTGAGE,50814.53,Not Verified,debt_consolidation,29.81,2,20,1,5794,16.29,27,772,702,0,synthetic,synthetic loan,smoke
+0,train,2014-01-11,6925,16.95,116.38,A,F3,< 1 year,MORTGAGE,44634.17,Not Verified,credit_card,5.25,0,17,0,17651,51.92,7,688,782,0,synthetic,synthetic loan,smoke
+1,train,2014-01-12,8808,15.42,932.51,D,B1,5 years,MORTGAGE,87648.05,Not Verified,debt_consolidation,7.94,4,20,1,44254,53.32,20,694,671,0,synthetic,synthetic loan,smoke
+0,train,2014-01-13,10496,10.81,98.9,B,E4,5 years,RENT,119146.96,Verified,debt_consolidation,25.07,1,18,2,34473,17.79,47,733,747,2,synthetic,synthetic loan,smoke
+1,train,2014-01-14,5481,14.19,337.45,F,E5,1 year,OWN,169264.13,Not Verified,home_improvement,29.89,0,3,1,24463,61.31,32,737,795,3,synthetic,synthetic loan,smoke
+0,train,2014-01-15,1610,14.16,394.18,E,A3,10+ years,MORTGAGE,176931.38,Verified,debt_consolidation,35.79,2,22,1,14140,1.41,34,764,756,4,synthetic,synthetic loan,smoke
+0,train,2014-01-16,24040,13.19,223.37,F,B2,< 1 year,RENT,31142.5,Not Verified,debt_consolidation,10.9,2,13,0,7081,92.77,27,701,795,1,synthetic,synthetic loan,smoke
+0,train,2014-01-17,33956,14.49,372.73,E,F3,< 1 year,MORTGAGE,42079.6,Not Verified,home_improvement,4.43,3,2,1,13538,26.46,18,782,671,4,synthetic,synthetic loan,smoke
+0,train,2014-01-18,5142,22.14,827.25,D,D3,1 year,OWN,146518.08,Verified,home_improvement,38.24,4,12,2,7634,3.96,36,706,738,3,synthetic,synthetic loan,smoke
+1,train,2014-01-19,11082,12.42,55.56,G,A5,< 1 year,OWN,63301.14,Not Verified,debt_consolidation,6.18,0,13,1,9354,10.82,38,734,773,0,synthetic,synthetic loan,smoke
+0,train,2014-01-20,18215,28.72,916.8,D,G5,1 year,MORTGAGE,161575.85,Not Verified,home_improvement,7.91,1,3,2,34376,24.02,54,790,753,2,synthetic,synthetic loan,smoke
+0,train,2014-01-21,32535,27.91,947.94,G,B5,1 year,RENT,126152.52,Not Verified,credit_card,11.65,2,29,0,6634,27.39,37,735,787,1,synthetic,synthetic loan,smoke
+0,train,2014-01-22,24604,17.02,434.6,G,A1,10+ years,MORTGAGE,37895.17,Verified,home_improvement,21.18,3,7,0,2368,3.28,59,755,728,5,synthetic,synthetic loan,smoke
+1,train,2014-01-23,27050,13.21,202.83,E,G3,1 year,MORTGAGE,153204.69,Verified,debt_consolidation,35.31,3,10,1,27117,27.94,49,787,759,5,synthetic,synthetic loan,smoke
+1,train,2014-01-24,20757,18.39,676.89,E,A1,10+ years,MORTGAGE,48217.02,Not Verified,home_improvement,30.42,1,13,0,14329,19.29,6,796,722,4,synthetic,synthetic loan,smoke
+0,train,2014-01-25,15179,26.21,166.85,B,D5,10+ years,RENT,87759.26,Not Verified,credit_card,28.33,3,25,1,22736,37.86,24,729,786,3,synthetic,synthetic loan,smoke
+0,train,2014-01-26,7792,21.31,426.81,F,G5,10+ years,MORTGAGE,108349.59,Not Verified,home_improvement,7.01,4,22,2,6989,38.52,24,718,680,2,synthetic,synthetic loan,smoke
+0,train,2014-01-27,30386,25.11,1055.93,E,E1,< 1 year,MORTGAGE,100122.58,Not Verified,credit_card,14.31,2,23,1,10498,33.9,2,687,699,1,synthetic,synthetic loan,smoke
+0,train,2014-01-28,28340,18.32,1095.19,G,E1,10+ years,OWN,129786.07,Verified,home_improvement,19.14,4,7,1,22053,32.79,12,735,677,4,synthetic,synthetic loan,smoke
+0,train,2014-01-29,1853,20.82,858.43,B,C4,5 years,MORTGAGE,124429.88,Not Verified,credit_card,5.9,3,25,2,34501,8.97,46,788,762,0,synthetic,synthetic loan,smoke
+0,train,2014-01-30,25323,12.2,369.62,F,A5,10+ years,MORTGAGE,178726.72,Verified,debt_consolidation,10.94,1,25,0,20717,2.52,22,728,696,1,synthetic,synthetic loan,smoke
+0,train,2014-01-31,3869,23.37,768.92,D,E1,1 year,MORTGAGE,179907.51,Not Verified,home_improvement,12.33,1,14,2,27085,20.21,10,708,708,0,synthetic,synthetic loan,smoke
+1,train,2014-02-01,26125,10.06,787.73,B,G2,10+ years,RENT,102633.5,Not Verified,home_improvement,5.09,3,16,0,26093,75.66,18,675,781,2,synthetic,synthetic loan,smoke
+0,train,2014-02-02,29082,22.37,451.11,B,A4,5 years,RENT,35231.85,Not Verified,debt_consolidation,22.01,1,2,2,13443,99.08,17,714,714,1,synthetic,synthetic loan,smoke
+0,train,2014-02-03,5455,26.52,719.34,D,G1,< 1 year,OWN,136454.93,Not Verified,credit_card,28.2,1,23,1,13981,92.85,12,693,684,1,synthetic,synthetic loan,smoke
+0,train,2014-02-04,15750,8.3,51.37,C,C5,1 year,OWN,176266.25,Verified,credit_card,2.8,1,28,0,21286,50.42,7,796,666,2,synthetic,synthetic loan,smoke
+0,train,2014-02-05,5207,20.36,261.6,A,D4,< 1 year,OWN,70932.22,Verified,credit_card,19.24,3,14,2,1602,53.18,46,733,695,5,synthetic,synthetic loan,smoke
+0,train,2014-02-06,20287,7.38,596.59,C,B1,10+ years,MORTGAGE,93793.42,Verified,home_improvement,31.29,1,16,0,34269,31.46,49,679,792,3,synthetic,synthetic loan,smoke
+0,train,2014-02-07,32537,23.14,213.58,E,E2,1 year,RENT,87964.31,Not Verified,home_improvement,29.92,3,15,1,30719,77.39,30,669,740,4,synthetic,synthetic loan,smoke
+0,train,2014-02-08,3749,7.11,215.86,C,B2,< 1 year,OWN,28227.06,Verified,debt_consolidation,32.6,4,3,2,15306,76.48,37,779,803,5,synthetic,synthetic loan,smoke
+0,train,2014-02-09,14517,28.4,926.48,G,B5,5 years,MORTGAGE,127562.31,Not Verified,home_improvement,17.93,4,18,2,18685,84.43,55,790,694,5,synthetic,synthetic loan,smoke
+0,train,2014-02-10,34086,8.44,1088.48,F,F1,1 year,RENT,76534.03,Verified,credit_card,32.82,4,21,2,16435,89.55,50,766,713,2,synthetic,synthetic loan,smoke
+1,train,2014-02-11,11232,28.97,629.33,D,A2,< 1 year,OWN,145994.22,Verified,home_improvement,9.63,0,27,1,32566,43.43,3,677,686,5,synthetic,synthetic loan,smoke
+0,train,2014-02-12,5495,25.02,929.41,G,D1,10+ years,OWN,153139.21,Verified,home_improvement,14.43,2,27,1,37986,76.69,57,673,719,5,synthetic,synthetic loan,smoke
+0,train,2014-02-13,17611,19.84,1089.74,D,E1,10+ years,OWN,151396.93,Verified,credit_card,7.05,1,15,0,5433,80.64,5,687,742,5,synthetic,synthetic loan,smoke
+1,train,2014-02-14,18284,24.57,190.09,A,A5,5 years,RENT,86666.56,Verified,credit_card,18.7,4,28,2,20665,30.85,3,765,777,2,synthetic,synthetic loan,smoke
+1,train,2014-02-15,23537,24.88,515.14,A,C1,5 years,OWN,71447.31,Verified,credit_card,15.68,3,16,1,688,92.92,25,767,715,1,synthetic,synthetic loan,smoke
+0,train,2014-02-16,11667,28.65,456.13,G,C3,1 year,MORTGAGE,139811.32,Not Verified,home_improvement,9.64,1,19,2,22612,9.43,45,777,772,3,synthetic,synthetic loan,smoke
+0,train,2014-02-17,33491,11.33,124.85,G,E4,5 years,MORTGAGE,148222.31,Not Verified,credit_card,30.07,2,18,1,12414,99.43,6,673,751,5,synthetic,synthetic loan,smoke
+0,train,2014-02-18,18714,19.75,840.65,F,G5,5 years,OWN,98601.19,Not Verified,debt_consolidation,12.55,3,29,2,16790,77.01,18,681,704,5,synthetic,synthetic loan,smoke
+0,train,2014-02-19,10739,7.38,499.81,A,F5,< 1 year,MORTGAGE,162884.96,Verified,credit_card,10.91,2,22,0,22827,9.33,17,786,791,3,synthetic,synthetic loan,smoke
+0,train,2014-02-20,33649,20.4,537.49,C,B2,< 1 year,RENT,43025.39,Not Verified,debt_consolidation,5.24,2,4,2,16186,65.62,25,790,724,0,synthetic,synthetic loan,smoke
+0,train,2014-02-21,32443,9.28,199.71,A,A1,1 year,RENT,160651.0,Not Verified,credit_card,17.55,0,3,0,19703,3.42,59,761,685,2,synthetic,synthetic loan,smoke
+0,train,2014-02-22,17971,19.12,231.78,A,A2,1 year,MORTGAGE,35375.24,Not Verified,debt_consolidation,12.12,2,12,0,38238,77.02,21,674,798,4,synthetic,synthetic loan,smoke
+0,train,2014-02-23,1845,19.31,1001.53,B,E1,< 1 year,OWN,44564.08,Verified,debt_consolidation,14.77,1,15,1,40515,79.92,14,669,791,3,synthetic,synthetic loan,smoke
+0,train,2014-02-24,21295,16.65,87.33,E,B1,< 1 year,OWN,105414.4,Not Verified,home_improvement,9.44,4,20,1,293,60.24,9,667,670,2,synthetic,synthetic loan,smoke
+0,train,2014-02-25,19876,18.07,286.82,A,B4,10+ years,MORTGAGE,30802.96,Not Verified,debt_consolidation,30.53,4,14,2,18891,85.69,13,756,790,2,synthetic,synthetic loan,smoke
+0,train,2014-02-26,6039,24.1,349.58,G,F5,1 year,OWN,28449.14,Verified,credit_card,37.2,3,15,1,42344,9.79,9,778,796,0,synthetic,synthetic loan,smoke
+0,train,2014-02-27,22555,24.98,559.61,D,G1,5 years,OWN,20083.0,Verified,home_improvement,19.92,0,27,0,26522,27.59,35,748,780,1,synthetic,synthetic loan,smoke
+0,train,2014-02-28,29586,17.3,661.63,B,F5,5 years,MORTGAGE,89810.67,Not Verified,home_improvement,25.72,4,10,0,10264,41.42,26,696,699,4,synthetic,synthetic loan,smoke
+0,train,2014-03-01,4600,19.99,562.89,D,B4,5 years,MORTGAGE,143939.82,Verified,credit_card,34.69,1,15,1,29675,4.25,30,766,752,1,synthetic,synthetic loan,smoke
+0,train,2014-03-02,25592,28.28,129.16,F,E2,5 years,OWN,25574.14,Verified,debt_consolidation,39.95,2,17,1,7246,44.82,50,668,739,5,synthetic,synthetic loan,smoke
+0,train,2014-03-03,5771,7.99,298.29,C,E2,1 year,MORTGAGE,124361.22,Not Verified,home_improvement,24.54,4,14,1,1091,26.52,35,775,750,0,synthetic,synthetic loan,smoke
+0,train,2014-03-04,26460,7.93,934.2,A,B2,10+ years,RENT,151700.37,Verified,home_improvement,35.59,4,29,0,31621,39.27,10,784,750,3,synthetic,synthetic loan,smoke
+0,train,2014-03-05,15249,7.19,715.84,A,D5,1 year,OWN,46880.14,Verified,credit_card,36.34,0,28,1,25756,42.51,23,760,753,2,synthetic,synthetic loan,smoke
+0,train,2014-03-06,1221,21.45,728.1,F,D4,10+ years,MORTGAGE,43498.2,Verified,debt_consolidation,31.66,1,15,1,37825,87.94,20,783,735,4,synthetic,synthetic loan,smoke
+0,train,2014-03-07,33851,15.47,750.42,A,C4,1 year,MORTGAGE,157728.16,Not Verified,debt_consolidation,18.44,3,14,2,17241,27.03,49,742,760,5,synthetic,synthetic loan,smoke
+0,train,2014-03-08,6642,24.36,848.68,E,F2,< 1 year,OWN,151699.94,Verified,debt_consolidation,3.25,2,18,1,42714,89.37,19,725,737,3,synthetic,synthetic loan,smoke
+0,train,2014-03-09,21265,21.78,101.59,C,E4,10+ years,OWN,106230.68,Not Verified,debt_consolidation,0.63,1,6,2,21064,42.6,10,705,666,3,synthetic,synthetic loan,smoke
+0,train,2014-03-10,7169,13.34,428.6,F,D4,< 1 year,RENT,151071.98,Verified,home_improvement,19.09,2,13,0,36900,32.78,44,789,668,4,synthetic,synthetic loan,smoke
+0,train,2014-03-11,32722,27.46,611.9,A,F1,10+ years,MORTGAGE,34840.97,Not Verified,debt_consolidation,19.77,4,7,2,5014,50.25,26,757,798,3,synthetic,synthetic loan,smoke
+0,train,2014-03-12,26103,24.06,398.76,G,F2,< 1 year,RENT,83117.04,Not Verified,debt_consolidation,16.29,1,5,0,4857,41.77,7,686,791,1,synthetic,synthetic loan,smoke
+0,train,2014-03-13,28348,11.76,935.15,E,D5,< 1 year,MORTGAGE,138047.61,Not Verified,home_improvement,22.73,3,3,0,39141,25.74,42,793,745,2,synthetic,synthetic loan,smoke
+1,train,2014-03-14,15690,14.1,551.53,D,B5,5 years,MORTGAGE,61192.31,Not Verified,home_improvement,22.09,3,18,2,41699,50.27,14,668,688,1,synthetic,synthetic loan,smoke
+0,train,2014-03-15,16890,12.86,854.75,B,F2,10+ years,MORTGAGE,140372.63,Verified,debt_consolidation,33.46,4,1,1,47120,15.18,52,742,773,2,synthetic,synthetic loan,smoke
+0,train,2014-03-16,22566,8.94,943.14,G,F1,1 year,OWN,100668.58,Not Verified,credit_card,4.35,1,19,1,16231,35.19,50,686,684,3,synthetic,synthetic loan,smoke
+0,train,2014-03-17,27681,8.69,575.08,C,G5,< 1 year,MORTGAGE,140042.56,Not Verified,credit_card,9.01,1,13,1,1113,56.58,23,753,716,1,synthetic,synthetic loan,smoke
+0,train,2014-03-18,29797,28.4,1004.13,D,B1,< 1 year,MORTGAGE,94348.74,Not Verified,credit_card,31.72,2,11,2,48995,41.34,34,717,710,1,synthetic,synthetic loan,smoke
+0,train,2014-03-19,1606,15.95,662.35,C,C5,10+ years,MORTGAGE,78864.69,Not Verified,home_improvement,33.91,2,23,0,30068,82.39,34,721,665,4,synthetic,synthetic loan,smoke
+0,train,2014-03-20,23561,14.58,941.29,B,G3,5 years,RENT,55070.27,Not Verified,home_improvement,39.79,2,16,0,12356,25.67,39,754,776,2,synthetic,synthetic loan,smoke
+0,train,2014-03-21,4710,23.24,401.03,C,D4,< 1 year,RENT,53340.69,Verified,home_improvement,34.92,3,22,0,38192,96.98,6,765,735,1,synthetic,synthetic loan,smoke
+0,train,2014-03-22,10789,18.82,568.75,B,G3,1 year,OWN,140238.53,Verified,debt_consolidation,35.6,3,21,2,45194,78.47,20,713,708,4,synthetic,synthetic loan,smoke
+0,train,2014-03-23,29200,28.4,603.3,A,A1,1 year,RENT,39025.66,Verified,debt_consolidation,12.57,1,1,0,14240,96.76,11,799,735,4,synthetic,synthetic loan,smoke
+1,train,2014-03-24,9517,24.51,151.28,C,A2,< 1 year,RENT,33757.18,Verified,credit_card,16.07,3,7,1,38483,83.81,42,729,664,4,synthetic,synthetic loan,smoke
+0,train,2014-03-25,28091,16.98,462.47,A,F3,10+ years,OWN,48206.62,Not Verified,debt_consolidation,10.72,1,17,1,39377,14.21,6,682,725,4,synthetic,synthetic loan,smoke
+0,train,2014-03-26,16742,14.41,1012.38,C,C3,5 years,RENT,48055.44,Not Verified,credit_card,24.25,2,29,0,25084,52.65,31,660,736,5,synthetic,synthetic loan,smoke
+0,train,2014-03-27,8909,29.67,708.68,G,D4,< 1 year,MORTGAGE,151697.22,Verified,debt_consolidation,37.55,0,5,1,31617,17.0,44,688,711,3,synthetic,synthetic loan,smoke
+0,train,2014-03-28,12364,22.94,228.16,B,C5,5 years,OWN,83761.06,Verified,home_improvement,13.79,1,4,0,13475,81.82,57,756,780,1,synthetic,synthetic loan,smoke
+0,train,2014-03-29,19046,28.78,399.19,A,C5,1 year,MORTGAGE,178462.15,Not Verified,debt_consolidation,22.28,4,28,0,46458,58.42,18,735,698,5,synthetic,synthetic loan,smoke
+0,train,2014-03-30,27015,7.96,243.1,A,G3,< 1 year,RENT,41953.8,Not Verified,debt_consolidation,11.85,2,29,0,49155,26.34,2,707,683,1,synthetic,synthetic loan,smoke
+0,train,2014-03-31,21604,26.26,66.31,D,A4,1 year,RENT,124566.37,Not Verified,debt_consolidation,6.79,3,5,2,49050,92.96,43,727,737,1,synthetic,synthetic loan,smoke
+0,train,2014-04-01,32729,20.93,1023.11,B,F3,< 1 year,OWN,91796.72,Not Verified,debt_consolidation,7.81,0,12,1,36856,11.52,2,777,788,4,synthetic,synthetic loan,smoke
+0,train,2014-04-02,30503,8.05,515.1,D,G2,< 1 year,RENT,82866.91,Not Verified,credit_card,2.32,3,19,2,2117,56.39,5,740,716,5,synthetic,synthetic loan,smoke
+0,train,2014-04-03,26614,19.71,365.99,A,E4,10+ years,OWN,160013.47,Not Verified,credit_card,37.97,1,6,1,18322,72.1,59,668,670,2,synthetic,synthetic loan,smoke
+0,train,2014-04-04,21505,22.15,674.39,C,C4,5 years,RENT,176095.3,Verified,home_improvement,16.12,3,10,0,22246,5.88,52,666,799,4,synthetic,synthetic loan,smoke
+0,train,2014-04-05,10855,5.31,47.75,C,B1,< 1 year,RENT,159657.43,Not Verified,debt_consolidation,33.36,4,12,1,47992,59.79,43,727,726,5,synthetic,synthetic loan,smoke
+0,train,2014-04-06,15027,16.36,334.7,D,E4,10+ years,OWN,50768.11,Verified,credit_card,27.25,2,19,2,27349,81.59,50,716,688,4,synthetic,synthetic loan,smoke
+0,train,2014-04-07,5042,25.63,785.22,D,D2,5 years,OWN,55327.67,Verified,credit_card,7.68,0,9,1,26808,6.75,6,779,750,0,synthetic,synthetic loan,smoke
+0,train,2014-04-08,13722,12.38,711.8,F,B1,10+ years,OWN,124971.82,Verified,credit_card,7.02,2,12,0,7337,51.22,7,741,708,3,synthetic,synthetic loan,smoke
+0,train,2014-04-09,32500,16.46,1080.71,D,C3,5 years,OWN,66253.37,Verified,home_improvement,32.48,0,9,0,39686,25.86,19,765,795,1,synthetic,synthetic loan,smoke
+1,train,2014-04-10,15479,16.06,697.58,F,G4,1 year,RENT,137556.02,Verified,debt_consolidation,10.59,2,23,2,16814,66.29,3,741,705,5,synthetic,synthetic loan,smoke
+1,train,2014-04-11,4866,12.55,546.16,D,B5,5 years,OWN,110627.3,Not Verified,credit_card,36.53,0,5,1,4593,11.87,53,708,741,0,synthetic,synthetic loan,smoke
+0,train,2014-04-12,23165,27.96,847.12,B,B2,5 years,OWN,108145.4,Not Verified,home_improvement,5.6,3,7,2,49382,93.71,5,752,740,5,synthetic,synthetic loan,smoke
+0,train,2014-04-13,33728,24.53,997.53,B,E4,5 years,RENT,152567.51,Verified,home_improvement,27.11,1,8,1,9503,89.47,33,747,697,1,synthetic,synthetic loan,smoke
+1,train,2014-04-14,30494,7.76,803.94,C,B2,< 1 year,RENT,133685.24,Not Verified,credit_card,32.58,1,27,0,811,18.6,51,760,733,2,synthetic,synthetic loan,smoke
+0,train,2014-04-15,10318,29.93,1061.0,E,G3,1 year,OWN,24252.44,Verified,credit_card,9.41,0,28,2,3891,32.33,44,686,679,1,synthetic,synthetic loan,smoke
+0,train,2014-04-16,16432,26.98,868.93,B,G1,< 1 year,RENT,27913.46,Verified,home_improvement,11.05,4,15,2,22625,58.76,15,749,754,4,synthetic,synthetic loan,smoke
+0,train,2014-04-17,19054,12.1,958.81,G,G5,1 year,OWN,116249.35,Not Verified,credit_card,38.58,4,5,2,5145,71.81,29,699,770,2,synthetic,synthetic loan,smoke
+0,train,2014-04-18,9426,25.92,160.95,D,G2,< 1 year,RENT,97790.73,Verified,home_improvement,10.58,4,22,2,42132,44.27,33,770,797,4,synthetic,synthetic loan,smoke
+0,train,2014-04-19,10135,7.66,816.36,G,B4,< 1 year,RENT,61629.54,Not Verified,debt_consolidation,17.2,0,15,0,25622,15.63,46,771,709,0,synthetic,synthetic loan,smoke
+1,train,2014-04-20,9046,29.98,506.49,E,B3,10+ years,RENT,86984.97,Not Verified,credit_card,17.3,1,25,2,16195,10.42,26,747,703,2,synthetic,synthetic loan,smoke
+0,train,2014-04-21,34815,21.64,626.29,C,C2,< 1 year,RENT,141265.65,Verified,debt_consolidation,10.12,4,11,0,157,99.98,18,792,740,5,synthetic,synthetic loan,smoke
+0,train,2014-04-22,26364,21.25,733.35,B,D2,10+ years,OWN,152257.84,Verified,debt_consolidation,31.03,2,29,2,23989,45.54,48,735,760,5,synthetic,synthetic loan,smoke
+0,train,2014-04-23,29589,7.26,1068.0,F,G1,< 1 year,OWN,109795.69,Not Verified,credit_card,30.87,0,24,0,7565,87.25,53,663,802,1,synthetic,synthetic loan,smoke
+0,train,2014-04-24,28763,27.43,1083.65,C,F1,10+ years,OWN,81659.12,Not Verified,debt_consolidation,15.13,0,7,1,48902,48.24,30,744,667,2,synthetic,synthetic loan,smoke
+0,train,2014-04-25,33610,5.72,345.52,B,E3,1 year,OWN,63311.48,Not Verified,credit_card,33.41,1,22,2,14554,92.24,3,768,697,2,synthetic,synthetic loan,smoke
+1,train,2014-04-26,4579,11.02,817.78,G,G1,5 years,RENT,103506.96,Verified,credit_card,8.52,4,9,0,23743,8.78,31,674,700,3,synthetic,synthetic loan,smoke
+0,train,2014-04-27,30975,8.58,834.98,D,E3,1 year,OWN,70359.94,Verified,credit_card,0.17,0,11,0,931,11.4,53,674,699,3,synthetic,synthetic loan,smoke
+0,train,2014-04-28,3263,24.42,407.28,A,C4,1 year,MORTGAGE,110255.22,Not Verified,home_improvement,22.85,4,8,2,6546,92.96,59,698,728,0,synthetic,synthetic loan,smoke
+0,train,2014-04-29,17164,9.96,171.3,D,C5,1 year,MORTGAGE,128264.38,Not Verified,home_improvement,39.76,3,20,0,10374,94.75,25,778,786,4,synthetic,synthetic loan,smoke
+0,train,2014-04-30,21210,27.77,83.4,D,D4,5 years,OWN,30572.67,Verified,credit_card,1.55,4,8,1,2586,31.47,10,733,668,1,synthetic,synthetic loan,smoke
+0,train,2014-05-01,13167,21.41,863.98,G,A4,1 year,OWN,20170.79,Not Verified,debt_consolidation,8.32,4,19,2,36299,35.52,35,796,778,1,synthetic,synthetic loan,smoke
+0,train,2014-05-02,5969,5.9,559.08,E,F1,5 years,OWN,53964.34,Not Verified,home_improvement,20.76,1,17,1,47270,45.25,50,782,750,5,synthetic,synthetic loan,smoke
+0,train,2014-05-03,7538,5.14,1084.67,B,E3,10+ years,MORTGAGE,163121.84,Verified,debt_consolidation,32.4,4,22,1,49267,41.62,56,737,750,4,synthetic,synthetic loan,smoke
+0,train,2014-05-04,29038,6.29,532.87,B,F1,1 year,MORTGAGE,123406.52,Verified,credit_card,3.56,0,29,1,13290,19.0,5,755,758,2,synthetic,synthetic loan,smoke
+0,train,2014-05-05,11836,20.15,1076.59,E,D4,1 year,OWN,47513.66,Not Verified,credit_card,15.81,1,1,1,39437,89.84,18,706,680,5,synthetic,synthetic loan,smoke
+0,train,2014-05-06,11551,25.04,476.27,A,F3,< 1 year,RENT,162442.23,Not Verified,debt_consolidation,29.88,1,29,1,25203,25.33,29,672,768,2,synthetic,synthetic loan,smoke
+0,train,2014-05-07,32394,10.96,881.3,C,G4,1 year,RENT,95192.95,Verified,credit_card,14.86,0,4,1,2292,70.53,7,715,698,3,synthetic,synthetic loan,smoke
+0,train,2014-05-08,5891,26.24,129.91,A,D5,< 1 year,MORTGAGE,96174.68,Verified,debt_consolidation,7.55,0,16,0,4535,6.72,53,742,736,1,synthetic,synthetic loan,smoke
+0,train,2014-05-09,32119,6.43,628.79,A,D1,< 1 year,RENT,169686.71,Not Verified,debt_consolidation,7.82,0,10,1,27389,3.88,8,685,758,1,synthetic,synthetic loan,smoke
+0,train,2014-05-10,32312,25.02,890.18,G,A4,10+ years,RENT,29517.87,Verified,credit_card,16.4,0,19,2,21182,65.37,40,691,748,2,synthetic,synthetic loan,smoke
+0,train,2014-05-11,21351,28.19,1020.18,A,F3,< 1 year,OWN,54428.52,Not Verified,debt_consolidation,19.18,1,21,2,419,33.9,55,662,709,3,synthetic,synthetic loan,smoke
+1,train,2014-05-12,6628,24.3,911.94,A,G2,1 year,OWN,113723.41,Not Verified,home_improvement,34.47,0,25,0,46505,65.55,41,762,719,4,synthetic,synthetic loan,smoke
+0,train,2014-05-13,6299,22.45,79.19,G,E5,10+ years,MORTGAGE,51277.84,Not Verified,debt_consolidation,25.69,0,12,2,36516,9.4,46,785,730,2,synthetic,synthetic loan,smoke
+0,train,2014-05-14,10680,25.95,435.06,B,G1,10+ years,MORTGAGE,128724.32,Verified,credit_card,27.62,4,28,2,25120,94.99,17,775,669,5,synthetic,synthetic loan,smoke
+0,train,2014-05-15,20632,6.0,91.62,F,G1,< 1 year,MORTGAGE,54254.77,Verified,home_improvement,39.32,0,10,0,49349,74.85,49,713,765,3,synthetic,synthetic loan,smoke
+0,train,2014-05-16,6222,10.04,155.84,A,F3,< 1 year,OWN,35865.12,Verified,debt_consolidation,16.47,0,6,2,48556,87.63,26,743,677,0,synthetic,synthetic loan,smoke
+1,train,2014-05-17,16492,8.12,755.82,B,D3,1 year,MORTGAGE,53117.63,Not Verified,home_improvement,16.13,0,11,1,48697,13.65,5,794,728,4,synthetic,synthetic loan,smoke
+0,train,2014-05-18,4926,17.61,796.05,A,A4,5 years,RENT,87637.45,Verified,home_improvement,36.93,0,16,1,12941,32.02,23,742,755,3,synthetic,synthetic loan,smoke
+0,train,2014-05-19,19369,23.63,860.14,E,A1,10+ years,MORTGAGE,48182.13,Verified,home_improvement,9.84,2,20,2,44044,36.83,22,701,675,2,synthetic,synthetic loan,smoke
+0,train,2014-05-20,1719,20.75,957.38,E,B3,< 1 year,MORTGAGE,41550.72,Verified,debt_consolidation,29.19,4,25,1,25227,53.72,32,707,803,2,synthetic,synthetic loan,smoke
+0,train,2014-05-21,25107,26.28,823.8,D,D1,< 1 year,OWN,157645.1,Verified,home_improvement,30.18,3,7,1,36301,29.69,17,761,716,1,synthetic,synthetic loan,smoke
+0,train,2014-05-22,2883,8.88,888.92,B,F2,1 year,OWN,71263.55,Verified,home_improvement,3.91,2,9,0,42976,6.06,28,722,666,3,synthetic,synthetic loan,smoke
+1,train,2014-05-23,7623,23.37,91.9,A,D1,10+ years,OWN,77721.39,Not Verified,home_improvement,18.73,0,28,2,8166,36.89,26,777,756,3,synthetic,synthetic loan,smoke
+0,train,2014-05-24,6937,9.83,288.61,D,A1,< 1 year,MORTGAGE,28843.27,Not Verified,debt_consolidation,8.02,3,13,2,22412,25.45,20,780,742,2,synthetic,synthetic loan,smoke
+0,val,2014-05-25,29253,11.77,699.21,B,B3,1 year,MORTGAGE,77179.14,Verified,home_improvement,7.42,0,8,0,6444,38.59,42,665,753,1,synthetic,synthetic loan,smoke
+0,val,2014-05-26,2814,22.75,949.61,E,G5,< 1 year,MORTGAGE,62369.15,Verified,debt_consolidation,18.55,3,29,2,13974,19.7,19,761,769,2,synthetic,synthetic loan,smoke
+0,val,2014-05-27,15594,29.51,44.77,E,G5,< 1 year,RENT,117677.61,Verified,credit_card,11.58,2,14,0,20675,26.19,46,711,730,2,synthetic,synthetic loan,smoke
+0,val,2014-05-28,21098,20.29,585.51,F,C4,10+ years,OWN,52862.45,Not Verified,credit_card,31.84,4,29,1,42773,62.7,16,732,779,2,synthetic,synthetic loan,smoke
+0,val,2014-05-29,18543,6.36,757.92,D,F4,< 1 year,OWN,162138.47,Verified,credit_card,36.3,1,27,2,43133,38.82,52,697,715,1,synthetic,synthetic loan,smoke
+0,val,2014-05-30,24144,20.41,71.38,A,F1,1 year,OWN,168746.66,Not Verified,credit_card,32.11,3,27,0,19494,34.54,23,711,740,3,synthetic,synthetic loan,smoke
+1,val,2014-05-31,28305,6.06,465.44,B,G3,10+ years,RENT,35972.97,Verified,debt_consolidation,10.64,2,17,1,16459,53.39,4,706,686,1,synthetic,synthetic loan,smoke
+1,val,2014-06-01,14383,27.1,989.37,F,G2,5 years,RENT,37184.47,Verified,credit_card,10.97,2,24,0,26536,77.19,10,667,750,3,synthetic,synthetic loan,smoke
+0,val,2014-06-02,29159,22.74,751.91,D,E3,< 1 year,OWN,38452.23,Not Verified,home_improvement,10.19,4,28,2,45593,37.89,48,769,700,0,synthetic,synthetic loan,smoke
+0,val,2014-06-03,11811,9.33,291.92,E,C4,1 year,MORTGAGE,119131.08,Not Verified,credit_card,5.4,3,8,1,48826,58.75,52,680,761,2,synthetic,synthetic loan,smoke
+0,val,2014-06-04,34470,7.29,943.95,D,E2,10+ years,OWN,39515.03,Not Verified,debt_consolidation,37.75,2,2,1,11338,96.62,14,712,776,4,synthetic,synthetic loan,smoke
+0,val,2014-06-05,18153,9.59,408.91,B,C2,1 year,MORTGAGE,156381.17,Not Verified,home_improvement,16.08,2,10,2,9324,52.2,36,687,784,4,synthetic,synthetic loan,smoke
+0,val,2014-06-06,26024,29.5,944.55,G,C3,5 years,MORTGAGE,140683.44,Not Verified,debt_consolidation,8.99,3,19,1,35338,90.98,35,682,794,4,synthetic,synthetic loan,smoke
+0,val,2014-06-07,30750,16.46,356.88,F,E2,5 years,MORTGAGE,151169.42,Not Verified,credit_card,33.87,1,16,2,15070,79.37,9,712,681,4,synthetic,synthetic loan,smoke
+0,val,2014-06-08,27950,24.6,665.74,G,D5,5 years,OWN,104169.68,Verified,credit_card,15.97,0,3,0,9988,5.87,28,788,683,0,synthetic,synthetic loan,smoke
+0,val,2014-06-09,29938,20.91,460.76,F,E1,< 1 year,MORTGAGE,179468.35,Verified,credit_card,1.4,2,17,0,1553,42.91,42,792,793,2,synthetic,synthetic loan,smoke
+0,test,2014-06-10,19241,19.31,331.31,C,C4,10+ years,OWN,27068.02,Verified,home_improvement,6.48,0,6,2,20160,69.83,58,713,717,3,synthetic,synthetic loan,smoke
+1,test,2014-06-11,2478,8.63,979.75,B,C5,10+ years,RENT,84202.39,Verified,credit_card,25.57,0,15,2,19591,98.67,51,730,667,4,synthetic,synthetic loan,smoke
+0,test,2014-06-12,17764,28.65,238.85,B,A1,< 1 year,MORTGAGE,71829.87,Verified,home_improvement,31.32,2,17,1,28152,45.84,7,797,704,3,synthetic,synthetic loan,smoke
+0,test,2014-06-13,7170,12.53,129.9,G,E2,10+ years,OWN,171783.28,Verified,debt_consolidation,8.44,3,19,1,10009,9.28,15,692,781,5,synthetic,synthetic loan,smoke
+0,test,2014-06-14,31229,19.45,402.44,D,E1,10+ years,OWN,112297.75,Verified,home_improvement,36.7,3,12,0,35718,56.2,27,792,713,1,synthetic,synthetic loan,smoke
+0,test,2014-06-15,9049,22.49,800.7,D,G3,5 years,OWN,148990.55,Not Verified,credit_card,34.04,1,12,2,34001,12.66,10,674,674,0,synthetic,synthetic loan,smoke
+1,test,2014-06-16,8754,21.23,895.88,G,D3,1 year,RENT,47254.59,Verified,debt_consolidation,33.94,2,20,2,23117,75.15,35,691,765,0,synthetic,synthetic loan,smoke
+1,test,2014-06-17,9479,28.51,1098.67,E,D2,1 year,OWN,176581.46,Not Verified,debt_consolidation,9.11,0,22,0,9066,50.77,2,707,691,3,synthetic,synthetic loan,smoke
+0,test,2014-06-18,22847,8.71,354.14,G,A3,10+ years,OWN,99782.33,Verified,home_improvement,2.02,3,24,1,25347,72.34,8,665,713,3,synthetic,synthetic loan,smoke
+1,test,2014-06-19,20421,17.71,472.42,G,B2,< 1 year,OWN,98987.53,Not Verified,credit_card,34.7,1,10,1,33740,86.94,4,774,664,1,synthetic,synthetic loan,smoke
+0,test,2014-06-20,33260,15.1,185.03,A,C2,10+ years,RENT,175341.56,Not Verified,credit_card,12.23,3,13,1,18635,62.89,19,779,748,4,synthetic,synthetic loan,smoke
+0,test,2014-06-21,15152,16.85,649.36,C,C4,10+ years,OWN,80917.18,Verified,debt_consolidation,24.76,4,10,2,13173,61.24,46,713,726,4,synthetic,synthetic loan,smoke
+0,test,2014-06-22,10597,7.98,1097.43,F,C3,5 years,OWN,83604.0,Verified,credit_card,30.4,3,16,0,25325,75.46,12,777,785,2,synthetic,synthetic loan,smoke
+1,test,2014-06-23,2674,8.35,782.93,F,C4,1 year,OWN,113560.43,Not Verified,home_improvement,5.13,1,4,0,17760,84.25,59,768,710,1,synthetic,synthetic loan,smoke
+0,test,2014-06-24,1240,11.95,670.93,B,F2,5 years,RENT,40488.42,Not Verified,debt_consolidation,31.23,4,13,0,20025,86.91,17,772,692,4,synthetic,synthetic loan,smoke
+0,test,2014-06-25,13702,12.62,455.91,C,A5,< 1 year,OWN,71373.7,Verified,credit_card,37.54,3,6,2,17443,3.64,4,772,687,4,synthetic,synthetic loan,smoke
+0,test,2014-06-26,32477,15.7,1010.22,D,C2,10+ years,RENT,50913.33,Not Verified,credit_card,29.13,3,16,1,15173,55.62,21,740,692,1,synthetic,synthetic loan,smoke
+1,test,2014-06-27,18807,20.27,566.73,F,B1,1 year,MORTGAGE,36525.36,Not Verified,home_improvement,17.65,4,25,2,35837,21.63,45,675,727,1,synthetic,synthetic loan,smoke
+1,test,2014-06-28,31380,20.87,182.43,A,C1,< 1 year,MORTGAGE,158583.14,Verified,debt_consolidation,35.07,4,29,1,23012,86.03,8,789,676,2,synthetic,synthetic loan,smoke
+0,test,2014-06-29,4456,15.3,427.3,E,E4,10+ years,MORTGAGE,114292.99,Verified,credit_card,21.1,0,13,0,23325,64.84,6,745,720,3,synthetic,synthetic loan,smoke
+1,test,2014-06-30,4172,15.22,111.2,C,A2,5 years,OWN,77387.65,Verified,home_improvement,29.79,4,2,1,32654,42.02,51,786,783,0,synthetic,synthetic loan,smoke
+1,test,2014-07-01,29337,10.44,254.1,B,C2,5 years,RENT,85387.1,Not Verified,debt_consolidation,32.82,3,7,0,18064,18.81,36,794,771,5,synthetic,synthetic loan,smoke
+0,test,2014-07-02,4629,19.71,58.73,D,A1,< 1 year,MORTGAGE,89043.04,Not Verified,home_improvement,29.97,1,4,2,5051,33.9,21,686,753,2,synthetic,synthetic loan,smoke
+0,test,2014-07-03,2766,12.93,520.48,C,G4,10+ years,MORTGAGE,121303.87,Not Verified,home_improvement,11.51,1,23,2,42631,70.38,45,716,789,2,synthetic,synthetic loan,smoke
+0,test,2014-07-04,14739,5.9,712.61,E,F1,5 years,MORTGAGE,168283.1,Not Verified,home_improvement,4.71,3,29,2,2785,20.44,50,686,773,0,synthetic,synthetic loan,smoke
+0,test,2014-07-05,32444,15.46,403.89,C,B4,10+ years,RENT,169244.74,Verified,credit_card,9.53,1,17,1,28597,9.36,22,667,755,5,synthetic,synthetic loan,smoke
+0,test,2014-07-06,24439,16.85,485.6,F,B2,10+ years,RENT,82638.72,Verified,home_improvement,20.11,2,6,0,13291,88.8,34,795,784,1,synthetic,synthetic loan,smoke
+0,test,2014-07-07,4369,10.64,1056.76,A,A4,< 1 year,RENT,72681.99,Verified,home_improvement,20.21,3,1,0,10691,76.42,2,789,681,5,synthetic,synthetic loan,smoke
+0,test,2014-07-08,29462,19.31,837.08,G,D2,< 1 year,MORTGAGE,92167.44,Verified,home_improvement,23.31,3,29,1,2097,19.98,19,790,778,2,synthetic,synthetic loan,smoke
+0,test,2014-07-09,29681,19.14,613.31,A,F2,10+ years,MORTGAGE,110869.48,Not Verified,credit_card,15.8,4,10,1,45004,29.23,36,783,705,5,synthetic,synthetic loan,smoke
+1,test,2014-07-10,28223,22.55,341.61,F,E1,5 years,MORTGAGE,93890.87,Not Verified,credit_card,31.48,0,4,2,21460,97.21,13,750,766,1,synthetic,synthetic loan,smoke
+0,test,2014-07-11,31690,21.2,990.82,C,G1,1 year,MORTGAGE,125400.55,Verified,credit_card,36.53,1,6,2,17132,70.82,59,733,791,0,synthetic,synthetic loan,smoke
+0,test,2014-07-12,9155,21.31,289.2,C,C3,1 year,RENT,108703.84,Not Verified,debt_consolidation,9.87,4,8,0,37061,61.05,58,798,733,4,synthetic,synthetic loan,smoke
+1,test,2014-07-13,34305,12.91,384.86,A,B5,5 years,RENT,71314.49,Not Verified,home_improvement,29.46,2,20,0,1948,30.76,16,737,676,4,synthetic,synthetic loan,smoke
+0,test,2014-07-14,11903,24.69,1003.61,E,D2,10+ years,MORTGAGE,75316.93,Verified,home_improvement,27.12,1,26,1,28227,29.91,24,749,715,3,synthetic,synthetic loan,smoke
+0,test,2014-07-15,28268,18.73,601.31,B,B3,< 1 year,OWN,80574.85,Not Verified,credit_card,20.92,1,8,1,24730,3.95,12,689,720,0,synthetic,synthetic loan,smoke
+0,test,2014-07-16,20698,15.79,826.86,E,G5,5 years,RENT,35142.36,Not Verified,debt_consolidation,7.54,1,20,0,27671,72.85,31,764,795,5,synthetic,synthetic loan,smoke
+1,test,2014-07-17,27502,20.65,666.19,F,B2,10+ years,OWN,46570.02,Not Verified,credit_card,31.81,2,2,2,6196,4.32,9,774,795,2,synthetic,synthetic loan,smoke
+0,test,2014-07-18,22345,14.02,732.65,F,D2,1 year,MORTGAGE,135698.21,Not Verified,credit_card,38.43,1,1,2,47626,0.49,24,754,743,5,synthetic,synthetic loan,smoke
+0,test,2014-07-19,22844,17.82,357.35,E,D4,1 year,RENT,82255.47,Verified,credit_card,28.87,3,2,1,11923,72.95,34,729,797,5,synthetic,synthetic loan,smoke

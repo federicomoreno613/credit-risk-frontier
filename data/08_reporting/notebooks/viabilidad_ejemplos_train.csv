@@ -1,0 +1,4 @@
+segmento,n_pago,n_mora,n_creditos,min_clase,cubre_8,cubre_16,cubre_32
+denso,283,269,552,269,True,True,True
+esparso,722,2086,2808,722,True,True,True
+todos,1005,2355,3360,1005,True,True,True

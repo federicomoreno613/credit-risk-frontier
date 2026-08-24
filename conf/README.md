@@ -1,20 +1,12 @@
-# What is this for?
+# Configuración vigente
 
-This folder should be used to store configuration files used by Kedro or by separate tools.
+`base/catalog.yml` declara las entradas y salidas del procesamiento de la
+cohorte, de los dos brazos clásicos y de la consolidación con Qwen3-8B.
 
-This file can be used to provide users with instructions for how to reproduce local configuration with their own credentials. You can edit the file however you like, but you may wish to retain the information below and add your own section in the section titled **Instructions**.
+`base/parameters.yml` define el resultado observado, la partición temporal y los
+controles de la cohorte. `base/parameters_intermediate_delivery.yml` es la fuente
+legible del contrato de 20 variables TransUnion más 9 declaraciones directas y
+de los parámetros que identifican las cuatro inferencias recuperables de Qwen.
 
-## Local configuration
-
-The `local` folder should be used for configuration that is either user-specific (e.g. IDE configuration) or protected (e.g. security keys).
-
-> *Note:* Please do not check in any local configuration to version control.
-
-## Base configuration
-
-The `base` folder is for shared configuration, such as non-sensitive and project-related configuration that may be shared across team members.
-
-WARNING: Please do not put access credentials in the base configuration folder.
-
-## Find out more
-You can find out more about configuration from the [user guide documentation](https://docs.kedro.org/en/stable/configuration/configuration_basics.html).
+`local/` queda reservado para credenciales o reemplazos propios de una máquina.
+Su contenido, salvo `.gitkeep`, está excluido del control de versiones.

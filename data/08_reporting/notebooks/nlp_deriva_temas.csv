@@ -1,0 +1,4 @@
+set,n_con_descripcion,n_sin_vocabulario_train,proporcion_sin_vocabulario_train,distancia_js_con_train
+train,2649,62,0.023405058512646282,0.0
+val,410,10,0.024390243902439025,0.1164461529175129
+test,421,4,0.009501187648456057,0.1972288082616332

@@ -1,0 +1,7 @@
+set,segmento,n_creditos
+test,denso,268
+test,esparso,153
+train,denso,552
+train,esparso,2808
+val,denso,206
+val,esparso,214

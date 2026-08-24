@@ -1,0 +1,22 @@
+{
+  "model": "qwen3:8b",
+  "profiles": [
+    "tu_form",
+    "tu_form_description"
+  ],
+  "shots": [
+    0,
+    8,
+    16,
+    32
+  ],
+  "modes": [
+    "direct",
+    "thinking"
+  ],
+  "examples_source": "train",
+  "rows_serialized": 2,
+  "configurations_documented": 32,
+  "ollama_calls": 2,
+  "valid_results": 2
+}

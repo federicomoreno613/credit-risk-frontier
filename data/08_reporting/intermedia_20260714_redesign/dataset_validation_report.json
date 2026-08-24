@@ -1,0 +1,25 @@
+{
+  "status": "ok",
+  "n_rows": 4897,
+  "n_columns": 102,
+  "n_features_modelables": 94,
+  "required_columns_missing": [],
+  "set_counts": {
+    "train": 3910,
+    "test": 495,
+    "val": 492
+  },
+  "target_rate": 0.43945272615887276,
+  "date_min": "2022-07-05",
+  "date_max": "2024-01-15",
+  "segment_rule": "(20 TU vars < 0).sum(axis=1) >= 6",
+  "segment_counts": {
+    "esparso": 3538,
+    "denso": 1359
+  },
+  "test_segment_counts": {
+    "denso": 291,
+    "esparso": 204
+  },
+  "expected_count_mismatches": []
+}

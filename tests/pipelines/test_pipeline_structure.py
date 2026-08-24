@@ -1,23 +1,8 @@
-"""Estructura del proyecto Kedro canónico y paridad de los modelos clásicos.
-
-Verifica que ``find_pipelines()`` descubre los pipelines esperados, que el
-``__default__`` es offline (sin ``tabllm`` ni nodos que requieran torch/servidor),
-que cada variante namespaced de ``data_science`` tiene su ``model_options``, y que
-las métricas clásicas ya regeneradas reproducen los valores de paridad E4.
-
-Los pipelines ``tabllm`` y ``reporting`` se agregan en fases posteriores; los tests
-que dependen de la ``comparison_table`` y de las métricas LLM se incorporan con
-``reporting``. Aquí no se re-corre nada (rápido): se leen los artefactos ya escritos.
-"""
+"""Estructura Kedro mínima y vigente de la entrega intermedia."""
 
 from __future__ import annotations
 
-import json
-from pathlib import Path
-
 import pytest
-
-ROOT = Path(__file__).resolve().parents[2]
 
 
 @pytest.fixture(scope="module")
@@ -29,65 +14,52 @@ def pipelines():
     return register_pipelines()
 
 
-# ---------------------------------------------------------------------------
-# Estructura / registry canónico
-# ---------------------------------------------------------------------------
+def test_registry_exposes_current_delivery_pipelines(pipelines):
+    assert set(pipelines) == {
+        "__default__",
+        "data_processing",
+        "intermediate_classics",
+        "intermediate_evaluate",
+        "intermediate_reporting",
+        "intermediate_delivery",
+    }
+    composed = (
+        pipelines["intermediate_classics"]
+        + pipelines["intermediate_evaluate"]
+        + pipelines["intermediate_reporting"]
+    )
+    assert {node.name for node in pipelines["intermediate_delivery"].nodes} == {
+        node.name for node in composed.nodes
+    }
 
-def test_find_pipelines_discovers_expected_folders(pipelines):
-    for name in ("data_processing", "data_science"):
-        assert name in pipelines, f"find_pipelines debe descubrir {name}"
-    assert "__default__" in pipelines
 
-
-def test_default_is_offline(pipelines):
-    """El __default__ no debe contener nodos que requieran torch/servidor."""
+def test_default_runs_only_the_two_classic_arms(pipelines):
     default = pipelines["__default__"]
-    namespaces = {n.namespace for n in default.nodes if n.namespace}
-    assert "tabfm" not in namespaces, "TabFM (torch) no debe estar en __default__"
-    assert not any(ns.startswith("arm_") for ns in namespaces), "los brazos de ablación no van en __default__"
-    # Solo los clásicos citables + procesamiento.
-    assert {"xgb", "logreg"}.issubset(namespaces)
-    tags = set().union(*(n.tags for n in default.nodes))
-    assert "requires_tabfm" not in tags
+    assert [node.name for node in default.nodes] == [
+        "run_intermediate_classic_experiments_node"
+    ]
+    assert set(default.outputs()) == {
+        "intermediate_classic_predictions",
+        "intermediate_classic_metrics",
+        "intermediate_logreg_coefficients",
+        "intermediate_xgb_shap_summary",
+    }
 
 
-def test_data_science_variants_have_params(pipelines):
-    """Cada variante namespaced de data_science tiene su model_options en params."""
-    ds = pipelines["data_science"]
-    namespaces = {n.namespace for n in ds.nodes if n.namespace}
-    params = _load_params("parameters_data_science.yml")
-    for ns in namespaces:
-        assert ns in params and "model_options" in params[ns], f"falta model_options para {ns}"
-
-
-def _load_params(fname: str) -> dict:
-    import yaml
-    return yaml.safe_load((ROOT / "conf" / "base" / fname).read_text())
-
-
-# ---------------------------------------------------------------------------
-# Paridad de los modelos clásicos regenerados (E4)
-# ---------------------------------------------------------------------------
-
-@pytest.mark.parametrize("metrics_file,target", [
-    ("models/xgboost_metrics.json", 0.7516166960611403),   # XGB no-leak citable
-    ("models/logreg_metrics.json", 0.6604611666340061),    # LogReg no-leak citable
-])
-def test_classic_noleak_metrics_match_thesis(metrics_file, target):
-    path = ROOT / metrics_file
-    if not path.exists():
-        pytest.skip(f"{metrics_file} ausente — correr kedro run primero")
-    auc = json.loads(path.read_text())["test"]["AUC"]
-    assert auc == pytest.approx(target, abs=1e-9)
-
-
-@pytest.mark.parametrize("fixture_file,target", [
-    ("tests/fixtures/legacy_metrics/xgboost_metrics_leak.json", 0.7775981448820954),
-    ("tests/fixtures/legacy_metrics/logreg_metrics_leak.json", 0.6910150891632373),
-])
-def test_leak_fixtures_preserved(fixture_file, target):
-    """Los fixtures con-leakage (evidencia previa) quedan preservados para las variantes *_leak."""
-    path = ROOT / fixture_file
-    assert path.exists(), f"fixture con-leak ausente: {fixture_file}"
-    auc = json.loads(path.read_text())["test"]["AUC"]
-    assert auc == pytest.approx(target, abs=1e-9)
+def test_full_delivery_validates_contract_and_consumes_four_qwen_caches(pipelines):
+    delivery = pipelines["intermediate_delivery"]
+    names = {node.name for node in delivery.nodes}
+    assert "build_intermediate_feature_contract_node" in names
+    assert "combine_intermediate_predictions_node" in names
+    assert "build_intermediate_metrics_table_node" in names
+    assert "plot_intermediate_xgb_shap_node" in names
+    qwen_inputs = {
+        name for name in delivery.inputs()
+        if name.startswith("qwen_intermediate_")
+    }
+    assert qwen_inputs == {
+        "qwen_intermediate_tu_form_zero_cache",
+        "qwen_intermediate_tu_form_few8_cache",
+        "qwen_intermediate_tu_form_description_zero_cache",
+        "qwen_intermediate_tu_form_description_few8_cache",
+    }

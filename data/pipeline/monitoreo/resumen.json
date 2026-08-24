@@ -1,0 +1,47 @@
+{
+  "tasa_mora_por_set": {
+    "test": 0.393,
+    "train": 0.7048,
+    "val": 0.7778
+  },
+  "conteos_por_set": {
+    "train": 2940,
+    "test": 631,
+    "val": 630
+  },
+  "variables_psi_alto": [
+    "shops_daily_incomes",
+    "duemag01",
+    "credits_family_expenses",
+    "credits_dependants_amount",
+    "shops_monthly_outcomes",
+    "shops_shop_age",
+    "shops_initial_capital",
+    "utlmag04",
+    "aepmag01",
+    "g051s",
+    "wd81",
+    "agg2503",
+    "bi21s",
+    "wd03",
+    "agg9316",
+    "agg308",
+    "at34af",
+    "tel03s",
+    "tranbal09",
+    "at103s",
+    "shops_monthly_incomes",
+    "tel32s"
+  ],
+  "razonamientos": {
+    "qwen_tu_form_few0.jsonl": {
+      "casos": 3,
+      "con_razonamiento": 3,
+      "largo_medio_caracteres": 3403
+    }
+  },
+  "costos": {
+    "costo_fn": 5.0,
+    "costo_fp": 1.0
+  }
+}

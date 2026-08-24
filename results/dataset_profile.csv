@@ -1,9 +1,0 @@
-metric,value
-rows,5351
-columns,102
-target_default_1,2606
-target_no_default_0,2745
-train_rows,4364
-val_rows,492
-test_rows,495
-text_columns,"subcategoria_texto,descripcion_negocio,otra_categoria_negocio,tipo_credito"

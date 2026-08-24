@@ -1,0 +1,2 @@
+regla,corte,n_esparso,n_denso,n_total
+n_tu_missing = (20 vars TU < 0).sum(axis=1),6,3175,1026,4201

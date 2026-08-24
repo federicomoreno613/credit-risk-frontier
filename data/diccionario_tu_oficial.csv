@@ -1,0 +1,21 @@
+codigo,definicion_oficial_CreditVision,tipologia,uso,portafolio,ventana_tiempo,tipo_valor,auc_univariada,corr_default,pct_centinela
+agg308,Monto en mora agregado de obligaciones no hipotecarias en créditos financieros al mes M = 08,Algoritmo,Mora,"Financiero (sector financiero, sector solidario y sector real (excluyendo telcos))",8 Meses,$ Miles,0.635,-0.023,9.7
+wd81,Mora ponderada en créditos financieros en el mes M = 01,Algoritmo,Mora,"Financiero (sector financiero, sector solidario y sector real (excluyendo telcos))",1 Mes,Porcentaje,0.754,-0.375,10.7
+agg2503,Plazo Inferido (relación de saldo sobre la cuota minima) agregado en el mes M=03,Algoritmo,Plazo Inferido,General (Con exclusiones u otro),3 Meses,Cantidad,0.54,0.063,81.0
+utlmag04,Magnitud de utilización de obligaciones retail en los últimos 24 meses (índice que mide la tendencia de 0 a 600),Algoritmo,Utilización,Retail,24 Meses,Índice,0.576,0.192,51.4
+duemag01,Magnitud total de todas las obligaciones en los últimos 24 meses (índice que mide la tendencia de 0 a 600),Algoritmo,Otro,General (Con exclusiones u otro),24 Meses,Índice,0.654,0.312,32.7
+aepmag01,Magnitud del exceso de Pago Inferido agregado no hipotecario en los últimos 24 meses (índice que mide la tendencia de 0 a 600),Algoritmo,Pago Inferido,General (Con exclusiones u otro),24 Meses,Índice,0.572,0.331,74.4
+bi21s,Meses desde la más reciente apertura bancaria en instalamentos,Atributo,Apertura,Instalamento,,Meses,0.565,0.003,42.9
+lmd34s,Utilización de obligaciones bancarias vigentes sin garantía de mediano plazo reportadas en los últimos 12 meses,Atributo,Utilización,Bancario,12 Meses,Porcentaje,0.502,0.093,93.1
+ri27s,Número de obligaciones actualmente vigentes y al día de retail instalamentos con 24 meses o más de antigüedad,Atributo,Cuentas,Instalamento,24 Meses,Cantidad,0.511,-0.022,70.7
+rle904,Exceso de Pago Inferido en cuentas de hipotecario en los últimos 6 meses,Algoritmo,Pago Inferido,Hipoteca,6 Meses,$ Miles con 3 decimales,0.51,0.0,99.0
+tel32s,Saldo máximo en obligaciones vigentes de telecomunicaciones reportadas en los últimos 12 meses,Atributo,Saldo,Telcos,12 Meses,$ Miles con 3 decimales,0.526,0.05,16.7
+tranbal09,Saldo asignado a obligaciones identificadas como transactor al mes 9,Algoritmo,Saldo,Tarjeta de Crédito,9 Meses,$ Miles con 3 decimales,0.543,0.108,80.5
+at104s,Porcentaje de obligaciones aperturadas en los últimos 24 meses sobre el total de obligaciones,Atributo,Apertura,General (Con exclusiones u otro),24 Meses,Porcentaje,0.529,0.046,0.7
+sa21s,Meses desde la más reciente cuenta de ahorros aperturada,Atributo,Apertura,Cuentas Ahorro,,Meses,0.518,0.006,0.9
+at103s,Porcentaje de obligaciones vigentes y al día del total de obligaciones,Atributo,Cuentas,General (Con exclusiones u otro),,Porcentaje,0.665,0.295,4.5
+tel03s,Número de obligaciones vigentes al día de telecomunicaciones,Atributo,Cuentas,Telcos,,Cantidad,0.626,0.188,15.9
+at34af,Utilización de obligaciones vigentes reportadas en los últimos 12 meses en créditos financieros,Atributo,Utilización,"Financiero (sector financiero, sector solidario y sector real (excluyendo telcos))",12 Meses,Porcentaje,0.505,-0.02,24.0
+g051s,Porcentaje de obligaciones que alguna vez estuvo en mora,Atributo,Mora,General (Con exclusiones u otro),,Porcentaje,0.799,-0.482,0.3
+agg9316,Monto agregado en mora al mes M = 16,Algoritmo,Mora,General (Con exclusiones u otro),16 Meses,$ Miles,0.611,0.011,5.7
+wd03,Mora ponderada en las obligaciones en el mes M = 06,Algoritmo,Mora,General (Con exclusiones u otro),6 Meses,Porcentaje,0.711,-0.34,4.2
