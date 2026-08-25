@@ -1,5 +1,0 @@
-campo,n_validos,cobertura,n_unicos,proporcion_unicos,n_hapax,mediana_caracteres,p90_caracteres,max_caracteres,concentracion_valor_top,valor_top
-subcategoria_texto,4201,1.0,37,0.008807426803142109,0,29.0,32.0,40.0,0.4199000238038562,venta de productos para el hogar
-descripcion_negocio,3480,0.8283741966198525,3350,0.9626436781609196,3280,46.0,137.0,686.0,0.002586206896551724,Ropa
-otra_categoria_negocio,1238,0.29469174006189003,780,0.630048465266559,738,23.0,79.0,245.0,0.07350565428109855,Moda/accesorios
-tipo_credito,4201,1.0,2,0.00047607712449416806,1,14.0,14.0,14.0,0.9997619614377529,Primer Crédito

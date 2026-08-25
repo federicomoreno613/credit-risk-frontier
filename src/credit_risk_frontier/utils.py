@@ -1,8 +1,8 @@
 """Contratos compartidos del experimento intermedio vigente.
 
 Este módulo contiene únicamente las variables, métricas, reglas de segmentación,
-serialización y transporte local que utilizan los pipelines actuales. La entrada
-y la salida de archivos permanecen a cargo del catálogo de Kedro.
+serialización y transporte local que utiliza el pipeline. La entrada y la
+salida de archivos están a cargo de pipeline/contrato.py.
 """
 
 from __future__ import annotations

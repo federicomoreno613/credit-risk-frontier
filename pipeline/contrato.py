@@ -1,4 +1,4 @@
-"""Contrato único del pipeline (sin Kedro).
+"""Contrato único del pipeline de la tesis.
 
 Todo lo que está DECLARADO acá gobierna a todas las carpetas:
 
@@ -9,7 +9,8 @@ Todo lo que está DECLARADO acá gobierna a todas las carpetas:
     04_tabulares/             modelo #3, TabPFN/TabFM (pendiente)
     05_qwen/                  modelos #5-7, inferencia local con thinking guardado
     06_gpt/                   modelo #4, API con reasoning guardado
-    07_finetuning/            modelo #8, QLoRA (pendiente)
+    07_finetuning/            modelo #8, LoRA con MLX (pendiente)
+    08_lendingclub/           dataset 2 del PLAN (pendiente)
     monitoreo.py              módulo COMÚN: métricas, PSI, consolidación
 
 Cada carpeta de modelo escribe sus predicciones de test en
@@ -119,9 +120,9 @@ QWEN_OPCIONES = {
 # ---------------------------------------------------------------------------
 # Rutas — entradas crudas, salidas del preprocesamiento y salidas por modelo
 # ---------------------------------------------------------------------------
-RAW_CREDITOS = ROOT / "data" / "01_raw" / "credit_applications_anonymized.csv"
-RAW_PAGOS = ROOT / "data" / "01_raw" / "01_pagos_cuota.csv"
-RAW_LEGACY = ROOT / "data" / "03_primary" / "02_dataset_modelo.csv"
+RAW_CREDITOS = ROOT / "data" / "crudo" / "credit_applications_anonymized.csv"
+RAW_PAGOS = ROOT / "data" / "crudo" / "01_pagos_cuota.csv"
+RAW_LEGACY = ROOT / "data" / "crudo" / "02_dataset_modelo.csv"
 
 SALIDAS = ROOT / "data" / "pipeline"
 BASE = SALIDAS / "01_base.parquet"

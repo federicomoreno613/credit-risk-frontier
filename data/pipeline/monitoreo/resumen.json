@@ -35,14 +35,14 @@
   ],
   "razonamientos": {
     "gpt_tu_form_few0.jsonl": {
-      "casos": 159,
-      "con_razonamiento": 92,
-      "largo_medio_caracteres": 322
+      "casos": 208,
+      "con_razonamiento": 123,
+      "largo_medio_caracteres": 335
     },
     "qwen_tu_form_few0.jsonl": {
-      "casos": 50,
-      "con_razonamiento": 50,
-      "largo_medio_caracteres": 3461
+      "casos": 71,
+      "con_razonamiento": 71,
+      "largo_medio_caracteres": 3410
     }
   },
   "costos": {
