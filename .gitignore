@@ -10,6 +10,9 @@ conf/**/*credentials*
 # razonamientos para máxima reproducibilidad (repo público, decisión de Federico).
 /notebooks/*
 !/notebooks/.gitkeep
+# Extracto del dataset original-original (1.146 cols, contiene PII cruda):
+# SOLO local, NUNCA versionar
+/data/00_original/
 
 # Fuentes de trabajo local que no se publican: notebooks fuente, catálogo de
 # conocimiento y configuración de agentes

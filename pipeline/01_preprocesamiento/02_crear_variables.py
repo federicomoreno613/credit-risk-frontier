@@ -28,7 +28,22 @@ def main() -> None:
         raise FileNotFoundError(f"Falta {C.BASE}. Correr primero 01_cargar_datos.py")
     base = pd.read_parquet(C.BASE)
 
-    faltantes = [v for v in C.META + C.FEATURES_29 + [C.TEXTO_LIBRE] if v not in base.columns]
+    # Texto extra desde el extracto original (solo local; join opcional).
+    if C.EXTRACTO_ORIGINAL.exists():
+        original = pd.read_parquet(
+            C.EXTRACTO_ORIGINAL,
+            columns=["credito_id_anon", *C.TEXTO_DESDE_ORIGINAL],
+        ).rename(columns=C.TEXTO_DESDE_ORIGINAL)
+        base = base.merge(original, on="credito_id_anon", how="left",
+                          validate="one_to_one")
+    else:
+        print(f"aviso: falta {C.EXTRACTO_ORIGINAL} (correr 00_extraer_original.py); "
+              "las columnas del original quedan vacías")
+        for columna in C.TEXTO_DESDE_ORIGINAL.values():
+            base[columna] = pd.NA
+
+    faltantes = [v for v in C.META + C.FEATURES_29 + [C.TEXTO_LIBRE, *C.CUALITATIVAS]
+                 if v not in base.columns]
     if faltantes:
         raise RuntimeError(f"La base no cumple el contrato; faltan: {faltantes}")
     prohibidas = [
@@ -40,7 +55,8 @@ def main() -> None:
 
     if "segmento" not in base.columns:
         base = utils.annotate_segments(base)
-    columnas = C.META + C.FEATURES_29 + [C.TEXTO_LIBRE, "segmento", "n_tu_missing"]
+    columnas = (C.META + C.FEATURES_29
+                + [C.TEXTO_LIBRE, *C.CUALITATIVAS, "segmento", "n_tu_missing"])
     variables = base.loc[:, columnas].copy()
     variables.to_parquet(C.VARIABLES, index=False)
 
@@ -51,6 +67,7 @@ def main() -> None:
         "variables_transunion": C.TU_VARS,
         "variables_formulario": C.FORM_DIRECT_VARS,
         "texto_libre": C.TEXTO_LIBRE,
+        "cualitativas": list(C.CUALITATIVAS),
         "segmentos": variables["segmento"].value_counts().to_dict(),
         "faltantes_por_variable": numerico.isna().mean().round(4).to_dict(),
     }

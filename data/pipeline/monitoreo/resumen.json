@@ -34,10 +34,15 @@
     "tel32s"
   ],
   "razonamientos": {
+    "gpt_tu_form_few0.jsonl": {
+      "casos": 159,
+      "con_razonamiento": 92,
+      "largo_medio_caracteres": 322
+    },
     "qwen_tu_form_few0.jsonl": {
-      "casos": 3,
-      "con_razonamiento": 3,
-      "largo_medio_caracteres": 3403
+      "casos": 50,
+      "con_razonamiento": 50,
+      "largo_medio_caracteres": 3461
     }
   },
   "costos": {

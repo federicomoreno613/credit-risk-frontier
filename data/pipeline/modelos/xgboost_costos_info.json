@@ -1,0 +1,22 @@
+{
+  "objetivo": "costo monetario mínimo en validación",
+  "formula_costos": "costo_FN = monto_medio(500.0) * LGD(1.0) = 500.0; costo_FP = monto_medio(500.0) * tasa(0.2) = 100.0",
+  "monto_medio": 500.0,
+  "tasa_interes": 0.2,
+  "lgd": 1.0,
+  "costo_val": 13100.0,
+  "umbral_optimo_val": 0.04,
+  "auc_val": 0.7440233236151604,
+  "trials": 30,
+  "mejores_params": {
+    "max_depth": 3,
+    "learning_rate": 0.04046087858257566,
+    "subsample": 0.8167222286362311,
+    "colsample_bytree": 0.8206312691474609,
+    "min_child_weight": 15,
+    "reg_alpha": 0.33499957565025373,
+    "reg_lambda": 0.8659356500664692
+  },
+  "mejor_iteracion": 109,
+  "scale_pos_weight": 0.4189189189189189
+}

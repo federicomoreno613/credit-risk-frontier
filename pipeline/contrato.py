@@ -58,6 +58,18 @@ FEATURES_29 = TU_VARS + FORM_DIRECT_VARS
 META = list(utils.META)                          # id, fecha, target, set
 TEXT = list(utils.TEXT)
 TEXTO_LIBRE = "descripcion_negocio"
+# Cualitativas restantes (decisión 2026-08: entran al perfil full; se verificó
+# que no hay otra columna de texto libre útil en el original de 1.146 cols).
+# objetivo_credito viene del extracto original (paso 00) vía join opcional.
+CUALITATIVAS = {
+    "subcategoria_texto": "rubro del negocio",
+    "tipo_credito": "tipo de crédito",
+    "otra_categoria_negocio": "otra categoría declarada",
+    "objetivo_credito": "objetivo declarado del crédito",
+}
+# Columnas de texto que se traen del extracto original (solo local, con PII):
+EXTRACTO_ORIGINAL = ROOT / "data" / "00_original" / "original_cohorte.parquet"
+TEXTO_DESDE_ORIGINAL = {"credits_credit_alternative_goal": "objetivo_credito"}
 CORTE_ESPARSO = utils.CORTE_ESPARSO
 
 # ---------------------------------------------------------------------------
@@ -88,7 +100,9 @@ COSTOS = {"costo_fn": 5.0, "costo_fp": 1.0}
 # ---------------------------------------------------------------------------
 QWEN_MODEL = "qwen3:8b"
 GPT_MODEL = os.environ.get("TESIS_GPT_MODEL", "gpt-5.5")
-PERFILES = ("tu_form", "tu_form_description")
+# tu_form_description_full = 29 vars + descripción + CUALITATIVAS (config nueva;
+# los dos primeros perfiles no cambian, sus caches siguen válidos).
+PERFILES = ("tu_form", "tu_form_description", "tu_form_description_full")
 SHOTS = (0, 8, 16)  # decisión 2026-08: 32 ejemplos eran demasiados
 PROMPT_VARIANT = "minimum"
 QWEN_OPCIONES = {

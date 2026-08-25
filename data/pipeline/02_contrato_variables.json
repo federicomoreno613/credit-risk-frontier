@@ -39,6 +39,12 @@
     "shops_shop_age"
   ],
   "texto_libre": "descripcion_negocio",
+  "cualitativas": [
+    "subcategoria_texto",
+    "tipo_credito",
+    "otra_categoria_negocio",
+    "objetivo_credito"
+  ],
   "segmentos": {
     "esparso": 3175,
     "denso": 1026
