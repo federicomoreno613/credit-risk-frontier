@@ -3,13 +3,13 @@ from pathlib import Path
 import pandas as pd
 
 from credit_risk_frontier import utils
-from credit_risk_frontier.pipelines.data_processing.nodes import validate_credit_dataset
+from credit_risk_frontier.cohorte import validate_credit_dataset
 
 ROOT = Path(__file__).resolve().parents[2]
 def test_buro_esparso_counts_match_thesis_dataset():
     # Universo contractual anonimizado (n=4897). Los centinelas TU negativos
     # representan ausencia de información, no solamente el valor -1.
-    df = pd.read_csv(ROOT / "data" / "01_raw" / "credit_applications_anonymized.csv")
+    df = pd.read_csv(ROOT / "data" / "crudo" / "credit_applications_anonymized.csv")
     n_tu_missing = (df[utils.TU_VARS] < 0).sum(axis=1)
     segmento = n_tu_missing.ge(6).map({True: "esparso", False: "denso"})
 
@@ -21,7 +21,7 @@ def test_buro_esparso_counts_match_thesis_dataset():
 
 
 def test_validate_credit_dataset_report_has_expected_contract():
-    df = pd.read_csv(ROOT / "data" / "01_raw" / "credit_applications_anonymized.csv")
+    df = pd.read_csv(ROOT / "data" / "crudo" / "credit_applications_anonymized.csv")
     params = {
         "required_columns": ["credito_id_anon", "fecha_desembolso", "target", "set", "wd81"],
         "meta_cols": ["credito_id_anon", "fecha_desembolso", "target", "set"],

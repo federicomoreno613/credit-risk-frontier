@@ -34,17 +34,6 @@ files = [
 ]
 
 [[package]]
-name = "antlr4-python3-runtime"
-version = "4.9.3"
-description = "ANTLR 4.9.3 runtime for Python 3.7"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "antlr4-python3-runtime-4.9.3.tar.gz", hash = "sha256:f224469b4168294902bb1efa80a8bf7855f24c99aef99cbefc1bcd3cce77881b"},
-]
-
-[[package]]
 name = "anyio"
 version = "4.14.2"
 description = "High-level concurrency and networking framework on top of asyncio or Trio"
@@ -63,50 +52,6 @@ typing_extensions = {version = ">=4.5", markers = "python_version < \"3.13\""}
 
 [package.extras]
 trio = ["trio (>=0.32.0)"]
-
-[[package]]
-name = "appdirs"
-version = "1.4.4"
-description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
-    {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
-]
-
-[[package]]
-name = "arrow"
-version = "1.4.0"
-description = "Better dates & times for Python"
-optional = false
-python-versions = ">=3.8"
-groups = ["main"]
-files = [
-    {file = "arrow-1.4.0-py3-none-any.whl", hash = "sha256:749f0769958ebdc79c173ff0b0670d59051a535fa26e8eba02953dc19eb43205"},
-    {file = "arrow-1.4.0.tar.gz", hash = "sha256:ed0cc050e98001b8779e84d461b0098c4ac597e88704a655582b21d116e526d7"},
-]
-
-[package.dependencies]
-python-dateutil = ">=2.7.0"
-tzdata = {version = "*", markers = "python_version >= \"3.9\""}
-
-[package.extras]
-doc = ["doc8", "sphinx (>=7.0.0)", "sphinx-autobuild", "sphinx-autodoc-typehints", "sphinx_rtd_theme (>=1.3.0)"]
-test = ["dateparser (==1.*)", "pre-commit", "pytest", "pytest-cov", "pytest-mock", "pytz (==2025.2)", "simplejson (==3.*)"]
-
-[[package]]
-name = "attrs"
-version = "25.4.0"
-description = "Classes Without Boilerplate"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "attrs-25.4.0-py3-none-any.whl", hash = "sha256:adcf7e2a1fb3b36ac48d97835bb6d8ade15b8dcce26aba8bf1d14847b57a3373"},
-    {file = "attrs-25.4.0.tar.gz", hash = "sha256:16d5969b87f0859ef33a48b35d55ac1be6e42ae49d5e853b597db70c35c57e11"},
-]
 
 [[package]]
 name = "backoff"
@@ -135,69 +80,6 @@ files = [
 ]
 
 [[package]]
-name = "backports-strenum"
-version = "1.3.1"
-description = "Base class for creating enumerated constants that are also subclasses of str"
-optional = false
-python-versions = ">=3.8.6,<3.11"
-groups = ["main"]
-markers = "python_version == \"3.10\""
-files = [
-    {file = "backports_strenum-1.3.1-py3-none-any.whl", hash = "sha256:cdcfe36dc897e2615dc793b7d3097f54d359918fc448754a517e6f23044ccf83"},
-    {file = "backports_strenum-1.3.1.tar.gz", hash = "sha256:77c52407342898497714f0596e86188bb7084f89063226f4ba66863482f42414"},
-]
-
-[[package]]
-name = "binaryornot"
-version = "0.4.4"
-description = "Ultra-lightweight pure Python package to check if a file is binary or text."
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "binaryornot-0.4.4-py2.py3-none-any.whl", hash = "sha256:b8b71173c917bddcd2c16070412e369c3ed7f0528926f70cac18a6c97fd563e4"},
-    {file = "binaryornot-0.4.4.tar.gz", hash = "sha256:359501dfc9d40632edc9fac890e19542db1a287bbcfa58175b66658392018061"},
-]
-
-[package.dependencies]
-chardet = ">=3.0.2"
-
-[[package]]
-name = "build"
-version = "1.4.0"
-description = "A simple, correct Python build frontend"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "build-1.4.0-py3-none-any.whl", hash = "sha256:6a07c1b8eb6f2b311b96fcbdbce5dab5fe637ffda0fd83c9cac622e927501596"},
-    {file = "build-1.4.0.tar.gz", hash = "sha256:f1b91b925aa322be454f8330c6fb48b465da993d1e7e7e6fa35027ec49f3c936"},
-]
-
-[package.dependencies]
-colorama = {version = "*", markers = "os_name == \"nt\""}
-importlib-metadata = {version = ">=4.6", markers = "python_full_version < \"3.10.2\""}
-packaging = ">=24.0"
-pyproject_hooks = "*"
-tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
-
-[package.extras]
-uv = ["uv (>=0.1.18)"]
-virtualenv = ["virtualenv (>=20.11) ; python_version < \"3.10\"", "virtualenv (>=20.17) ; python_version >= \"3.10\" and python_version < \"3.14\"", "virtualenv (>=20.31) ; python_version >= \"3.14\""]
-
-[[package]]
-name = "cachetools"
-version = "7.0.2"
-description = "Extensible memoizing collections and decorators"
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-files = [
-    {file = "cachetools-7.0.2-py3-none-any.whl", hash = "sha256:938dcad184827c5e94928c4fd5526e2b46692b7fb1ae94472da9131d0299343c"},
-    {file = "cachetools-7.0.2.tar.gz", hash = "sha256:7e7f09a4ca8b791d8bb4864afc71e9c17e607a28e6839ca1a644253c97dbeae0"},
-]
-
-[[package]]
 name = "certifi"
 version = "2026.2.25"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -207,43 +89,6 @@ groups = ["main"]
 files = [
     {file = "certifi-2026.2.25-py3-none-any.whl", hash = "sha256:027692e4402ad994f1c42e52a4997a9763c646b73e4096e4d5d6db8af1d6f0fa"},
     {file = "certifi-2026.2.25.tar.gz", hash = "sha256:e887ab5cee78ea814d3472169153c2d12cd43b14bd03329a39a9c6e2e80bfba7"},
-]
-
-[[package]]
-name = "chardet"
-version = "7.0.1"
-description = "Universal character encoding detector"
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-files = [
-    {file = "chardet-7.0.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:8a8d87853c7f191029933307094a8896b087c2c436703281cb289a22aa4ae8bd"},
-    {file = "chardet-7.0.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:fb14755377d8de845c69378bbaedc0e35109c21a43824450524fd9c3178792d5"},
-    {file = "chardet-7.0.1-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:4af34cf0652a9da44720540c97f11e30781a77900c89547b311984a7272b33f7"},
-    {file = "chardet-7.0.1-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:54e448fab0c11b27bb908ea0218e2094578c583d05faa5f65b91fa6ccfa45570"},
-    {file = "chardet-7.0.1-cp310-cp310-win_amd64.whl", hash = "sha256:69708a504a43464b60ea16d031250b58206969c9bbd6851266e2f39afef53168"},
-    {file = "chardet-7.0.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:c3f59dc3e148b54813ec5c7b4b2e025d37f5dc221ee28a06d1a62f169cfaedf5"},
-    {file = "chardet-7.0.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:3355a3c8453d673e7c1664fdd24a0c6ef39964c3d41befc4849250f7eb1de3b5"},
-    {file = "chardet-7.0.1-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:5333f9967863ea7d8642df0e00cf4d33e8ed7e99fe7b6464b40ba969a2808544"},
-    {file = "chardet-7.0.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:265cb3b5dafc0411c0949800a0692f07e986fb663b6ae1ecfba32ad193a55a03"},
-    {file = "chardet-7.0.1-cp311-cp311-win_amd64.whl", hash = "sha256:26186f0ea03c4c1f9be20c088b127c71b0e9d487676930fab77625ddec2a4ef2"},
-    {file = "chardet-7.0.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:f661edbfa77b8683a503043ddc9b9fe9036cf28af13064200e11fa1844ded79c"},
-    {file = "chardet-7.0.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:169951fa88d449e72e0c6194cec1c5e405fd36a6cfbe74c7dab5494cc35f1700"},
-    {file = "chardet-7.0.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:dd6db7505556ae8f9e2a3bf6d689c2b86aa6b459cf39552645d2c4d3fdbf489c"},
-    {file = "chardet-7.0.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:6f907962b18df78d5ca87a7484e4034354408d2c97cec6f53634b0ea0424c594"},
-    {file = "chardet-7.0.1-cp312-cp312-win_amd64.whl", hash = "sha256:302798e1e62008ca34a216dd04ecc5e240993b2090628e2a35d4c0754313ea9a"},
-    {file = "chardet-7.0.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:67fe3f453416ed9343057dcf06583b36aae6d8bdb013370b3ff46bc37b7e30ac"},
-    {file = "chardet-7.0.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:63bc210ce73f8a1b87430b949f84d086cb326d67eb259305862e7c8861b73374"},
-    {file = "chardet-7.0.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:11f51985946b49739968b6dc2fa70e7d8f490bb15574377c5ee114f33d19ef7e"},
-    {file = "chardet-7.0.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:8714f0013c208452a98e23595d99cef53c5364565454425f431446eb586e2591"},
-    {file = "chardet-7.0.1-cp313-cp313-win_amd64.whl", hash = "sha256:c12abc65830068ad05bd257fb953aaaf63a551446688e03e145522086be5738c"},
-    {file = "chardet-7.0.1-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:88793aeebb28a5296eea9bdd9b5e74ee4e3582766a6a2cb7f39e4761a96fdd55"},
-    {file = "chardet-7.0.1-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:44011e3b4fd4a8a15bc94736717414b7ec82880066fb22d9f476c68a4ded2647"},
-    {file = "chardet-7.0.1-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:33f4132f9781302beff34713fe6c990badd009aa8ea730611aef0931b27f1541"},
-    {file = "chardet-7.0.1-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:1566d0f91990b8f33b53836391d557f779584bd48beabf90efbf7a6efa89179e"},
-    {file = "chardet-7.0.1-cp314-cp314-win_amd64.whl", hash = "sha256:9e827211249d8e3cacc1adf6950a7a8cf56920e5e303e56dcab827b71c03df33"},
-    {file = "chardet-7.0.1-py3-none-any.whl", hash = "sha256:e51e1ff2c51b2d622d97c9737bd5ee9d9b9038f05b7dd8f9ea10b9e2d9674c24"},
-    {file = "chardet-7.0.1.tar.gz", hash = "sha256:6fce895c12c5495bb598e59ae3cd89306969b4464ec7b6dd609b9c86e3397fe3"},
 ]
 
 [[package]]
@@ -370,28 +215,13 @@ files = [
 ]
 
 [[package]]
-name = "click"
-version = "8.3.1"
-description = "Composable command line interface toolkit"
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-files = [
-    {file = "click-8.3.1-py3-none-any.whl", hash = "sha256:981153a64e25f12d547d3426c367a4857371575ee7ad18df2a6183ab0545b2a6"},
-    {file = "click-8.3.1.tar.gz", hash = "sha256:12ff4785d337a1bb490bb7e9c2b1ee5da3112e94a8622f26a6c77f5d2fc6842a"},
-]
-
-[package.dependencies]
-colorama = {version = "*", markers = "platform_system == \"Windows\""}
-
-[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 groups = ["main"]
-markers = "os_name == \"nt\" or platform_system == \"Windows\" or sys_platform == \"win32\""
+markers = "platform_system == \"Windows\" or sys_platform == \"win32\""
 files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
@@ -587,28 +417,6 @@ test = ["Pillow", "contourpy[test-no-images]", "matplotlib"]
 test-no-images = ["pytest", "pytest-cov", "pytest-rerunfailures", "pytest-xdist", "wurlitzer"]
 
 [[package]]
-name = "cookiecutter"
-version = "2.7.1"
-description = "A command-line utility that creates projects from project templates, e.g. creating a Python package project from a Python package project template."
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-files = [
-    {file = "cookiecutter-2.7.1-py3-none-any.whl", hash = "sha256:cee50defc1eaa7ad0071ee9b9893b746c1b3201b66bf4d3686d0f127c8ed6cf9"},
-    {file = "cookiecutter-2.7.1.tar.gz", hash = "sha256:ca7bb7bc8c6ff441fbf53921b5537668000e38d56e28d763a1b73975c66c6138"},
-]
-
-[package.dependencies]
-arrow = "*"
-binaryornot = ">=0.4.4"
-click = ">=7.0,<9.0.0"
-Jinja2 = ">=2.7,<4.0.0"
-python-slugify = ">=4.0.0"
-pyyaml = ">=5.3.1"
-requests = ">=2.23.0"
-rich = "*"
-
-[[package]]
 name = "cuda-bindings"
 version = "13.3.1"
 description = "Python bindings for CUDA"
@@ -735,28 +543,6 @@ files = [
     {file = "distro-1.9.0-py3-none-any.whl", hash = "sha256:7bffd925d65168f85027d8da9af6bddab658135b840670a223589bc0c8ef02b2"},
     {file = "distro-1.9.0.tar.gz", hash = "sha256:2fa77c6fd8940f116ee1d6b94a2f90b13b5ea8d019b98bc8bafdcabcdd9bdbed"},
 ]
-
-[[package]]
-name = "dynaconf"
-version = "3.2.12"
-description = "The dynamic configurator for your Python Project"
-optional = false
-python-versions = ">=3.8"
-groups = ["main"]
-files = [
-    {file = "dynaconf-3.2.12-py2.py3-none-any.whl", hash = "sha256:eb2a11865917dff8810c6098cd736b8f4d2f4e39ad914500e2dfbe064b82c499"},
-    {file = "dynaconf-3.2.12.tar.gz", hash = "sha256:29cea583b007d890e6031fa89c0ac489b631c73dbee83bcd5e6f97602c26354e"},
-]
-
-[package.extras]
-all = ["configobj", "hvac", "redis", "ruamel.yaml"]
-configobj = ["configobj"]
-ini = ["configobj"]
-redis = ["redis"]
-test = ["configobj", "django", "flask (>=0.12)", "hvac (>=1.1.0)", "pytest", "pytest-cov", "pytest-mock", "pytest-xdist", "python-dotenv", "radon", "redis", "toml"]
-toml = ["toml"]
-vault = ["hvac"]
-yaml = ["ruamel.yaml"]
 
 [[package]]
 name = "einops"
@@ -928,40 +714,6 @@ test = ["aiohttp (!=4.0.0a0,!=4.0.0a1)", "numpy", "pytest", "pytest-asyncio (!=0
 test-downstream = ["aiobotocore (>=2.5.4,<3.0.0)", "dask[dataframe,test]", "moto[server] (>4,<5)", "pytest-timeout", "xarray"]
 test-full = ["adlfs", "aiohttp (!=4.0.0a0,!=4.0.0a1)", "backports-zstd ; python_version < \"3.14\"", "cloudpickle", "dask", "distributed", "dropbox", "dropboxdrivefs", "fastparquet", "fusepy", "gcsfs", "jinja2", "kerchunk", "libarchive-c", "lz4", "notebook", "numpy", "ocifs", "pandas (<3.0.0)", "panel", "paramiko", "pyarrow", "pyarrow (>=1)", "pyftpdlib", "pygit2", "pytest", "pytest-asyncio (!=0.22.0)", "pytest-benchmark", "pytest-cov", "pytest-mock", "pytest-recording", "pytest-rerunfailures", "python-snappy", "requests", "smbprotocol", "tqdm", "urllib3", "zarr", "zstandard ; python_version < \"3.14\""]
 tqdm = ["tqdm"]
-
-[[package]]
-name = "gitdb"
-version = "4.0.12"
-description = "Git Object Database"
-optional = false
-python-versions = ">=3.7"
-groups = ["main"]
-files = [
-    {file = "gitdb-4.0.12-py3-none-any.whl", hash = "sha256:67073e15955400952c6565cc3e707c554a4eea2e428946f7a4c162fab9bd9bcf"},
-    {file = "gitdb-4.0.12.tar.gz", hash = "sha256:5ef71f855d191a3326fcfbc0d5da835f26b13fbcba60c32c21091c349ffdb571"},
-]
-
-[package.dependencies]
-smmap = ">=3.0.1,<6"
-
-[[package]]
-name = "gitpython"
-version = "3.1.46"
-description = "GitPython is a Python library used to interact with Git repositories"
-optional = false
-python-versions = ">=3.7"
-groups = ["main"]
-files = [
-    {file = "gitpython-3.1.46-py3-none-any.whl", hash = "sha256:79812ed143d9d25b6d176a10bb511de0f9c67b1fa641d82097b0ab90398a2058"},
-    {file = "gitpython-3.1.46.tar.gz", hash = "sha256:400124c7d0ef4ea03f7310ac2fbf7151e09ff97f2a3288d64a440c584a29c37f"},
-]
-
-[package.dependencies]
-gitdb = ">=4.0.1,<5"
-
-[package.extras]
-doc = ["sphinx (>=7.1.2,<7.2)", "sphinx-autodoc-typehints", "sphinx_rtd_theme"]
-test = ["coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mock ; python_version < \"3.8\"", "mypy (==1.18.2) ; python_version >= \"3.9\"", "pre-commit", "pytest (>=7.3.1)", "pytest-cov", "pytest-instafail", "pytest-mock", "pytest-sugar", "typing-extensions ; python_version < \"3.11\""]
 
 [[package]]
 name = "greenlet"
@@ -1220,31 +972,6 @@ files = [
 all = ["coverage (>=7.10.0)", "hypothesis (>=6.141.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.16.0)", "ty (>=0.0.37)"]
 
 [[package]]
-name = "importlib-metadata"
-version = "8.7.1"
-description = "Read metadata from Python packages"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-markers = "python_version == \"3.10\" and python_full_version < \"3.10.2\""
-files = [
-    {file = "importlib_metadata-8.7.1-py3-none-any.whl", hash = "sha256:5a1f80bf1daa489495071efbb095d75a634cf28a8bc299581244063b53176151"},
-    {file = "importlib_metadata-8.7.1.tar.gz", hash = "sha256:49fef1ae6440c182052f407c8d34a68f72efc36db9ca90dc0113398f2fdde8bb"},
-]
-
-[package.dependencies]
-zipp = ">=3.20"
-
-[package.extras]
-check = ["pytest-checkdocs (>=2.4)", "pytest-ruff (>=0.2.1) ; sys_platform != \"cygwin\""]
-cover = ["pytest-cov"]
-doc = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
-enabler = ["pytest-enabler (>=3.4)"]
-perf = ["ipython"]
-test = ["flufl.flake8", "jaraco.test (>=5.4)", "packaging", "pyfakefs", "pytest (>=6,!=8.1.*)", "pytest-perf (>=0.9.2)"]
-type = ["mypy (<1.19) ; platform_python_implementation == \"PyPy\"", "pytest-mypy (>=1.0.1)"]
-
-[[package]]
 name = "iniconfig"
 version = "2.3.0"
 description = "brain-dead simple config-ini parsing"
@@ -1402,241 +1129,6 @@ files = [
 ]
 
 [[package]]
-name = "kedro"
-version = "1.2.0"
-description = "Kedro helps you build production-ready data and analytics pipelines"
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-files = [
-    {file = "kedro-1.2.0-py3-none-any.whl", hash = "sha256:2dcc59ec430af8ecee8e085aa33a3c6064ea4afd782fa53152bb8450f5024306"},
-    {file = "kedro-1.2.0.tar.gz", hash = "sha256:822cbc132bd654a33ce9b467ba76160f71df80e546dbc0e3b6821e476aab4b28"},
-]
-
-[package.dependencies]
-attrs = ">=21.3"
-build = ">=0.7.0"
-cachetools = ">=4.1"
-click = ">=8.2"
-cookiecutter = ">=2.1.1,<3.0"
-dynaconf = ">=3.1.2,<4.0"
-fsspec = ">=2021.4"
-gitpython = ">=3.0"
-kedro-telemetry = ">=0.5.0"
-more_itertools = ">=8.14.0"
-omegaconf = ">=2.1.1"
-parse = ">=1.19.0"
-pluggy = ">=1.0"
-PyYAML = ">=4.2,<7.0"
-rich = ">=12.0,<15.0"
-tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
-tomli-w = "*"
-typing_extensions = ">=4.0"
-
-[package.extras]
-all = ["kedro[benchmark,docs,jupyter,test]"]
-benchmark = ["asv"]
-docs = ["griffe", "mkdocs (>=1.6.1)", "mkdocs-autorefs (>=1.4.1)", "mkdocs-click", "mkdocs-get-deps (>=0.2.0)", "mkdocs-llmstxt", "mkdocs-material (>=9.6.11)", "mkdocs-material-extensions (>=1.3.1)", "mkdocs-mermaid2-plugin (>=1.2.1)", "mkdocs-redirects", "mkdocstrings (>=0.29.1)", "mkdocstrings-python (>=0.29.1)"]
-jupyter = ["ipylab (>=1.0.0)", "notebook (>=7.0.0)"]
-test = ["behave (>=1.2.6,<2.0)", "coverage[toml]", "detect-secrets (>=1.5.0,<1.6.0)", "import-linter (>=2.5.2,<3.0)", "ipylab (>=1.0.0)", "ipython (>=8.10,<10.0)", "jupyter (>=1.0,<2.0)", "jupyterlab (>=3,<5)", "jupyterlab_server (>=2.11.1)", "kedro-datasets", "mypy (>=1.0,<2.0)", "pandas (>=2.0,<3.0)", "pandas-stubs", "pluggy (>=1.0)", "pre-commit (>=2.9.2,<5.0)", "pytest (>=7.2,<10.0)", "pytest-cov (>=3,<8)", "pytest-mock (>=1.7.1,<4.0)", "pytest-xdist[psutil] (>=2.2.1,<4.0)", "requests_mock", "s3fs (>=2021.4,<2026.2)", "types-PyYAML", "types-cachetools", "types-requests"]
-
-[[package]]
-name = "kedro-datasets"
-version = "9.2.0"
-description = "Kedro-Datasets is where you can find all of Kedro's data connectors."
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-files = [
-    {file = "kedro_datasets-9.2.0-py3-none-any.whl", hash = "sha256:3309c3a21c25d87f055714d0a9fc3232f45803bb5e3b3c384d403acb9971ee29"},
-    {file = "kedro_datasets-9.2.0.tar.gz", hash = "sha256:32f364d61d211add1187ddcfb4466284b90df6027560c89cd9232c8c28e9f645"},
-]
-
-[package.dependencies]
-"backports.strenum" = {version = "*", markers = "python_version < \"3.11\""}
-kedro = ">=1.0.0rc1,<2.0.0"
-lazy_loader = "*"
-matplotlib = {version = ">=3.0.3,<4.0", optional = true, markers = "extra == \"matplotlib-matplotlibdataset\""}
-pandas = {version = ">=1.3,<3.0", optional = true, markers = "extra == \"pandas-base\""}
-pyarrow = {version = ">=6.0", optional = true, markers = "extra == \"pandas-parquetdataset\""}
-
-[package.extras]
-all = ["kedro-datasets[docs,lint,test]"]
-api = ["kedro-datasets[api-apidataset]"]
-api-apidataset = ["requests (>=2.20,<3.0)"]
-biosequence = ["kedro-datasets[biosequence-biosequencedataset]"]
-biosequence-biosequencedataset = ["biopython (>=1.73,<2.0)"]
-chromadb = ["kedro-datasets[chromadb-chromadbdataset]"]
-chromadb-chromadbdataset = ["chromadb (>=1.0.0)"]
-darts = ["kedro-datasets[darts-torch-model-dataset]"]
-darts-torch-model-dataset = ["u8darts-all"]
-dask = ["kedro-datasets[dask-csvdataset,dask-parquetdataset]"]
-dask-csvdataset = ["dask[dataframe] (>=2021.10)"]
-dask-parquetdataset = ["dask[complete] (>=2021.10)", "triad (>=0.6.7,<2.0)"]
-databricks = ["kedro-datasets[databricks-managedtabledataset]"]
-databricks-externaltabledataset = ["kedro-datasets[hdfs-base,s3fs-base]"]
-databricks-managedtabledataset = ["kedro-datasets[hdfs-base,s3fs-base]"]
-delta-base = ["delta-spark (>=1.0,<5.0)"]
-docs = ["Jinja2 (<3.2.0)", "black", "ipykernel (>=5.3,<7.0)", "linkchecker (>=10.2.1)", "mkdocs (>=1.6.1)", "mkdocs-autorefs (>=1.4.1)", "mkdocs-get-deps (>=0.2.0)", "mkdocs-llmstxt", "mkdocs-material (>=9.6.11)", "mkdocs-material-extensions (>=1.3.1)", "mkdocs-mermaid2-plugin (>=1.2.1)", "mkdocstrings-python (>=0.29.1)", "ruff"]
-experimental = ["h5netcdf (>=1.2.0)", "langchain-anthropic", "langchain-cohere", "langchain-community", "langchain-openai", "langfuse", "netcdf4 (>=1.6.4)", "opencv-python (>=4.12.0.88,<4.13.0.0)", "opik", "optuna", "prophet (>=1.1.5)", "pypdf (>=3.0.0)", "rioxarray", "torch", "u8darts[all]", "xarray (>=2023.1.0)"]
-experimental-test = ["chromadb (>=1.0.0)", "dask[complete] (>=2021.10)", "delta-spark (>=1.0,<3.0) ; python_version <= \"3.11\"", "delta-spark (>=4.0) ; python_version >= \"3.12\"", "gcsfs (>=2023.1,<2023.7)", "h5netcdf (>=1.2.0)", "langchain (>=0.2.0)", "langchain-anthropic", "langchain-cohere", "langchain-community", "langchain-openai", "langfuse", "moto (==5.0.0)", "netcdf4 (>=1.6.4,<1.7.4)", "openai (>=2.3.0)", "opencv-python (>=4.12.0.88,<4.13.0.0)", "opik", "optuna", "prophet (>=1.1.5)", "pypdf (>=3.0.0)", "pyspark (>=3.0,<4.0) ; python_version < \"3.11\"", "pyspark (>=3.4,<4.0) ; python_version == \"3.11\"", "pyspark (>=4.0) ; python_version >= \"3.12\"", "pytest (>=7.2,<8.0)", "pytest-cov (>=3.0,<4.0)", "pytest-mock (>=1.7.1,<2.0)", "pytest-xdist[psutil] (>=2.2.1,<2.3.0)", "reportlab (>=3.6.0)", "rioxarray", "s3fs (>=2021.04)", "torch", "u8darts[all]", "xarray (>=2023.1.0)"]
-geopandas = ["kedro-datasets[geopandas-genericdataset]"]
-geopandas-genericdataset = ["fiona (>=1.8,<2.0)", "geopandas (>=0.8.0,<2.0)"]
-hdfs-base = ["hdfs (>=2.5.8,<3.0)"]
-holoviews = ["kedro-datasets[holoviews-holoviewswriter]"]
-holoviews-holoviewswriter = ["holoviews (>=1.13.0)"]
-huggingface = ["kedro-datasets[huggingface-hfdataset,huggingface-hftransformerpipelinedataset]"]
-huggingface-hfdataset = ["datasets", "huggingface_hub"]
-huggingface-hftransformerpipelinedataset = ["transformers"]
-ibis = ["ibis-framework"]
-ibis-athena = ["ibis-framework[athena]"]
-ibis-bigquery = ["ibis-framework[bigquery]"]
-ibis-clickhouse = ["ibis-framework[clickhouse]"]
-ibis-dask = ["ibis-framework[dask] (<10.0)"]
-ibis-databricks = ["ibis-framework[databricks]"]
-ibis-datafusion = ["ibis-framework[datafusion]"]
-ibis-druid = ["ibis-framework[druid]"]
-ibis-duckdb = ["ibis-framework[duckdb]"]
-ibis-exasol = ["ibis-framework[exasol]"]
-ibis-flink = ["apache-flink", "ibis-framework"]
-ibis-impala = ["ibis-framework[impala]"]
-ibis-mssql = ["ibis-framework[mssql]"]
-ibis-mysql = ["ibis-framework[mysql]"]
-ibis-oracle = ["ibis-framework[oracle]"]
-ibis-pandas = ["ibis-framework[pandas] (<10.0)"]
-ibis-polars = ["ibis-framework[polars]"]
-ibis-postgres = ["ibis-framework[postgres]"]
-ibis-pyspark = ["ibis-framework[pyspark]"]
-ibis-risingwave = ["ibis-framework[risingwave]"]
-ibis-snowflake = ["ibis-framework[snowflake]"]
-ibis-sqlite = ["ibis-framework[sqlite]"]
-ibis-trino = ["ibis-framework[trino]"]
-json = ["kedro-datasets[json-jsondataset]"]
-langchain = ["kedro-datasets[langchain-chatanthropicdataset,langchain-chatcoheredataset,langchain-chatopenaidataset,langchain-langchainpromptdataset,langchain-openaiembeddingsdataset]"]
-langchain-chatanthropicdataset = ["langchain-anthropic (>=0.1.13)", "langchain-community (>=0.2.0)"]
-langchain-chatcoheredataset = ["langchain-cohere (>=0.1.5)", "langchain-community (>=0.2.0)"]
-langchain-chatopenaidataset = ["langchain-openai (>=0.1.7)"]
-langchain-langchainpromptdataset = ["langchain (>=0.3.0)"]
-langchain-openaiembeddingsdataset = ["langchain-openai (>=0.1.7)"]
-langfuse = ["kedro-datasets[langfuse-langfusepromptdataset,langfuse-langfusetracedataset,langfuse-langfusetracedataset-autogen]", "langchain (>=0.2.0,<1.0)", "openai (>=2.3.0)"]
-langfuse-langfusepromptdataset = ["langfuse (>=2.0.0)"]
-langfuse-langfusetracedataset = ["langfuse (>=2.0.0)"]
-langfuse-langfusetracedataset-autogen = ["langfuse (>=2.0.0)", "opentelemetry-exporter-otlp-proto-http", "opentelemetry-sdk"]
-lint = ["bandit (>=1.6.2,<2.0)", "black (>=22.0,<23.0)", "blacken-docs (==1.9.2)", "detect-secrets (>=1.5.0,<1.6.0)", "import-linter[toml] (==1.2.6)", "mypy (>=1.0,<2.0)", "pre-commit (>=2.9.2)", "ruff (>=0.14.4,<0.15.0)", "types-PyYAML", "types-cachetools", "types-decorator", "types-redis", "types-requests", "types-six", "types-tabulate"]
-matlab = ["kedro-datasets[matlab-matlabdataset]"]
-matlab-matlabdataset = ["scipy"]
-matplotlib = ["kedro-datasets[matplotlib-matplotlibdataset]"]
-matplotlib-matplotlibdataset = ["matplotlib (>=3.0.3,<4.0)"]
-mlrun = ["mlrun (>=1.10.0)"]
-netcdf = ["kedro-datasets[netcdf-netcdfdataset]"]
-netcdf-netcdfdataset = ["h5netcdf (>=1.2.0)", "netcdf4 (>=1.6.4)", "xarray (>=2023.1.0)"]
-networkx = ["kedro-datasets[networkx-base]"]
-networkx-base = ["networkx (>=3.4,<4.0)"]
-networkx-gmldataset = ["kedro-datasets[networkx-base]"]
-networkx-graphmldataset = ["kedro-datasets[networkx-base]"]
-networkx-jsondataset = ["kedro-datasets[networkx-base]"]
-openxml = ["kedro-datasets[openxml-docxdataset]", "kedro-datasets[openxml-pptxdataset]"]
-openxml-docxdataset = ["python-docx"]
-openxml-pptxdataset = ["python-pptx"]
-opik = ["kedro-datasets[opik-opikpromptdataset,opik-opiktracedataset,opik-opiktracedataset-autogen]", "langchain (>=0.2.0)", "openai (>=2.3.0)"]
-opik-opikpromptdataset = ["opik (>=1.8.0)"]
-opik-opiktracedataset = ["opik (>=1.8.0)"]
-opik-opiktracedataset-autogen = ["opentelemetry-exporter-otlp-proto-http", "opentelemetry-sdk", "opik (>=1.8.0)"]
-optuna = ["kedro-datasets[optuna-studydataset]"]
-optuna-studydataset = ["optuna"]
-pandas = ["kedro-datasets[pandas-csvdataset,pandas-deltatabledataset,pandas-exceldataset,pandas-featherdataset,pandas-gbqquerydataset,pandas-gbqtabledataset,pandas-genericdataset,pandas-hdfdataset,pandas-jsondataset,pandas-parquetdataset,pandas-sqlquerydataset,pandas-sqltabledataset,pandas-xmldataset]"]
-pandas-base = ["pandas (>=1.3,<3.0)"]
-pandas-csvdataset = ["kedro-datasets[pandas-base]"]
-pandas-deltatabledataset = ["deltalake (>=0.10.0)", "kedro-datasets[pandas-base]"]
-pandas-exceldataset = ["kedro-datasets[pandas-base]", "openpyxl (>=3.0.6,<4.0)"]
-pandas-featherdataset = ["kedro-datasets[pandas-base]"]
-pandas-gbqquerydataset = ["kedro-datasets[pandas-base]", "pandas-gbq (>=0.12.0)"]
-pandas-gbqtabledataset = ["kedro-datasets[pandas-base]", "pandas-gbq (>=0.12.0)"]
-pandas-genericdataset = ["kedro-datasets[pandas-base]"]
-pandas-hdfdataset = ["kedro-datasets[pandas-base]", "tables (>=3.6)"]
-pandas-jsondataset = ["kedro-datasets[pandas-base]"]
-pandas-parquetdataset = ["kedro-datasets[pandas-base]", "pyarrow (>=6.0)"]
-pandas-sqlquerydataset = ["SQLAlchemy (>=1.4,<3.0)", "kedro-datasets[pandas-base]", "pyodbc (>=4.0)"]
-pandas-sqltabledataset = ["SQLAlchemy (>=1.4,<3.0)", "kedro-datasets[pandas-base]"]
-pandas-xmldataset = ["kedro-datasets[pandas-base]", "lxml (>=4.6,<5.0) ; python_version < \"3.13\"", "lxml (>=5.2,<6.0) ; python_version >= \"3.13\""]
-pickle = ["kedro-datasets[pickle-pickledataset]"]
-pickle-pickledataset = ["compress-pickle[lz4] (>=2.1.0,<2.2.0)"]
-pillow = ["kedro-datasets[pillow-imagedataset]"]
-pillow-imagedataset = ["Pillow (>=9.0)"]
-plotly = ["kedro-datasets[plotly-htmldataset,plotly-jsondataset,plotly-plotlydataset]"]
-plotly-base = ["plotly (>=4.8.0,<6.0)"]
-plotly-htmldataset = ["kedro-datasets[plotly-base]"]
-plotly-jsondataset = ["kedro-datasets[plotly-base]"]
-plotly-plotlydataset = ["kedro-datasets[pandas-base,plotly-base]"]
-polars = ["kedro-datasets[polars-csvdataset,polars-eagerpolarsdataset,polars-lazypolarsdataset]"]
-polars-base = ["polars (>=0.18.0)"]
-polars-csvdataset = ["kedro-datasets[polars-base]"]
-polars-eagerpolarsdataset = ["deltalake (>=0.6.2)", "kedro-datasets[polars-base]", "pyarrow (>=4.0)", "xlsx2csv (>=0.8.0)"]
-polars-lazypolarsdataset = ["deltalake (>=0.6.2)", "kedro-datasets[polars-base]", "pyarrow (>=4.0)"]
-prophet = ["kedro-datasets[prophet]"]
-prophet-dataset = ["prophet (>=1.1.5)"]
-pypdf = ["kedro-datasets[pypdf-pdfdataset]"]
-pypdf-pdfdataset = ["cryptography (>=3.1)", "pypdf (>=3.0.0)"]
-pytorch = ["kedro-datasets[pytorch-dataset]"]
-pytorch-dataset = ["torch"]
-redis = ["kedro-datasets[redis-pickledataset]"]
-redis-pickledataset = ["redis (>=4.1,<5.0)"]
-rioxarray = ["kedro-datasets[rioxarray-geotiffdataset]"]
-rioxarray-geotiffdataset = ["rioxarray (>=0.15.0)"]
-s3fs-base = ["s3fs (>=2021.4)"]
-safetensors = ["kedro-datasets[safetensors-safetensorsdataset]"]
-safetensors-safetensorsdataset = ["numpy", "safetensors"]
-snowflake = ["kedro-datasets[snowflake-snowparktabledataset]"]
-snowflake-snowparktabledataset = ["snowflake-snowpark-python (>=1.23)"]
-spark = ["kedro-datasets[spark-local,spark-s3]"]
-spark-all = ["kedro-datasets[spark-cloud,spark-deltatabledataset,spark-local,spark-sparkdataset,spark-sparkhivedataset,spark-sparkjdbcdataset,spark-sparkstreamingdataset]"]
-spark-azure = ["adlfs (>=2023.1)"]
-spark-base = ["pyspark (>=2.2,<5.0)"]
-spark-cloud = ["kedro-datasets[spark-azure,spark-gcs,spark-s3]"]
-spark-deltatabledataset = ["kedro-datasets[delta-base,spark-core]"]
-spark-gcs = ["gcsfs (>=2023.1,<2023.7)"]
-spark-hdfs = ["pyarrow (>=7.0)"]
-spark-local = ["pyspark (>=2.2,<5.0)"]
-spark-s3 = ["s3fs (>=2021.4)"]
-spark-sparkdataset = ["kedro-datasets[spark-core]"]
-spark-sparkhivedataset = ["kedro-datasets[spark-core]"]
-spark-sparkjdbcdataset = ["kedro-datasets[spark-core]"]
-spark-sparkstreamingdataset = ["kedro-datasets[spark-core]"]
-svmlight = ["kedro-datasets[svmlight-svmlightdataset]"]
-svmlight-svmlightdataset = ["scikit-learn (>=1.0.2)", "scipy (>=1.7.3)"]
-tensorflow = ["kedro-datasets[tensorflow-tensorflowmodeldataset]"]
-tensorflow-tensorflowmodeldataset = ["tensorflow (>=2.0,<3.0) ; platform_system != \"Darwin\" or platform_machine != \"arm64\"", "tensorflow-macos (>=2.0,<3.0) ; platform_system == \"Darwin\" and platform_machine == \"arm64\""]
-test = ["Jinja2 (<3.2.0)", "Pillow (>=10.0,<11.0)", "SQLAlchemy (>=1.2)", "accelerate (<0.32)", "adlfs (>=2023.1,<2024.0)", "biopython (>=1.73,<2.0)", "chromadb (>=1.0.0)", "cloudpickle (>=2.2.1,<2.3.0)", "compress-pickle[lz4] (>=2.1.0,<2.2.0)", "coverage (>=7.2.0)", "dask[complete] (>=2021.10)", "datasets (>=3.0.0)", "delta-spark (>=1.0,<3.0) ; python_version <= \"3.11\"", "delta-spark (>=4.0) ; python_version >= \"3.12\"", "deltalake (>=0.10.0)", "dill (>=0.3.1,<0.4.0)", "filelock (>=3.4.0,<4.0)", "fiona (>=1.8,<2.0)", "gcsfs (>=2023.1,<2023.7)", "geopandas (>=0.8.0,<2.0)", "hdfs (>=2.5.8,<3.0)", "holoviews (>=1.13.0)", "huggingface_hub", "ibis-framework[duckdb,examples]", "ipython (>=7.31.1,<8.0)", "joblib (>=0.14)", "jupyter (>=1.0,<2.0)", "jupyterlab (>=3.0)", "langchain-anthropic (>=0.1.13)", "langchain-cohere (>=0.1.5)", "langchain-community (>=0.2.0)", "langchain-openai (>=0.1.7)", "lxml (>=5.0,<6.0)", "matplotlib (>=3.5,<4.0)", "memory_profiler (>=0.50.0,<1.0)", "moto (==5.0.0)", "networkx (==3.4)", "openpyxl (>=3.0.3,<4.0)", "packaging", "pandas (>=2.0)", "pandas-gbq (>=0.12.0)", "plotly (>=4.8.0,<6.0)", "polars[deltalake,xlsx2csv] (>=1.0)", "pyOpenSSL (>=22.1.0)", "pyarrow (>=1.0) ; python_version < \"3.11\"", "pyarrow (>=7.0) ; python_version >= \"3.11\"", "pyodbc (>=5.0,<6.0)", "pyspark (>=3.0,<4.0) ; python_version < \"3.11\"", "pyspark (>=3.4,<4.0) ; python_version == \"3.11\"", "pyspark (>=4.0,<4.1) ; python_version >= \"3.12\"", "pytest (>=7.2,<8.0)", "pytest-cov (>=3.0,<4.0)", "pytest-mock (>=1.7.1,<2.0)", "pytest-xdist[psutil] (>=2.2.1,<2.3.0)", "python-docx", "python-pptx", "redis (>=4.1,<5.0)", "reportlab (>=3.6.0)", "requests (>=2.20,<3.0)", "requests-mock (>=1.6,<2.0)", "s3fs (>=2021.04)", "scikit-learn (>=1.0.2,<2)", "scipy (>=1.7.3)", "snowflake-snowpark-python (>=1.23) ; python_version < \"3.12\"", "tables (>=3.6)", "tensorflow (>=2.0,<3.0) ; platform_system != \"Darwin\" or platform_machine != \"arm64\"", "tensorflow-macos (>=2.0,<3.0) ; platform_system == \"Darwin\" and platform_machine == \"arm64\"", "transformers[torch]", "triad (>=0.6.7,<2.0)", "xarray (>=2023.1.0)", "xlsxwriter (>=1.0,<2.0)"]
-text = ["kedro-datasets[text-textdataset]"]
-video = ["kedro-datasets[video-videodataset]"]
-video-videodataset = ["opencv-python (>=4.12.0.88,<4.13.0.0)"]
-yaml = ["kedro-datasets[yaml-yamldataset]"]
-yaml-yamldataset = ["PyYAML (>=4.2,<7.0)", "kedro-datasets[pandas-base]"]
-
-[[package]]
-name = "kedro-telemetry"
-version = "0.7.0"
-description = "Kedro-Telemetry"
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-files = [
-    {file = "kedro_telemetry-0.7.0-py3-none-any.whl", hash = "sha256:fbec6981781dbc6bedda74a1287865c6fab699d19c0a0f5940434c1613a97066"},
-    {file = "kedro_telemetry-0.7.0.tar.gz", hash = "sha256:76a82fe2716f3532ce97441f5a7781d3ad8894fb2096da65a9f1c6f23d4cb43b"},
-]
-
-[package.dependencies]
-appdirs = ">=1.4.4"
-kedro = ">=0.18.0,<2.0.0"
-requests = ">=2.20,<3.0"
-tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
-tomli-w = "*"
-
-[package.extras]
-lint = ["bandit (>=1.6.2,<2.0)", "black (>=22.0,<23.0)", "detect-secrets (>=1.5.0,<1.6.0)", "mypy (>=1.0,<2.0)", "pre-commit (>=2.9.2)", "ruff (>=0.14.4,<0.15.0)", "types-PyYAML", "types-requests"]
-test = ["PyYAML (==5.3.1)", "pytest", "pytest-cov", "pytest-mock", "pytest-xdist[psutil] (>=2.2.1,<2.3.0)", "wheel"]
-
-[[package]]
 name = "kiwisolver"
 version = "1.4.9"
 description = "A fast implementation of the Cassowary constraint solver"
@@ -1748,26 +1240,6 @@ files = [
 ]
 
 [[package]]
-name = "lazy-loader"
-version = "0.4"
-description = "Makes it easy to load subpackages and functions on demand."
-optional = false
-python-versions = ">=3.7"
-groups = ["main"]
-files = [
-    {file = "lazy_loader-0.4-py3-none-any.whl", hash = "sha256:342aa8e14d543a154047afb4ba8ef17f5563baad3fc610d7b15b213b0f119efc"},
-    {file = "lazy_loader-0.4.tar.gz", hash = "sha256:47c75182589b91a4e1a85a136c074285a5ad4d9f39c63e0d7fb76391c4574cd1"},
-]
-
-[package.dependencies]
-packaging = "*"
-
-[package.extras]
-dev = ["changelist (==0.5)"]
-lint = ["pre-commit (==3.7.0)"]
-test = ["pytest (>=7.4)", "pytest-cov (>=4.1)"]
-
-[[package]]
 name = "mako"
 version = "1.3.12"
 description = "A super-fast templating language that borrows the best ideas from the existing templating languages."
@@ -1786,30 +1258,6 @@ MarkupSafe = ">=0.9.2"
 babel = ["Babel"]
 lingua = ["lingua"]
 testing = ["pytest"]
-
-[[package]]
-name = "markdown-it-py"
-version = "4.0.0"
-description = "Python port of markdown-it. Markdown parsing, done right!"
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-files = [
-    {file = "markdown_it_py-4.0.0-py3-none-any.whl", hash = "sha256:87327c59b172c5011896038353a81343b6754500a08cd7a4973bb48c6d578147"},
-    {file = "markdown_it_py-4.0.0.tar.gz", hash = "sha256:cb0a2b4aa34f932c007117b194e945bd74e0ec24133ceb5bac59009cda1cb9f3"},
-]
-
-[package.dependencies]
-mdurl = ">=0.1,<1.0"
-
-[package.extras]
-benchmarking = ["psutil", "pytest", "pytest-benchmark"]
-compare = ["commonmark (>=0.9,<1.0)", "markdown (>=3.4,<4.0)", "markdown-it-pyrs", "mistletoe (>=1.0,<2.0)", "mistune (>=3.0,<4.0)", "panflute (>=2.3,<3.0)"]
-linkify = ["linkify-it-py (>=1,<3)"]
-plugins = ["mdit-py-plugins (>=0.5.0)"]
-profiling = ["gprof2dot"]
-rtd = ["ipykernel", "jupyter_sphinx", "mdit-py-plugins (>=0.5.0)", "myst-parser", "pyyaml", "sphinx", "sphinx-book-theme (>=1.0,<2.0)", "sphinx-copybutton", "sphinx-design"]
-testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions", "requests"]
 
 [[package]]
 name = "markupsafe"
@@ -1988,30 +1436,6 @@ python-dateutil = ">=2.7"
 
 [package.extras]
 dev = ["meson-python (>=0.13.1,<0.17.0)", "pybind11 (>=2.13.2,!=2.13.3)", "setuptools (>=64)", "setuptools_scm (>=7)"]
-
-[[package]]
-name = "mdurl"
-version = "0.1.2"
-description = "Markdown URL utilities"
-optional = false
-python-versions = ">=3.7"
-groups = ["main"]
-files = [
-    {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
-    {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
-]
-
-[[package]]
-name = "more-itertools"
-version = "10.8.0"
-description = "More routines for operating on iterables, beyond itertools"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "more_itertools-10.8.0-py3-none-any.whl", hash = "sha256:52d4362373dcf7c52546bc4af9a86ee7c4579df9a8dc268be0a2f949d376cc9b"},
-    {file = "more_itertools-10.8.0.tar.gz", hash = "sha256:f638ddf8a1a0d134181275fb5d58b086ead7c6a72429ad725c67503f13ba30bd"},
-]
 
 [[package]]
 name = "mpmath"
@@ -2546,22 +1970,6 @@ files = [
 ]
 
 [[package]]
-name = "omegaconf"
-version = "2.3.0"
-description = "A flexible configuration library"
-optional = false
-python-versions = ">=3.6"
-groups = ["main"]
-files = [
-    {file = "omegaconf-2.3.0-py3-none-any.whl", hash = "sha256:7b4df175cdb08ba400f45cae3bdcae7ba8365db4d165fc65fd04b050ab63b46b"},
-    {file = "omegaconf-2.3.0.tar.gz", hash = "sha256:d5d4b6d29955cc50ad50c46dc269bcd92c6e00f5f90d23ab5fee7bfca4ba4cc7"},
-]
-
-[package.dependencies]
-antlr4-python3-runtime = "==4.9.*"
-PyYAML = ">=5.1.0"
-
-[[package]]
 name = "openai"
 version = "3.3.1"
 description = "The official Python library for the openai API"
@@ -2727,18 +2135,6 @@ spss = ["pyreadstat (>=1.2.0)"]
 sql-other = ["SQLAlchemy (>=2.0.0)", "adbc-driver-postgresql (>=0.8.0)", "adbc-driver-sqlite (>=0.8.0)"]
 test = ["hypothesis (>=6.46.1)", "pytest (>=7.3.2)", "pytest-xdist (>=2.2.0)"]
 xml = ["lxml (>=4.9.2)"]
-
-[[package]]
-name = "parse"
-version = "1.21.1"
-description = "parse() is the opposite of format()"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "parse-1.21.1-py2.py3-none-any.whl", hash = "sha256:55339ca698019815df3b8e8b550e5933933527e623b0cdf1ca2f404da35ffb47"},
-    {file = "parse-1.21.1.tar.gz", hash = "sha256:825e1a88e9d9fb481b8d2ca709c6195558b6eaa97c559ad3a9a20aa2d12815a3"},
-]
 
 [[package]]
 name = "pillow"
@@ -3172,18 +2568,6 @@ files = [
 diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
-name = "pyproject-hooks"
-version = "1.2.0"
-description = "Wrappers to call pyproject.toml-based build backend hooks."
-optional = false
-python-versions = ">=3.7"
-groups = ["main"]
-files = [
-    {file = "pyproject_hooks-1.2.0-py3-none-any.whl", hash = "sha256:9e5c6bfa8dcc30091c74b0cf803c81fdd29d94f01992a7707bc97babb1141913"},
-    {file = "pyproject_hooks-1.2.0.tar.gz", hash = "sha256:1e859bd5c40fae9448642dd871adf459e5e2084186e8d2c2a79a824c970da1f8"},
-]
-
-[[package]]
 name = "pytest"
 version = "9.1.1"
 description = "pytest: simple powerful testing with Python"
@@ -3236,24 +2620,6 @@ files = [
 
 [package.extras]
 cli = ["click (>=5.0)"]
-
-[[package]]
-name = "python-slugify"
-version = "8.0.4"
-description = "A Python slugify application that also handles Unicode"
-optional = false
-python-versions = ">=3.7"
-groups = ["main"]
-files = [
-    {file = "python-slugify-8.0.4.tar.gz", hash = "sha256:59202371d1d05b54a9e7720c5e038f928f45daaffe41dd10822f3907b937c856"},
-    {file = "python_slugify-8.0.4-py2.py3-none-any.whl", hash = "sha256:276540b79961052b66b7d116620b36518847f52d5fd9e3a70164fc8c50faa6b8"},
-]
-
-[package.dependencies]
-text-unidecode = ">=1.3"
-
-[package.extras]
-unidecode = ["Unidecode (>=1.1.1)"]
 
 [[package]]
 name = "pytz"
@@ -3371,25 +2737,6 @@ urllib3 = ">=1.21.1,<3"
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
-
-[[package]]
-name = "rich"
-version = "14.3.3"
-description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
-optional = false
-python-versions = ">=3.8.0"
-groups = ["main"]
-files = [
-    {file = "rich-14.3.3-py3-none-any.whl", hash = "sha256:793431c1f8619afa7d3b52b2cdec859562b950ea0d4b6b505397612db8d5362d"},
-    {file = "rich-14.3.3.tar.gz", hash = "sha256:b8daa0b9e4eef54dd8cf7c86c03713f53241884e814f4e2f5fb342fe520f639b"},
-]
-
-[package.dependencies]
-markdown-it-py = ">=2.2.0"
-pygments = ">=2.13.0,<3.0.0"
-
-[package.extras]
-jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
 name = "scikit-learn"
@@ -3621,18 +2968,6 @@ files = [
 ]
 
 [[package]]
-name = "smmap"
-version = "5.0.2"
-description = "A pure Python implementation of a sliding window memory map manager"
-optional = false
-python-versions = ">=3.7"
-groups = ["main"]
-files = [
-    {file = "smmap-5.0.2-py3-none-any.whl", hash = "sha256:b30115f0def7d7531d22a0fb6502488d879e75b260a9db4d0819cfb25403af5e"},
-    {file = "smmap-5.0.2.tar.gz", hash = "sha256:26ea65a03958fa0c8a1c7e8c7a58fdc77221b8910f6be2131affade476898ad5"},
-]
-
-[[package]]
 name = "sniffio"
 version = "1.3.1"
 description = "Sniff out which async library your code is running under"
@@ -3812,18 +3147,6 @@ scikit-learn = ">=1.2.0"
 typing-extensions = ">=4.12"
 
 [[package]]
-name = "text-unidecode"
-version = "1.3"
-description = "The most basic Text::Unidecode port"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "text-unidecode-1.3.tar.gz", hash = "sha256:bad6603bb14d279193107714b288be206cac565dfa49aa5b105294dd5c4aab93"},
-    {file = "text_unidecode-1.3-py2.py3-none-any.whl", hash = "sha256:1311f10e8b895935241623731c2ba64f4c455287888b18189350b67134a822e8"},
-]
-
-[[package]]
 name = "threadpoolctl"
 version = "3.6.0"
 description = "threadpoolctl"
@@ -3891,18 +3214,6 @@ files = [
     {file = "tomli-2.4.0-cp314-cp314t-win_arm64.whl", hash = "sha256:2b1e3b80e1d5e52e40e9b924ec43d81570f0e7d09d11081b797bc4692765a3d4"},
     {file = "tomli-2.4.0-py3-none-any.whl", hash = "sha256:1f776e7d669ebceb01dee46484485f43a4048746235e683bcdffacdf1fb4785a"},
     {file = "tomli-2.4.0.tar.gz", hash = "sha256:aa89c3f6c277dd275d8e243ad24f3b5e701491a860d5121f2cdd399fbb31fc9c"},
-]
-
-[[package]]
-name = "tomli-w"
-version = "1.2.0"
-description = "A lil' TOML writer"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "tomli_w-1.2.0-py3-none-any.whl", hash = "sha256:188306098d013b691fcadc011abd66727d3c414c571bb01b1a174ba8c983cf90"},
-    {file = "tomli_w-1.2.0.tar.gz", hash = "sha256:2dd14fac5a47c27be9cd4c976af5a12d87fb1f0b4512f81d69cce3b35ae25021"},
 ]
 
 [[package]]
@@ -4110,28 +3421,7 @@ plotting = ["graphviz", "matplotlib"]
 pyspark = ["cloudpickle", "pyspark", "scikit-learn"]
 scikit-learn = ["scikit-learn"]
 
-[[package]]
-name = "zipp"
-version = "3.23.0"
-description = "Backport of pathlib-compatible object wrapper for zip files"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-markers = "python_version == \"3.10\" and python_full_version < \"3.10.2\""
-files = [
-    {file = "zipp-3.23.0-py3-none-any.whl", hash = "sha256:071652d6115ed432f5ce1d34c336c0adfd6a884660d1e9712a256d3d3bd4b14e"},
-    {file = "zipp-3.23.0.tar.gz", hash = "sha256:a07157588a12518c9d4034df3fbbee09c814741a33ff63c05fa29d26a2404166"},
-]
-
-[package.extras]
-check = ["pytest-checkdocs (>=2.4)", "pytest-ruff (>=0.2.1) ; sys_platform != \"cygwin\""]
-cover = ["pytest-cov"]
-doc = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
-enabler = ["pytest-enabler (>=2.2)"]
-test = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more_itertools", "pytest (>=6,!=8.1.*)", "pytest-ignore-flaky"]
-type = ["pytest-mypy"]
-
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10"
-content-hash = "14bc55e33d4781fe38724bac8d6f8c607d06677499f2a468b7425de6cff888ce"
+content-hash = "924cbac5c0c9d4396e8004fd097b88f7fbdcfa44116df585a913128ce6203b09"

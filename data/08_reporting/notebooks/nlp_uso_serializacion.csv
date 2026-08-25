@@ -1,6 +1,0 @@
-campo,uso_recomendado,cuidado
-descripcion_negocio,unico relato libre del contrato; candidato a entrar al prompt,los temas no forman una taxonomía estable; no corregir ortografía
-subcategoria_texto,"etiqueta de menú; si se usa, como categoría, no como párrafo",sin tildes; una sola etiqueta concentra muchos casos
-otra_categoria_negocio,no concatenar con la descripción: suele repetirla o decir 'otro',cobertura baja y placeholders
-tipo_credito,no usar como texto: casi no varía,un valor cubre casi toda la cartera
-"onehots (rubro, escolaridad, objetivo)","si se humanizan, traducir el nombre de columna; no son relatos",parte del vocabulario está en inglés de sistema

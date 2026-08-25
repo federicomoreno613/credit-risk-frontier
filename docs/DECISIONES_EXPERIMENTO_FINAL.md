@@ -5,6 +5,42 @@ decidió, por qué, y qué implica al escribir. El experimento de referencia
 anterior es la entrega intermedia (`entregas/ENTREGA-INTERMEDIA-G1-MORENO-
 FEDERICO-2026.md`); este registro cubre el rediseño posterior.
 
+## 0. Ejes discursivos de la tesis
+
+Los experimentos de este registro alimentan siete líneas argumentales. Al
+redactar, cada resultado debe colgarse de uno de estos ejes:
+
+1. **Competencia LLM vs. ML clásico en igualdad de información** (pregunta
+   central, PLAN §2.1). Los ocho modelos reciben las mismas 29 variables y la
+   misma partición temporal; el LLM solo agrega texto donde el diseño lo
+   declara. Evidencia: tabla comparativa del monitoreo, progresión de los
+   8 modelos (§2.2 del PLAN).
+2. **El valor del contexto cualitativo humano.** ¿Leer texto aporta
+   ordenamiento? Se responde con la escalera de perfiles: 29 variables →
+   + descripción → + rubro/tipo/otra categoría/objetivo declarado (perfil
+   full). La entrega mostró ΔAUC negativo con solo la descripción; el perfil
+   full testea si el contexto completo revierte eso.
+3. **Razonamiento como objeto de estudio, no solo como mecanismo.** El corpus
+   de thinking de Qwen (guardado caso por caso) permite auditar QUÉ variables
+   pondera el modelo y contrastarlo con SHAP (fidelidad vs. plausibilidad de
+   las explicaciones, AlMarri et al. 2025; relevante para el EU AI Act que
+   clasifica el scoring como alto riesgo).
+4. **Thin-file e inclusión financiera.** Todas las métricas se reportan por
+   segmento esparso/denso del buró: ¿el conocimiento preentrenado del LLM
+   compensa la falta de historial donde el ML clásico se degrada?
+5. **De la discriminación a la decisión económica.** AUC no alcanza para
+   operar: matrices de confusión, umbral de costo mínimo y función de costos
+   con montos y tasas reales muestran que un modelo que ordena bien puede
+   decidir mal si está descalibrado (XGBoost: umbral óptimo 0,01, Brier 0,26).
+6. **Robustez temporal y sesgo de selección.** El corrimiento de mora
+   (train 0,70 → test 0,39) y los PSI altos condicionan toda lectura; la
+   partición temporal congelada es la garantía metodológica y también la
+   fuente de la dificultad.
+7. **Reproducibilidad y costo computacional.** Todo corre en hardware de
+   consumo (M4, Ollama local) o con costo de API medido y publicado; el
+   contraste con LendingClub sumará el eje de generalización y contaminación
+   de preentrenamiento.
+
 ## 1. Arquitectura: de Kedro a pipeline por carpetas
 
 **Decisión.** Se reemplazó el flujo Kedro por `pipeline/`: un contrato único
@@ -14,9 +50,12 @@ módulo común de monitoreo (`monitoreo.py`).
 
 **Por qué.** Simplicidad y legibilidad para la defensa: cada modelo del PLAN
 §2.2 vive en una carpeta con su script; la partición, las variables y el
-target se declaran UNA vez y todos los pasos los importan. El árbol Kedro se
-conserva porque la entrega intermedia publicada lo cita y porque los
-notebooks (`nbs/`) y tests importan sus módulos de dominio.
+target se declaran UNA vez y todos los pasos los importan. Kedro se eliminó
+por completo del repositorio (código, configuración, dependencias, tests y
+layout de datos por capas) bajo la regla de trabajo "lo que no se usa se
+saca, no se aclara"; del dominio sobrevivieron solo `utils.py` y
+`cohorte.py`. La única mención restante vive en la entrega intermedia
+publicada, que es evidencia histórica y no se modifica.
 
 **Para la redacción.** La sección de reproducibilidad puede describir el
 flujo como seis etapas: cohorte → variables → humanización → modelos →

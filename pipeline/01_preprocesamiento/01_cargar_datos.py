@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import contrato as C  # noqa: E402
 
-from credit_risk_frontier.pipelines.data_processing.nodes import (
+from credit_risk_frontier.cohorte import (
     build_credit_outcomes,
     build_exact_credit_bridge,
     build_split_manifest,

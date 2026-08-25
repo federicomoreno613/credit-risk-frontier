@@ -11,17 +11,17 @@ El repositorio sigue la estructura del documento rector:
 
 ## Flujo de ejecución: `pipeline/`
 
-El experimento se corre con seis scripts simples y un contrato único
-(sin Kedro). Detalle y comandos en [`pipeline/README.md`](pipeline/README.md):
+El experimento se corre por carpetas, con un contrato único. Detalle y
+comandos en [`pipeline/README.md`](pipeline/README.md):
 
 ```
-pipeline/contrato.py            declaración única: variables, target, split temporal, modelos
-pipeline/01_cargar_datos.py     data original -> cohorte + desenlace 150d + train/val/test
-pipeline/02_crear_variables.py  tabla de variables validada contra el contrato
-pipeline/03_humanizar.py        fila -> texto en lenguaje natural (serialización TabLLM, §1.6)
-pipeline/04_entrenar.py         modelos clásicos
-pipeline/05_predecir.py         predicciones en test + razonamientos guardados
-pipeline/06_monitorear.py       métricas por segmento, PSI train/test, auditoría
+pipeline/contrato.py             declaración única: variables, target, split, modelos, costos
+pipeline/monitoreo.py            módulo común: métricas, matrices de confusión, costos, PSI
+pipeline/01_preprocesamiento/    data original -> cohorte + variables + texto humanizado
+pipeline/02_regresion_logistica/ modelo #1        pipeline/06_gpt/         modelo #4
+pipeline/03_xgboost/             modelo #2        pipeline/07_finetuning/  modelo #8 (pend.)
+pipeline/04_tabulares/           modelo #3 (pend.) pipeline/08_lendingclub/ dataset 2 (pend.)
+pipeline/05_qwen/                modelos #5-7
 ```
 
 ```bash
@@ -104,10 +104,11 @@ esparso/denso, PSI train vs. test, tasa de mora por partición).
 | Ruta | Qué es |
 |---|---|
 | `entregas/` | PLAN de tesis y entrega intermedia (fuente de cifras publicadas) |
-| `nbs/` + `notebooks/` | notebooks de análisis y redacción (jupytext); NO son el flujo de ejecución |
+| `nbs/` + `notebooks/` | notebooks de análisis y redacción (locales, fuera de Git) |
 | `bibliografia/` | papers citados y `references.bib` |
-| `docs/`, `knowledge/` | diseño, inventario de variables, catálogo OKF |
-| `src/`, `conf/`, `scripts/`, `tests/` | flujo Kedro **legacy** de la entrega intermedia; se conserva porque la entrega publicada lo cita, pero ya no es necesario para reproducir |
+| `docs/` | registro de decisiones e inventario de variables |
+| `src/credit_risk_frontier/` | dominio compartido: `utils.py` (variables, serialización, métricas, Ollama) y `cohorte.py` (desenlace y partición) |
+| `tests/` | contrato de datos del universo crudo |
 
 ## Privacidad
 

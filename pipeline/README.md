@@ -1,4 +1,4 @@
-# Pipeline por carpetas (sin Kedro)
+# Pipeline por carpetas
 
 Una carpeta por etapa/modelo, un contrato único y un módulo común de
 monitoreo. La partición temporal train/val/test (70/15/15) se declara UNA vez
