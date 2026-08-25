@@ -34,15 +34,60 @@
     "tel32s"
   ],
   "razonamientos": {
+    "gpt_tu_form_description_few0.jsonl": {
+      "casos": 631,
+      "con_razonamiento": 357,
+      "largo_medio_caracteres": 359
+    },
+    "gpt_tu_form_description_full_few0.jsonl": {
+      "casos": 631,
+      "con_razonamiento": 358,
+      "largo_medio_caracteres": 350
+    },
+    "gpt_tu_form_description_full_think_few0.jsonl": {
+      "casos": 631,
+      "con_razonamiento": 571,
+      "largo_medio_caracteres": 1339
+    },
+    "gpt_tu_form_description_think_few0.jsonl": {
+      "casos": 631,
+      "con_razonamiento": 554,
+      "largo_medio_caracteres": 1221
+    },
     "gpt_tu_form_few0.jsonl": {
-      "casos": 208,
-      "con_razonamiento": 123,
-      "largo_medio_caracteres": 335
+      "casos": 631,
+      "con_razonamiento": 362,
+      "largo_medio_caracteres": 341
+    },
+    "gpt_tu_form_think_few0.jsonl": {
+      "casos": 631,
+      "con_razonamiento": 573,
+      "largo_medio_caracteres": 1299
+    },
+    "qwen_tu_form_description_few0.jsonl": {
+      "casos": 631,
+      "con_razonamiento": 631,
+      "largo_medio_caracteres": 3299
+    },
+    "qwen_tu_form_description_few8.jsonl": {
+      "casos": 28,
+      "con_razonamiento": 28,
+      "largo_medio_caracteres": 2990
+    },
+    "qwen_tu_form_description_full_few0.jsonl": {
+      "casos": 631,
+      "con_razonamiento": 631,
+      "largo_medio_caracteres": 3423
     },
     "qwen_tu_form_few0.jsonl": {
-      "casos": 71,
-      "con_razonamiento": 71,
-      "largo_medio_caracteres": 3410
+      "casos": 631,
+      "con_razonamiento": 631,
+      "largo_medio_caracteres": 3364
+    },
+    "qwen_tu_form_few8.jsonl": {
+      "casos": 631,
+      "con_razonamiento": 631,
+      "largo_medio_caracteres": 3137
     }
   },
   "costos": {

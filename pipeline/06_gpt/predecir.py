@@ -91,7 +91,8 @@ def ejemplos_para(fila, train, knn, perfil: str, shots: int) -> list[tuple[str, 
     ]
 
 
-def correr(variables, humanizado, perfil: str, shots: int, limite) -> None:
+def correr(variables, humanizado, perfil: str, shots: int, limite,
+           effort: str = "medium") -> None:
     try:
         from openai import OpenAI
     except ImportError as error:
@@ -102,7 +103,10 @@ def correr(variables, humanizado, perfil: str, shots: int, limite) -> None:
 
     cliente = OpenAI()
     train, _, test = C.dividir(variables)
-    cache_path = C.RAZONAMIENTOS / f"gpt_{perfil}_few{shots}.jsonl"
+    # La variante "thinking" (effort=high) es una configuración aparte:
+    # cache y etiqueta propios, para comparar contra el zero-shot estándar.
+    etiqueta = f"{perfil}_think" if effort == "high" else perfil
+    cache_path = C.RAZONAMIENTOS / f"gpt_{etiqueta}_few{shots}.jsonl"
     cache = leer_cache(cache_path)
     textos = humanizado.set_index("credito_id_anon")
     pendientes = []
@@ -111,7 +115,7 @@ def correr(variables, humanizado, perfil: str, shots: int, limite) -> None:
             break
         if str(fila["credito_id_anon"]) not in cache:
             pendientes.append(fila)
-    print(f"gpt {perfil}/few{shots}: {len(cache)} en cache, {len(pendientes)} pendientes")
+    print(f"gpt {etiqueta}/few{shots}: {len(cache)} en cache, {len(pendientes)} pendientes")
 
     knn = utils.build_knn_space(train, C.FEATURES_29) if shots else None
     for i, fila in enumerate(pendientes, 1):
@@ -120,12 +124,13 @@ def correr(variables, humanizado, perfil: str, shots: int, limite) -> None:
         registro = {
             "evaluation_id": str(fila["credito_id_anon"]),
             "modelo": C.GPT_MODEL,
-            "perfil": perfil,
+            "perfil": etiqueta,
             "shots": shots,
             "set": "test",
             "segmento": str(fila.get("segmento", "")),
             "y_true": int(fila["target"]),
             "prompt_variant": C.PROMPT_VARIANT,
+            "reasoning_effort": effort,
             "ts": time.time(),
         }
         try:
@@ -133,7 +138,7 @@ def correr(variables, humanizado, perfil: str, shots: int, limite) -> None:
                 model=C.GPT_MODEL,
                 instructions=SISTEMA,
                 input=mensajes,
-                reasoning={"effort": "medium", "summary": "auto"},
+                reasoning={"effort": effort, "summary": "auto"},
                 max_output_tokens=4096,
             )
             salida = respuesta.output_text or ""
@@ -169,6 +174,8 @@ def main() -> None:
     parser.add_argument("--perfil", choices=C.PERFILES, default=None)
     parser.add_argument("--shots", type=int, choices=C.SHOTS, default=None)
     parser.add_argument("--limite", type=int, default=None, help="máx. de casos por config")
+    parser.add_argument("--effort", choices=("medium", "high"), default="medium",
+                        help="esfuerzo de reasoning; high = variante 'thinking' con cache aparte")
     args = parser.parse_args()
 
     variables = C.cargar_variables()
@@ -182,7 +189,7 @@ def main() -> None:
     shots = [args.shots] if args.shots is not None else list(C.SHOTS)
     for perfil in perfiles:
         for n in shots:
-            correr(variables, humanizado, perfil, n, args.limite)
+            correr(variables, humanizado, perfil, n, args.limite, args.effort)
     print("consolidar y medir: poetry run python pipeline/monitoreo.py")
 
 
