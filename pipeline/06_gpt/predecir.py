@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 import sys
 from pathlib import Path
 
@@ -79,11 +80,13 @@ def construir_mensajes(texto_caso: str, ejemplos: list[tuple[str, int]]) -> list
 def ejemplos_para(fila, train, knn, perfil: str, shots: int) -> list[tuple[str, int]]:
     if not shots:
         return []
+    perfil_ejemplos = "tu_form_description" if perfil.endswith("_full") else perfil
     vecinos = utils.knn_examples_for_case(
         fila, str(fila["credito_id_anon"]), train, knn, shots
     )
     return [
-        (C.serializar_perfil(v, C.FEATURES_29, perfil, compact=True), int(v["target"]))
+        (C.serializar_perfil(v, C.FEATURES_29, perfil_ejemplos, compact=True),
+         int(v["target"]))
         for _, v in vecinos.iterrows()
     ]
 
@@ -123,6 +126,7 @@ def correr(variables, humanizado, perfil: str, shots: int, limite) -> None:
             "segmento": str(fila.get("segmento", "")),
             "y_true": int(fila["target"]),
             "prompt_variant": C.PROMPT_VARIANT,
+            "ts": time.time(),
         }
         try:
             respuesta = cliente.responses.create(

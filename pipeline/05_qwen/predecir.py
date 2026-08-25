@@ -44,6 +44,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 import sys
 from pathlib import Path
 
@@ -104,14 +105,20 @@ def construir_mensajes(texto_caso: str, ejemplos: list[tuple[str, int]]) -> list
 
 
 def ejemplos_para(fila, train, knn, perfil: str, shots: int) -> list[tuple[str, int]]:
-    """Vecinos de TRAIN balanceados por clase, serializados en compacto."""
+    """Vecinos de TRAIN balanceados por clase, serializados en compacto.
+
+    El perfil "full" usa la serialización compacta del perfil con descripción:
+    las cualitativas extra solo van en el caso a evaluar, no en los ejemplos.
+    """
     if not shots:
         return []
+    perfil_ejemplos = "tu_form_description" if perfil.endswith("_full") else perfil
     vecinos = utils.knn_examples_for_case(
         fila, str(fila["credito_id_anon"]), train, knn, shots
     )
     return [
-        (C.serializar_perfil(v, C.FEATURES_29, perfil, compact=True), int(v["target"]))
+        (C.serializar_perfil(v, C.FEATURES_29, perfil_ejemplos, compact=True),
+         int(v["target"]))
         for _, v in vecinos.iterrows()
     ]
 
@@ -172,6 +179,7 @@ def correr(variables, humanizado, perfil: str, shots: int, limite) -> None:
             "thinking": resultado["thinking"],
             "respuesta": resultado["content"],
             "eval_count": resultado["eval_count"],
+            "ts": time.time(),
         }
         agregar_cache(cache_path, registro)
         print(f"  {i}/{len(pendientes)} id={registro['evaluation_id']} "

@@ -38,4 +38,12 @@ C.guardar_predicciones("tabulares", df_predicciones)
 
 ## Estado
 
-Pendiente implementación y validación de desempeño.
+Implementado en `predecir.py` (TabPFN v2, device MPS/CPU, corrida 2026-08-24):
+AUC test 0,7656 (denso 0,7707 / esparso 0,7299) con las 2.940 filas de train
+como contexto in-context, sin entrenamiento ni hiperparámetros.
+
+Nota de dependencia: se fija `tabpfn = ^2.2` (release abierto de TabPFN v2,
+pesos públicos en HuggingFace). Las versiones 8.x de la librería exigen
+aceptar licencia con cuenta PriorLabs (`TABPFN_TOKEN`); si se quiere migrar,
+obtener el token en https://ux.priorlabs.ai/account. TabFM sigue pendiente
+(flag `--tabfm`, licencia no comercial, instalación manual).
