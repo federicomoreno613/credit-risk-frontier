@@ -51,7 +51,7 @@ escribió) → `revisada` → `cerrada`. Las citas son claves de
 | 5.1 Tabla maestra: AUC/Gini/KS por modelo y segmento | `monitoreo/metricas.csv` | tabla + forest plot a crear | — | pendiente |
 | 5.2 Tabulares: XGBoost vs TabPFN vs logreg | `metricas.csv`; nb12 | figura a crear | — | pendiente |
 | 5.3 Qwen zero-shot por perfil; efecto del texto libre | `metricas.csv`; nb13 | figura a crear | — | pendiente |
-| 5.4 Few-shot EMPEORA (0,67→0,58): diagnóstico | checkpoint 621ac0b; nb15 | figura a crear | hegselmann2023 | pendiente |
+| 5.4 Few-shot EMPEORA (0,67→0,58): diagnóstico | `fichas/5.4_fewshot_empeora.md`; nb15 | hist. probas nb15 + figura 3 backlog | hegselmann2023, feng2023, ouyang2022 | ficha |
 | 5.5 GPT vs Qwen; thinking no mejora (2x costo) | `metricas.csv`; commit 00d3407; nb14 | figura a crear | — | pendiente |
 | 5.6 Thin-file: ¿el LLM gana en esparso? | `metricas.csv` (segmento) | figura clave de la tesis | — | pendiente |
 | 5.7 Decisiones con costos: matrices y umbral óptimo | `matrices_confusion.csv` | figura a crear | bellotti2009 | pendiente |
