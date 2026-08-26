@@ -68,3 +68,7 @@ AGENTS.md
 *~
 .*.swp
 .*.swo
+
+# LendingClub: parquets reproducibles via 08_lendingclub/01_descargar.py
+data/lendingclub/*.parquet
+data/lendingclub/salidas/
