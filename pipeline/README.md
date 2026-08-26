@@ -15,8 +15,10 @@ monitoreo.py              módulo COMÚN (métricas, PSI, matrices de confusión
 05_qwen/                  modelos #5-7 — local, educativo, guarda el thinking
 06_gpt/                   modelo #4 — API, guarda el reasoning
 07_finetuning/            modelo #8 — QLoRA (pendiente)
-08_lendingclub/           dataset 2 del PLAN — Kaggle/LendingClub (pendiente;
-                          ojo contaminación de preentrenamiento en Qwen/GPT)
+08_lendingclub/           dataset 2 del PLAN — subset de Feng et al. 2023 vía
+                          Hugging Face (TheFinAI/cra-lendingclub, sin Kaggle);
+                          SOLO Qwen zero/few-shot + tests de contaminación
+                          (Bordt et al. 2024) antes de interpretar resultados
 ```
 
 ## Correr
@@ -36,6 +38,11 @@ poetry run python pipeline/06_gpt/predecir.py --limite 50    # requiere openai +
 
 # 3. Monitoreo común: consolida todo y mide
 poetry run python pipeline/monitoreo.py
+
+# 4. LendingClub (independiente del resto; solo Qwen)
+poetry run python pipeline/08_lendingclub/01_descargar.py
+poetry run python pipeline/08_lendingclub/02_contaminacion.py
+poetry run python pipeline/08_lendingclub/03_qwen_eval.py --limite 500
 ```
 
 ## Reglas

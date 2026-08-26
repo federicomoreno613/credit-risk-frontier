@@ -1,0 +1,20 @@
+{
+  "fuente": "TheFinAI/cra-lendingclub",
+  "archivos": {
+    "train": {
+      "sha256": "40ff986aabc42540ac7ac6b2337869e2e33c8b8db89559ca6ab60612cbdafc4f",
+      "filas": 9417,
+      "tasa_bad": 0.203
+    },
+    "valid": {
+      "sha256": "511b136058f34fcd00ebd231b6e1b6f1e8ac886f005b1d120e5234883cbf500d",
+      "filas": 1345,
+      "tasa_bad": 0.1918
+    },
+    "test": {
+      "sha256": "c73e43690706834ee640eee07b84ca860934265edf1989ef0aab18d9eadeff5d",
+      "filas": 2691,
+      "tasa_bad": 0.1918
+    }
+  }
+}
