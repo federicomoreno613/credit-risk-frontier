@@ -32,7 +32,10 @@ def main() -> None:
     pagos = pd.read_csv(
         C.RAW_PAGOS, parse_dates=["fecha_desembolso", "fecha_t_pago", "fecha_pago"]
     )
-    legacy = pd.read_csv(C.RAW_LEGACY)
+    # El extracto legacy trae 474 créditos (todos mora) duplicados como filas
+    # 100% idénticas; sin dedup, el puente por firmas únicas los descarta junto
+    # con sus contrapartes y sesga la cohorte (val quedaba ~98% mora en jun-ago).
+    legacy = pd.read_csv(C.RAW_LEGACY).drop_duplicates()
 
     puente = build_exact_credit_bridge(legacy, creditos)
     desenlaces = build_credit_outcomes(creditos, pagos, puente, C.DESENLACE)

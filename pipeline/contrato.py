@@ -76,7 +76,10 @@ GPT_MODEL = os.environ.get("TESIS_GPT_MODEL", "gpt-5.5")
 # los dos primeros perfiles no cambian, sus caches siguen válidos).
 PERFILES = ("tu_form", "tu_form_description", "tu_form_description_full")
 SHOTS = (0, 8, 16)  # decisión 2026-08: 32 ejemplos eran demasiados
-PROMPT_VARIANT = "minimum"
+# v2 (2026-09): respuesta CLASE + PROBABILIDAD, ejemplos few-shot humanizados y
+# sin anclaje 0/100. El nombre del cache incluye la variante: nunca se mezclan
+# respuestas de prompts distintos en una misma corrida.
+PROMPT_VARIANT = "clase_prob_v2"
 QWEN_OPCIONES = {
     "think_native": True,
     "temperature": 0.0,
@@ -113,10 +116,16 @@ COLUMNAS_PREDICCION = [
     "y_true", "probabilidad", "valida",
 ]
 
+def cache_razonamientos(motor: str, etiqueta: str, shots: int):
+    """Ruta del cache JSONL de una corrida LLM; incluye la variante de prompt."""
+    return RAZONAMIENTOS / f"{motor}_{etiqueta}_few{shots}_{PROMPT_VARIANT}.jsonl"
+
+
 # Funciones de dominio re-exportadas (una sola implementación, en utils)
 credit_metrics = utils.credit_metrics
 serializar_perfil = utils.serialize_intermediate_profile
 parse_prob = utils.parse_prob_labeled
+parse_clase = utils.parse_clase_labeled
 
 
 def guardar_json(path: Path, obj) -> Path:

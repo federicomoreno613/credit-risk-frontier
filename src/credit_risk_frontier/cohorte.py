@@ -75,13 +75,28 @@ def build_exact_credit_bridge(legacy_dataset: pd.DataFrame,
 
 def _assign_temporal_splits(outcomes: pd.DataFrame, train_fraction: float,
                             validation_fraction: float) -> pd.Series:
+    """Split temporal puro: el corte cae en un borde de fecha, de modo que todos
+    los créditos de un mismo día quedan en el mismo set (todo val es posterior a
+    todo train, y todo test posterior a todo val)."""
     ordered = outcomes.sort_values(["fecha_desembolso", "credito_id_anon"], kind="stable")
     n = len(ordered)
     n_train = int(n * train_fraction)
     n_val = int(n * validation_fraction)
+    dates = ordered["fecha_desembolso"].to_numpy()
+    positions = np.arange(1, n + 1)
+
+    def _snap(cut: int) -> int:
+        # Extiende el corte hasta agotar la fecha del último crédito incluido.
+        if cut <= 0 or cut >= n:
+            return cut
+        boundary_date = dates[cut - 1]
+        return int(positions[dates == boundary_date].max())
+
+    cut_train = _snap(n_train)
+    cut_val = _snap(cut_train + n_val)
     labels = pd.Series("test", index=ordered.index, dtype=object)
-    labels.iloc[:n_train] = "train"
-    labels.iloc[n_train:n_train + n_val] = "val"
+    labels.iloc[:cut_train] = "train"
+    labels.iloc[cut_train:cut_val] = "val"
     return labels.reindex(outcomes.index)
 
 

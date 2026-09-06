@@ -216,12 +216,27 @@ def serialize_intermediate_profile(
 INSTR_INTERMEDIATE = (
     "Analiza el caso y estima la probabilidad de que este crédito presente una mora "
     "mayor de 60 días dentro de los primeros 150 días de observación. Usa solamente "
-    "los datos proporcionados. Razona brevemente y termina tu respuesta con una única "
-    "línea con este formato EXACTO:\n"
+    "los datos proporcionados. Razona brevemente. La probabilidad puede ser cualquier "
+    "entero de 0 a 100: usa valores intermedios cuando la evidencia sea mixta y "
+    "reserva los extremos para casos con evidencia muy fuerte. Termina tu respuesta "
+    "con dos líneas con este formato EXACTO:\n"
+    "CLASE: <moroso o no moroso>\n"
     "PROBABILIDAD_DE_MORA: <entero de 0 a 100>"
 )
 
-_RE_LABELED = re.compile(r"PROBABILIDAD_DE_MORA\s*:\s*([0-9]{1,3})")
+# Instrucción de los turnos de ejemplo few-shot: la respuesta del ejemplo es el
+# desenlace observado (binario), sin pseudo-probabilidades 0/100 que anclen el
+# score del caso a evaluar.
+INSTR_EJEMPLO = (
+    "Clasifica el caso usando solamente los datos proporcionados. Responde con "
+    "una única línea con este formato EXACTO:\n"
+    "CLASE: <moroso o no moroso>"
+)
+
+_RE_LABELED = re.compile(r"PROBABILIDAD_DE_MORA\s*:\s*\**\s*([0-9]{1,3})")
+# "no moroso" antes que "moroso": la alternancia de regex es de izquierda a
+# derecha y "no moroso" contiene "moroso" como sufijo.
+_RE_CLASE = re.compile(r"CLASE\s*:\s*\**\s*(no\s+moroso|moroso)", re.IGNORECASE)
 
 
 def parse_prob_labeled(text: str) -> float:
@@ -231,6 +246,14 @@ def parse_prob_labeled(text: str) -> float:
         if 0 <= integer <= 100:
             return integer / 100.0
     return float("nan")
+
+
+def parse_clase_labeled(text: str) -> float:
+    """Última clase verbalizada: 1.0 = moroso, 0.0 = no moroso, NaN si falta."""
+    matches = _RE_CLASE.findall(text)
+    if not matches:
+        return float("nan")
+    return 0.0 if matches[-1].lower().startswith("no") else 1.0
 
 
 DEFAULT_OLLAMA_URL = "http://localhost:11434/api/chat"
@@ -257,18 +280,6 @@ def check_ollama(
         )
 
 
-def _extract_final_logprob(data: dict) -> float:
-    probabilities = data.get("logprobs") or data.get("message", {}).get("logprobs")
-    if not probabilities or not isinstance(probabilities, list):
-        return float("nan")
-    last = float("nan")
-    for entry in probabilities:
-        if any(character.isdigit() for character in str(entry.get("token", ""))):
-            if entry.get("logprob") is not None:
-                last = float(entry["logprob"])
-    return last
-
-
 def call_ollama_think(
     messages: list[dict],
     *,
@@ -289,40 +300,45 @@ def call_ollama_think(
         "messages": messages,
         "stream": False,
         "think": think_native,
-        "logprobs": True,
         "options": {
             "temperature": temperature,
             "num_predict": num_predict,
             "num_ctx": num_ctx,
         },
     }
+    fallo = {
+        "prob": float("nan"),
+        "clase": float("nan"),
+        "content": "",
+        "thinking": "",
+        "prob_desde_thinking": False,
+        "eval_count": None,
+    }
     for attempt in range(retries):
         try:
             response = requests.post(url, json=payload, timeout=timeout)
             response.raise_for_status()
             data = response.json()
-            message = data.get("message", {})
-            content = message.get("content", "") or ""
-            thinking = message.get("thinking", "") or ""
-            parsed_text = content if content.strip() else thinking
-            return {
-                "prob": parse_prob_labeled(parsed_text),
-                "content": content,
-                "thinking": thinking,
-                "logprob": _extract_final_logprob(data),
-                "eval_count": data.get("eval_count"),
-            }
-        except (requests.RequestException, KeyError, json.JSONDecodeError):
+        except requests.RequestException:
             if attempt < retries - 1:
                 time.sleep(2**attempt)
-            else:
-                return {
-                    "prob": float("nan"),
-                    "content": "",
-                    "thinking": "",
-                    "logprob": float("nan"),
-                    "eval_count": None,
-                }
+            continue
+        message = data.get("message", {})
+        content = message.get("content", "") or ""
+        thinking = message.get("thinking", "") or ""
+        # Si el modelo agotó tokens en el thinking, se parsea el razonamiento
+        # como último recurso y se deja marcado (puede ser una cifra tentativa).
+        desde_thinking = not content.strip()
+        parsed_text = content if content.strip() else thinking
+        return {
+            "prob": parse_prob_labeled(parsed_text),
+            "clase": parse_clase_labeled(parsed_text),
+            "content": content,
+            "thinking": thinking,
+            "prob_desde_thinking": desde_thinking,
+            "eval_count": data.get("eval_count"),
+        }
+    return fallo
 
 
 def build_knn_space(
