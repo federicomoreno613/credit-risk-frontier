@@ -1,4 +1,4 @@
-"""Nodos que reconstruyen y validan la cohorte analítica vigente."""
+"""Funciones de cohorte: puente, desenlace, partición y validación."""
 
 from __future__ import annotations
 
@@ -71,38 +71,6 @@ def build_exact_credit_bridge(legacy_dataset: pd.DataFrame,
     )
     bridge.attrs["signature_columns"] = columns
     return bridge
-
-
-def build_bridge_coverage_report(current_dataset: pd.DataFrame,
-                                 credit_bridge: pd.DataFrame) -> dict:
-    """Compara vinculados y excluidos por fecha, segmento y variables centrales."""
-    data = utils.annotate_segments(current_dataset)
-    linked = set(credit_bridge["credito_id_anon"])
-    data["bridge_group"] = np.where(data["credito_id_anon"].isin(linked),
-                                    "linked", "excluded")
-    columns = [c for c in ["fecha_desembolso", "segmento", "agg308", "wd81",
-                            "agg2503", "appusers_gender_male"] if c in data]
-    report = {"counts": data.bridge_group.value_counts().to_dict(), "variables": {}}
-    for column in columns:
-        if column == "fecha_desembolso":
-            values = pd.to_datetime(data[column], errors="coerce")
-            report["variables"][column] = {
-                group: {"min": str(values[data.bridge_group.eq(group)].min().date()),
-                        "max": str(values[data.bridge_group.eq(group)].max().date())}
-                for group in ("linked", "excluded")}
-        elif not pd.api.types.is_numeric_dtype(data[column]):
-            report["variables"][column] = {
-                group: data.loc[data.bridge_group.eq(group), column].value_counts(
-                    normalize=True).to_dict() for group in ("linked", "excluded")}
-        else:
-            a = pd.to_numeric(data.loc[data.bridge_group.eq("linked"), column], errors="coerce")
-            b = pd.to_numeric(data.loc[data.bridge_group.eq("excluded"), column], errors="coerce")
-            pooled = np.sqrt((a.var() + b.var()) / 2)
-            report["variables"][column] = {
-                "linked_mean": float(a.mean()), "excluded_mean": float(b.mean()),
-                "standardized_mean_difference": float((a.mean() - b.mean()) / pooled)
-                if pooled and not np.isnan(pooled) else None}
-    return utils.json_safe(report)
 
 
 def _assign_temporal_splits(outcomes: pd.DataFrame, train_fraction: float,
@@ -210,7 +178,7 @@ def build_split_manifest(current_dataset: pd.DataFrame, credit_bridge: pd.DataFr
     split_sha256 = {split: hashlib.sha256("\n".join(ids).encode()).hexdigest()
                     for split, ids in ids_by_set.items()}
     return utils.json_safe({
-        "contract": "target_60dpd_150d_temporal_80_10_10",
+        "contract": "target_60dpd_150d_temporal_70_15_15",
         "dataset_sha256": digest,
         "source_rows": len(current_dataset),
         "bridge_rows": len(credit_bridge),
@@ -230,24 +198,6 @@ def build_split_manifest(current_dataset: pd.DataFrame, credit_bridge: pd.DataFr
         "signature_columns": credit_bridge.attrs.get("signature_columns", []),
         "parameters": params,
     })
-
-
-def build_outcome_sensitivity(current_dataset: pd.DataFrame, payments: pd.DataFrame,
-                              credit_bridge: pd.DataFrame, params: dict) -> dict:
-    """Conteos/tasas para horizontes predefinidos; no entrena ni mira el test."""
-    horizons = params.get("sensitivity_horizons", [120, 180, 210])
-    summaries = {}
-    for horizon in horizons:
-        variant = {**params, "horizon_days": int(horizon)}
-        outcomes = build_credit_outcomes(current_dataset, payments, credit_bridge, variant)
-        summaries[str(horizon)] = {
-            "n": len(outcomes),
-            "default_rate": float(outcomes["target"].mean()) if len(outcomes) else None,
-            "set_counts": outcomes["set"].value_counts().to_dict(),
-            "date_min": str(outcomes["fecha_desembolso"].min().date()) if len(outcomes) else None,
-            "date_max": str(outcomes["fecha_desembolso"].max().date()) if len(outcomes) else None,
-        }
-    return utils.json_safe({"primary_horizon": params.get("horizon_days", 150), "sensitivity": summaries})
 
 
 def validate_credit_dataset(dataset: pd.DataFrame, params: dict) -> dict:

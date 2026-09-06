@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -6,6 +7,8 @@ from credit_risk_frontier import utils
 from credit_risk_frontier.cohorte import validate_credit_dataset
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
 def test_buro_esparso_counts_match_thesis_dataset():
     # Universo contractual anonimizado (n=4897). Los centinelas TU negativos
     # representan ausencia de información, no solamente el valor -1.
@@ -46,3 +49,14 @@ def test_validate_credit_dataset_report_has_expected_contract():
     assert report["segment_counts"]["esparso"] == 3538
     assert report["test_segment_counts"]["esparso"] == 204
     assert report["expected_count_mismatches"] == []
+
+
+def test_frozen_split_matches_plan_70_15_15():
+    manifiesto = json.loads(
+        (ROOT / "data" / "pipeline" / "01_manifiesto_particion.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert manifiesto["set_counts"]["train"] == 2940
+    assert manifiesto["set_counts"]["val"] == 630
+    assert manifiesto["set_counts"]["test"] == 631

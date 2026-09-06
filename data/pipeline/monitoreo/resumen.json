@@ -69,6 +69,11 @@
       "con_razonamiento": 631,
       "largo_medio_caracteres": 3299
     },
+    "qwen_tu_form_description_few16.jsonl": {
+      "casos": 631,
+      "con_razonamiento": 631,
+      "largo_medio_caracteres": 2672
+    },
     "qwen_tu_form_description_few8.jsonl": {
       "casos": 631,
       "con_razonamiento": 631,
@@ -78,6 +83,11 @@
       "casos": 631,
       "con_razonamiento": 631,
       "largo_medio_caracteres": 3423
+    },
+    "qwen_tu_form_description_full_few16.jsonl": {
+      "casos": 631,
+      "con_razonamiento": 631,
+      "largo_medio_caracteres": 2791
     },
     "qwen_tu_form_description_full_few8.jsonl": {
       "casos": 631,
@@ -90,9 +100,9 @@
       "largo_medio_caracteres": 3364
     },
     "qwen_tu_form_few16.jsonl": {
-      "casos": 322,
-      "con_razonamiento": 322,
-      "largo_medio_caracteres": 2871
+      "casos": 631,
+      "con_razonamiento": 631,
+      "largo_medio_caracteres": 2859
     },
     "qwen_tu_form_few8.jsonl": {
       "casos": 631,
