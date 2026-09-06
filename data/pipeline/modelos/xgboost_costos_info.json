@@ -4,19 +4,19 @@
   "monto_medio": 500.0,
   "tasa_interes": 0.2,
   "lgd": 1.0,
-  "costo_val": 13100.0,
+  "costo_val": 27400.0,
   "umbral_optimo_val": 0.04,
-  "auc_val": 0.7440233236151604,
-  "trials": 30,
+  "auc_val": 0.8001719197707737,
+  "trials": 500,
   "mejores_params": {
-    "max_depth": 3,
-    "learning_rate": 0.04046087858257566,
-    "subsample": 0.8167222286362311,
-    "colsample_bytree": 0.8206312691474609,
-    "min_child_weight": 15,
-    "reg_alpha": 0.33499957565025373,
-    "reg_lambda": 0.8659356500664692
+    "max_depth": 2,
+    "learning_rate": 0.14052743502212867,
+    "subsample": 0.886317571231805,
+    "colsample_bytree": 0.8177856881264294,
+    "min_child_weight": 3,
+    "reg_alpha": 0.00018578026565678227,
+    "reg_lambda": 0.021973151695299988
   },
-  "mejor_iteracion": 109,
-  "scale_pos_weight": 0.4189189189189189
+  "mejor_iteracion": 135,
+  "scale_pos_weight": 0.45585585585585586
 }

@@ -84,8 +84,10 @@ QWEN_OPCIONES = {
     "think_native": True,
     "temperature": 0.0,
     "num_ctx": 40960,
-    "num_predict": 1024,
-    "retry_num_predict": 1536,
+    # v2: el prompt con consigna de granularidad alarga el thinking; 1024 se
+    # quedaba corto y producia NaN evitables (verificado en el smoke 2026-09-06).
+    "num_predict": 2048,
+    "retry_num_predict": 3072,
     "request_retries": 3,
     "timeout_seconds": 600,
     "parallel_workers": 4,
