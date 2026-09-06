@@ -52,11 +52,13 @@ def test_validate_credit_dataset_report_has_expected_contract():
 
 
 def test_frozen_split_matches_plan_70_15_15():
+    # Cohorte v2 (2026-09): legacy deduplicado -> puente completo 4897 y corte
+    # temporal ajustado a bordes de fecha (ningún día repartido entre sets).
     manifiesto = json.loads(
         (ROOT / "data" / "pipeline" / "01_manifiesto_particion.json").read_text(
             encoding="utf-8"
         )
     )
-    assert manifiesto["set_counts"]["train"] == 2940
-    assert manifiesto["set_counts"]["val"] == 630
-    assert manifiesto["set_counts"]["test"] == 631
+    assert manifiesto["set_counts"]["train"] == 3232
+    assert manifiesto["set_counts"]["val"] == 699
+    assert manifiesto["set_counts"]["test"] == 686

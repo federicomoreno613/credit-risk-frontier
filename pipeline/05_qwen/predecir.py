@@ -30,9 +30,13 @@ def leer_cache(path: Path) -> dict[str, dict]:
         return {}
     registros = {}
     for linea in path.read_text(encoding="utf-8").splitlines():
-        if linea.strip():
+        if not linea.strip():
+            continue
+        try:
             registro = json.loads(linea)
-            registros[str(registro["evaluation_id"])] = registro
+        except json.JSONDecodeError:
+            continue  # línea truncada por una corrida interrumpida: se re-predice
+        registros[str(registro["evaluation_id"])] = registro
     return registros
 
 
@@ -52,14 +56,17 @@ def agregar_cache(path: Path, registro: dict) -> None:
 def construir_mensajes(texto_caso: str, ejemplos: list[tuple[str, int]]) -> list[dict]:
     mensajes = [{"role": "system", "content": SISTEMA}]
     for texto_ejemplo, target in ejemplos:
-        # Cada ejemplo few-shot es un turno usuario->asistente con la etiqueta real.
+        # Cada ejemplo few-shot es un turno usuario->asistente. La respuesta del
+        # ejemplo es el desenlace observado (CLASE), nunca una pseudo-probabilidad
+        # 0/100: el ground truth es binario y verbalizar certeza absoluta ancla
+        # el score del caso a evaluar en los extremos.
         mensajes.append({
             "role": "user",
-            "content": f"DATOS DEL SOLICITANTE: {texto_ejemplo}\n\n{utils.INSTR_INTERMEDIATE}",
+            "content": f"DATOS DEL SOLICITANTE: {texto_ejemplo}\n\n{utils.INSTR_EJEMPLO}",
         })
         mensajes.append({
             "role": "assistant",
-            "content": f"PROBABILIDAD_DE_MORA: {100 if target == 1 else 0}",
+            "content": f"CLASE: {'moroso' if target == 1 else 'no moroso'}",
         })
     mensajes.append({
         "role": "user",
@@ -69,10 +76,11 @@ def construir_mensajes(texto_caso: str, ejemplos: list[tuple[str, int]]) -> list
 
 
 def ejemplos_para(fila, train, knn, perfil: str, shots: int) -> list[tuple[str, int]]:
-    """Vecinos de TRAIN balanceados por clase, serializados en compacto.
+    """Vecinos de TRAIN balanceados por clase, en el MISMO formato humanizado
+    que el caso a evaluar (Min et al. 2022: las demostraciones enseñan formato).
 
-    El perfil "full" usa la serialización compacta del perfil con descripción:
-    las cualitativas extra solo van en el caso a evaluar, no en los ejemplos.
+    El perfil "full" usa la serialización del perfil con descripción: las
+    cualitativas extra solo van en el caso a evaluar, no en los ejemplos.
     """
     if not shots:
         return []
@@ -81,20 +89,21 @@ def ejemplos_para(fila, train, knn, perfil: str, shots: int) -> list[tuple[str, 
         fila, str(fila["credito_id_anon"]), train, knn, shots
     )
     return [
-        (C.serializar_perfil(v, C.FEATURES_29, perfil_ejemplos, compact=True),
+        (C.serializar_perfil(v, C.FEATURES_29, perfil_ejemplos),
          int(v["target"]))
         for _, v in vecinos.iterrows()
     ]
 
 
 def casos_pendientes(test, humanizado, cache: dict, limite):
+    """Pendientes en orden de test; --limite acota el TOTAL cubierto (cache
+    incluido) tomando siempre un prefijo contiguo del test, nunca un subconjunto
+    salteado (un piloto sobre casos no contiguos no es interpretable)."""
     textos = humanizado.set_index("credito_id_anon")
-    pendientes = []
-    for _, fila in test.iterrows():
-        if limite is not None and len(cache) + len(pendientes) >= limite:
-            break
-        if str(fila["credito_id_anon"]) not in cache:
-            pendientes.append(fila)
+    filas = [fila for _, fila in test.iterrows()]
+    if limite is not None:
+        filas = filas[:limite]
+    pendientes = [f for f in filas if str(f["credito_id_anon"]) not in cache]
     return pendientes, textos
 
 
@@ -117,7 +126,7 @@ def inferir(mensajes: list[dict], presupuesto: int) -> dict:
 def correr(variables, humanizado, perfil: str, shots: int, limite) -> None:
     utils.check_ollama(model=C.QWEN_MODEL)
     train, _, test = C.dividir(variables)
-    cache_path = C.RAZONAMIENTOS / f"qwen_{perfil}_few{shots}.jsonl"
+    cache_path = C.cache_razonamientos("qwen", perfil, shots)
     cache = leer_cache(cache_path)
     pendientes, textos = casos_pendientes(test, humanizado, cache, limite)
     print(f"qwen {perfil}/few{shots}: {len(cache)} en cache, {len(pendientes)} pendientes")
@@ -126,6 +135,7 @@ def correr(variables, humanizado, perfil: str, shots: int, limite) -> None:
     for i, fila in enumerate(pendientes, 1):
         texto = textos.loc[str(fila["credito_id_anon"]), f"texto_{perfil}"]
         mensajes = construir_mensajes(texto, ejemplos_para(fila, train, knn, perfil, shots))
+        inicio = time.time()
         resultado = inferir(mensajes, C.QWEN_OPCIONES["num_predict"])
         if pd.isna(resultado["prob"]):  # reintento con más presupuesto de tokens
             resultado = inferir(mensajes, C.QWEN_OPCIONES["retry_num_predict"])
@@ -139,10 +149,13 @@ def correr(variables, humanizado, perfil: str, shots: int, limite) -> None:
             "y_true": int(fila["target"]),
             "prompt_variant": C.PROMPT_VARIANT,
             "probabilidad": resultado["prob"],
+            "clase": resultado["clase"],
             "valida": bool(pd.notna(resultado["prob"])),
+            "prob_desde_thinking": resultado["prob_desde_thinking"],
             "thinking": resultado["thinking"],
             "respuesta": resultado["content"],
             "eval_count": resultado["eval_count"],
+            "duracion_s": round(time.time() - inicio, 2),
             "ts": time.time(),
         }
         agregar_cache(cache_path, registro)

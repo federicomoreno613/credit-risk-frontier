@@ -42,9 +42,13 @@ def leer_cache(path: Path) -> dict[str, dict]:
         return {}
     registros = {}
     for linea in path.read_text(encoding="utf-8").splitlines():
-        if linea.strip():
+        if not linea.strip():
+            continue
+        try:
             registro = json.loads(linea)
-            registros[str(registro["evaluation_id"])] = registro
+        except json.JSONDecodeError:
+            continue  # línea truncada por una corrida interrumpida: se re-predice
+        registros[str(registro["evaluation_id"])] = registro
     return registros
 
 
@@ -62,13 +66,15 @@ def construir_mensajes(texto_caso: str, ejemplos: list[tuple[str, int]]) -> list
     """Mismo prompt que Qwen; el system va aparte (instructions)."""
     mensajes = []
     for texto_ejemplo, target in ejemplos:
+        # Igual que en Qwen: la respuesta del ejemplo es el desenlace observado
+        # (CLASE), nunca una pseudo-probabilidad 0/100 que ancle el score.
         mensajes.append({
             "role": "user",
-            "content": f"DATOS DEL SOLICITANTE: {texto_ejemplo}\n\n{utils.INSTR_INTERMEDIATE}",
+            "content": f"DATOS DEL SOLICITANTE: {texto_ejemplo}\n\n{utils.INSTR_EJEMPLO}",
         })
         mensajes.append({
             "role": "assistant",
-            "content": f"PROBABILIDAD_DE_MORA: {100 if target == 1 else 0}",
+            "content": f"CLASE: {'moroso' if target == 1 else 'no moroso'}",
         })
     mensajes.append({
         "role": "user",
@@ -85,7 +91,7 @@ def ejemplos_para(fila, train, knn, perfil: str, shots: int) -> list[tuple[str, 
         fila, str(fila["credito_id_anon"]), train, knn, shots
     )
     return [
-        (C.serializar_perfil(v, C.FEATURES_29, perfil_ejemplos, compact=True),
+        (C.serializar_perfil(v, C.FEATURES_29, perfil_ejemplos),
          int(v["target"]))
         for _, v in vecinos.iterrows()
     ]
@@ -106,15 +112,14 @@ def correr(variables, humanizado, perfil: str, shots: int, limite,
     # La variante "thinking" (effort=high) es una configuración aparte:
     # cache y etiqueta propios, para comparar contra el zero-shot estándar.
     etiqueta = f"{perfil}_think" if effort == "high" else perfil
-    cache_path = C.RAZONAMIENTOS / f"gpt_{etiqueta}_few{shots}.jsonl"
+    cache_path = C.cache_razonamientos("gpt", etiqueta, shots)
     cache = leer_cache(cache_path)
     textos = humanizado.set_index("credito_id_anon")
-    pendientes = []
-    for _, fila in test.iterrows():
-        if limite is not None and len(cache) + len(pendientes) >= limite:
-            break
-        if str(fila["credito_id_anon"]) not in cache:
-            pendientes.append(fila)
+    # --limite acota el TOTAL cubierto tomando un prefijo contiguo del test.
+    filas = [fila for _, fila in test.iterrows()]
+    if limite is not None:
+        filas = filas[:limite]
+    pendientes = [f for f in filas if str(f["credito_id_anon"]) not in cache]
     print(f"gpt {etiqueta}/few{shots}: {len(cache)} en cache, {len(pendientes)} pendientes")
 
     knn = utils.build_knn_space(train, C.FEATURES_29) if shots else None
@@ -133,6 +138,7 @@ def correr(variables, humanizado, perfil: str, shots: int, limite,
             "reasoning_effort": effort,
             "ts": time.time(),
         }
+        inicio = time.time()
         try:
             respuesta = cliente.responses.create(
                 model=C.GPT_MODEL,
@@ -151,18 +157,22 @@ def correr(variables, humanizado, perfil: str, shots: int, limite,
             probabilidad = C.parse_prob(salida)
             registro |= {
                 "probabilidad": probabilidad,
+                "clase": C.parse_clase(salida),
                 "valida": bool(pd.notna(probabilidad)),
                 "reasoning": razonamiento,
                 "respuesta": salida,
                 "usage": respuesta.usage.model_dump() if respuesta.usage else None,
+                "duracion_s": round(time.time() - inicio, 2),
             }
         except Exception as error:  # noqa: BLE001 — se persiste el error y se sigue
             registro |= {
                 "probabilidad": float("nan"),
+                "clase": float("nan"),
                 "valida": False,
                 "reasoning": "",
                 "respuesta": "",
                 "error": str(error),
+                "duracion_s": round(time.time() - inicio, 2),
             }
         agregar_cache(cache_path, registro)
         print(f"  {i}/{len(pendientes)} id={registro['evaluation_id']} "
