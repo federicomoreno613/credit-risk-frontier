@@ -110,11 +110,11 @@ def casos_pendientes(test, humanizado, cache: dict, limite):
 # ---------------------------------------------------------------------------
 # Inferencia local vía Ollama, con reintento y thinking guardado
 # ---------------------------------------------------------------------------
-def inferir(mensajes: list[dict], presupuesto: int) -> dict:
+def inferir(mensajes: list[dict], presupuesto: int, think: bool = True) -> dict:
     return utils.call_ollama_think(
         mensajes,
         model=C.QWEN_MODEL,
-        think_native=C.QWEN_OPCIONES["think_native"],
+        think_native=think and C.QWEN_OPCIONES["think_native"],
         timeout=C.QWEN_OPCIONES["timeout_seconds"],
         retries=C.QWEN_OPCIONES["request_retries"],
         num_predict=presupuesto,
@@ -123,26 +123,30 @@ def inferir(mensajes: list[dict], presupuesto: int) -> dict:
     )
 
 
-def correr(variables, humanizado, perfil: str, shots: int, limite) -> None:
+def correr(variables, humanizado, perfil: str, shots: int, limite,
+           think: bool = True) -> None:
     utils.check_ollama(model=C.QWEN_MODEL)
     train, _, test = C.dividir(variables)
-    cache_path = C.cache_razonamientos("qwen", perfil, shots)
+    # La variante sin thinking (modelo #5 vs #6 del PLAN) usa cache y etiqueta
+    # propios: mismo prompt, mismo modelo, única diferencia el razonamiento.
+    etiqueta = perfil if think else f"{perfil}_nothink"
+    cache_path = C.cache_razonamientos("qwen", etiqueta, shots)
     cache = leer_cache(cache_path)
     pendientes, textos = casos_pendientes(test, humanizado, cache, limite)
-    print(f"qwen {perfil}/few{shots}: {len(cache)} en cache, {len(pendientes)} pendientes")
+    print(f"qwen {etiqueta}/few{shots}: {len(cache)} en cache, {len(pendientes)} pendientes")
 
     knn = utils.build_knn_space(train, C.FEATURES_29) if shots else None
     for i, fila in enumerate(pendientes, 1):
         texto = textos.loc[str(fila["credito_id_anon"]), f"texto_{perfil}"]
         mensajes = construir_mensajes(texto, ejemplos_para(fila, train, knn, perfil, shots))
         inicio = time.time()
-        resultado = inferir(mensajes, C.QWEN_OPCIONES["num_predict"])
+        resultado = inferir(mensajes, C.QWEN_OPCIONES["num_predict"], think)
         if pd.isna(resultado["prob"]):  # reintento con más presupuesto de tokens
-            resultado = inferir(mensajes, C.QWEN_OPCIONES["retry_num_predict"])
+            resultado = inferir(mensajes, C.QWEN_OPCIONES["retry_num_predict"], think)
         registro = {
             "evaluation_id": str(fila["credito_id_anon"]),
             "modelo": C.QWEN_MODEL,
-            "perfil": perfil,
+            "perfil": etiqueta,
             "shots": shots,
             "set": "test",
             "segmento": str(fila.get("segmento", "")),
@@ -191,6 +195,9 @@ def main() -> None:
     parser.add_argument("--limite", type=int, default=None, help="máx. de casos por config")
     parser.add_argument("--demo", action="store_true",
                         help="muestra un caso completo: prompt + thinking + respuesta")
+    parser.add_argument("--sin-thinking", action="store_true",
+                        help="desactiva el thinking nativo (contraste #5 vs #6 del PLAN); "
+                             "cache y etiqueta propios con sufijo _nothink")
     args = parser.parse_args()
 
     variables = C.cargar_variables()
@@ -208,7 +215,8 @@ def main() -> None:
     shots = [args.shots] if args.shots is not None else list(C.SHOTS)
     for perfil in perfiles:
         for n in shots:
-            correr(variables, humanizado, perfil, n, args.limite)
+            correr(variables, humanizado, perfil, n, args.limite,
+                   think=not args.sin_thinking)
     print("consolidar y medir: poetry run python pipeline/monitoreo.py")
 
 
