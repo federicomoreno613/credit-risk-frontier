@@ -1,43 +1,7 @@
-"""Modelos #5-7 del PLAN §2.2 — Qwen3 local: zero-shot, thinking y few-shot.
+"""Qwen3 local: zero-shot, thinking y few-shot (modelos #5-7).
 
-CÓMO FUNCIONA, paso a paso (educativo):
-
-1. SERIALIZACIÓN (hecha en 01_preprocesamiento/03_humanizar.py, estilo TabLLM,
-   Hegselmann et al. 2023): cada crédito ya es una oración en lenguaje natural
-   con las 29 variables descriptas en palabras ("la magnitud de utilización...:
-   0.42, edad del solicitante: 34, ..."). El perfil `tu_form_description`
-   agrega además la descripción libre del negocio. Este script NO vuelve a
-   serializar: lee el texto de data/pipeline/03_humanizado.parquet, así Qwen y
-   GPT reciben exactamente el mismo texto.
-
-2. PROMPT: system corto ("Estima el riesgo de mora de un microcrédito") +
-   usuario con "DATOS DEL SOLICITANTE: <texto>" y la instrucción de terminar
-   con una línea EXACTA "PROBABILIDAD_DE_MORA: <0-100>". Ese entero /100 es la
-   probabilidad que se evalúa con AUC.
-
-3. FEW-SHOT: con --shots 8 o 16 se anteponen ejemplos reales de TRAIN
-   (nunca de val/test) elegidos por KNN balanceado: los vecinos más parecidos
-   al caso en el espacio estandarizado de las 29 variables, mitad morosos y
-   mitad pagadores, serializados en formato compacto.
-
-4. THINKING: Qwen3 razona de forma nativa antes de responder. El razonamiento
-   completo se guarda SIEMPRE junto con la respuesta: sirve para auditar si el
-   modelo usa las variables correctas (comparación con SHAP, PLAN §2.4) y para
-   mejorar los prompts.
-
-5. CACHE REANUDABLE: cada caso se escribe apenas termina en un JSONL por
-   configuración (data/pipeline/razonamientos/qwen_{perfil}_few{shots}.jsonl).
-   Si se corta la corrida, se relanza y sigue desde donde quedó. Si la
-   respuesta no trae una probabilidad parseable, se reintenta una vez con más
-   presupuesto de tokens (retry_num_predict).
-
-Uso:
-  poetry run python pipeline/05_qwen/predecir.py --demo             un caso, muestra prompt + thinking
-  poetry run python pipeline/05_qwen/predecir.py --perfil tu_form --shots 0
-  poetry run python pipeline/05_qwen/predecir.py                    todas las configs (2 perfiles x 0/8/16)
-
-Si cambia el contrato (variables, prompt, split) hay que borrar los JSONL
-antes de volver a correr.
+Lee el texto humanizado, guarda thinking en JSONL reanudable y escribe
+predicciones de test. Detalle en ``pipeline/05_qwen/README.md``.
 """
 
 from __future__ import annotations

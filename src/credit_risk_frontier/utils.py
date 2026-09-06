@@ -1,8 +1,6 @@
-"""Contratos compartidos del experimento intermedio vigente.
+"""Dominio compartido del pipeline: variables, métricas, serialización y Ollama.
 
-Este módulo contiene únicamente las variables, métricas, reglas de segmentación,
-serialización y transporte local que utiliza el pipeline. La entrada y la
-salida de archivos están a cargo de pipeline/contrato.py.
+La entrada y la salida de archivos están a cargo de pipeline/contrato.py.
 """
 
 from __future__ import annotations
@@ -150,39 +148,6 @@ def credit_metrics(y_true, y_prob) -> dict:
     }
 
 
-def intermediate_feature_columns(
-    frame: pd.DataFrame,
-    profile: str,
-    feature_contract: dict | None = None,
-) -> list[str]:
-    """Devuelve las columnas exactas de cada perfil estructurado vigente."""
-    contract = feature_contract or {
-        "transunion": list(TU_VARS),
-        "form_direct": list(FORM_DIRECT_VARS),
-    }
-    transunion = list(contract.get("transunion", []))
-    form_direct = list(contract.get("form_direct", []))
-    if transunion != TU_VARS:
-        raise ValueError(
-            "El contrato intermedio debe contener las 20 variables TransUnion canónicas"
-        )
-    if form_direct != FORM_DIRECT_VARS:
-        raise ValueError(
-            "El contrato intermedio debe contener las 9 variables directas canónicas"
-        )
-    profiles = {
-        "tu": transunion,
-        "tu_form": transunion + form_direct,
-    }
-    if profile not in profiles:
-        raise ValueError(f"perfil intermedio desconocido: {profile!r}")
-    columns = profiles[profile]
-    missing = [column for column in columns if column not in frame.columns]
-    if missing:
-        raise ValueError(f"faltan columnas del perfil {profile}: {missing}")
-    return columns
-
-
 def annotate_segments(frame: pd.DataFrame) -> pd.DataFrame:
     """Distingue historial de buró esparso a partir de códigos TU negativos."""
     missing = [column for column in TU_VARS if column not in frame.columns]
@@ -214,9 +179,7 @@ def serialize_intermediate_profile(
 ) -> str:
     """Serializa 20 o 29 variables y, cuando corresponde, una descripción libre."""
     if profile not in {"tu", "tu_form", "tu_form_description"}:
-        raise ValueError(
-            f"perfil intermedio de serialización desconocido: {profile!r}"
-        )
+        raise ValueError(f"perfil de serialización desconocido: {profile!r}")
     expected = TU_VARS if profile == "tu" else TU_VARS + FORM_DIRECT_VARS
     if list(feature_names) != expected:
         if profile == "tu":
@@ -257,60 +220,6 @@ INSTR_INTERMEDIATE = (
     "línea con este formato EXACTO:\n"
     "PROBABILIDAD_DE_MORA: <entero de 0 a 100>"
 )
-
-
-def build_messages_intermediate(
-    row: pd.Series,
-    feature_names: list[str],
-    profile: str,
-    examples: pd.DataFrame | None = None,
-    prompt_variant: str = "minimum",
-) -> list[dict]:
-    """Construye los mensajes zero-shot o few-shot del experimento Qwen."""
-    systems = {
-        "minimum": "Estima el riesgo de mora de un microcrédito.",
-        "expert": (
-            "Eres especialista en evaluación de riesgo de microcréditos. Usa solo "
-            "la información disponible antes de la decisión."
-        ),
-    }
-    if prompt_variant not in systems:
-        raise ValueError(f"variante de instrucción desconocida: {prompt_variant!r}")
-    messages = [{"role": "system", "content": systems[prompt_variant]}]
-    if examples is not None:
-        for _, example in examples.iterrows():
-            serialized = serialize_intermediate_profile(
-                example, feature_names, profile, compact=True
-            )
-            messages.extend(
-                [
-                    {
-                        "role": "user",
-                        "content": (
-                            f"DATOS DEL SOLICITANTE: {serialized}\n\n"
-                            f"{INSTR_INTERMEDIATE}"
-                        ),
-                    },
-                    {
-                        "role": "assistant",
-                        "content": (
-                            "PROBABILIDAD_DE_MORA: "
-                            f"{100 if int(example['target']) == 1 else 0}"
-                        ),
-                    },
-                ]
-            )
-    serialized = serialize_intermediate_profile(row, feature_names, profile)
-    messages.append(
-        {
-            "role": "user",
-            "content": (
-                f"DATOS DEL SOLICITANTE: {serialized}\n\n{INSTR_INTERMEDIATE}"
-            ),
-        }
-    )
-    return messages
-
 
 _RE_LABELED = re.compile(r"PROBABILIDAD_DE_MORA\s*:\s*([0-9]{1,3})")
 

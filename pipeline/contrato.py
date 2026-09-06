@@ -1,37 +1,8 @@
-"""Contrato único del pipeline de la tesis.
+"""Contrato único del pipeline: rutas, 29 variables, split, modelos y costos.
 
-Todo lo que está DECLARADO acá gobierna a todas las carpetas:
-
-    01_preprocesamiento/      carga de datos -> variables -> humanizado,
-                              con la partición train/val/test declarada UNA vez
-    02_regresion_logistica/   modelo #1 del PLAN
-    03_xgboost/               modelo #2, búsqueda con Optuna
-    04_tabulares/             modelo #3, TabPFN/TabFM (pendiente)
-    05_qwen/                  modelos #5-7, inferencia local con thinking guardado
-    06_gpt/                   modelo #4, API con reasoning guardado
-    07_finetuning/            modelo #8, LoRA con MLX (pendiente)
-    08_lendingclub/           dataset 2 del PLAN (pendiente)
-    monitoreo.py              módulo COMÚN: métricas, PSI, consolidación
-
-Cada carpeta de modelo escribe sus predicciones de test en
-``PRED_DIR/<nombre>.parquet`` con las columnas de ``columnas_prediccion`` y
-reutiliza ``monitoreo.py``; ninguna redefine rutas, variables, split ni semilla.
-Las definiciones de dominio (29 variables, serialización, métricas) viven en
-``src/credit_risk_frontier/utils.py`` y acá solo se re-exportan.
-
-Extensiones futuras declaradas (no priorizadas):
-  - Foundation model tabular preentrenado para el modelo #3 del PLAN §2.2:
-    TabPFN v2 y/o TabFM (google-research/tabfm, in-context, API scikit-learn,
-    pesos con licencia no comercial). Consume las mismas 29 variables y la
-    misma partición; entraría como un modelo más en 04/05.
-  - Modelo de series de tiempo preentrenado (Chronos / TimesFM) sobre la
-    secuencia de pagos por crédito (``RAW_PAGOS``), misma partición temporal.
-    OJO: TabFM NO es de series de tiempo; esa línea sigue abierta.
-
-Experimento de referencia: la entrega intermedia (entregas/ENTREGA-INTERMEDIA-
-G1-MORENO-FEDERICO-2026.md) usó split 80/10/10 y NO conservó las respuestas de
-Qwen. Este pipeline usa 70/15/15 y guarda razonamientos: los resultados no son
-comparables caso a caso con los publicados y no deben mezclarse.
+Las definiciones de dominio viven en ``src/credit_risk_frontier/utils.py``.
+Cada modelo escribe ``PRED_DIR/<nombre>.parquet`` con ``COLUMNAS_PREDICCION``.
+QLoRA (modelo #8) sigue pendiente en ``07_finetuning/``.
 """
 
 from __future__ import annotations
@@ -145,7 +116,6 @@ COLUMNAS_PREDICCION = [
 # Funciones de dominio re-exportadas (una sola implementación, en utils)
 credit_metrics = utils.credit_metrics
 serializar_perfil = utils.serialize_intermediate_profile
-construir_mensajes = utils.build_messages_intermediate
 parse_prob = utils.parse_prob_labeled
 
 

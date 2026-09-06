@@ -11,14 +11,11 @@ monitoreo.py              módulo COMÚN (métricas, PSI, matrices de confusión
 01_preprocesamiento/      carga de datos -> variables -> humanizado (texto para LLMs)
 02_regresion_logistica/   modelo #1 del PLAN — baseline
 03_xgboost/               modelo #2 — búsqueda Optuna (varias pruebas)
-04_tabulares/             modelo #3 — TabPFN/TabFM (pendiente)
-05_qwen/                  modelos #5-7 — local, educativo, guarda el thinking
+04_tabulares/             modelo #3 — TabPFN v2 (TabFM opcional)
+05_qwen/                  modelos #5-7 — local, guarda el thinking
 06_gpt/                   modelo #4 — API, guarda el reasoning
 07_finetuning/            modelo #8 — QLoRA (pendiente)
-08_lendingclub/           dataset 2 del PLAN — subset de Feng et al. 2023 vía
-                          Hugging Face (TheFinAI/cra-lendingclub, sin Kaggle);
-                          SOLO Qwen zero/few-shot + tests de contaminación
-                          (Bordt et al. 2024) antes de interpretar resultados
+08_lendingclub/           dataset 2 — Qwen + contaminación (Hugging Face)
 ```
 
 ## Correr
@@ -32,6 +29,7 @@ poetry run python pipeline/01_preprocesamiento/03_humanizar.py
 # 2. Modelos (independientes entre sí)
 poetry run python pipeline/02_regresion_logistica/entrenar_y_predecir.py
 poetry run python pipeline/03_xgboost/entrenar_optuna.py --trials 50
+poetry run python pipeline/04_tabulares/predecir.py
 poetry run python pipeline/05_qwen/predecir.py --demo        # ver prompt+thinking
 poetry run python pipeline/05_qwen/predecir.py               # 6 configs, reanudable
 poetry run python pipeline/06_gpt/predecir.py --limite 50    # requiere openai + key
