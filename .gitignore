@@ -1,8 +1,4 @@
-# Configuración local, credenciales y secretos
-conf/local/**
-!conf/local/
-!conf/local/.gitkeep
-conf/**/*credentials*
+# Credenciales y secretos
 .env
 .env.*
 
@@ -19,6 +15,15 @@ conf/**/*credentials*
 /nbs/
 /knowledge/
 /.pi/
+
+# Material de proceso de tesis (redacción, entregas académicas, notas Obsidian):
+# vive en el working tree pero no se publica en el repo entregable
+/redaccion/
+/entregas/
+/.obsidian/
+/Resumen.md
+/Notas de bibliografia.md
+/2026-*.md
 
 # Material histórico o temporal que no es fuente vigente
 /tmp/
