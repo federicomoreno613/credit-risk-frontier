@@ -17,13 +17,18 @@
 /.pi/
 
 # Material de proceso de tesis (redacción, entregas académicas, notas Obsidian):
-# vive en el working tree pero no se publica en el repo entregable
+# vive en el working tree pero no se publica en el repo entregable.
+# En docs/ solo va documentación técnica del sistema; los borradores de capítulos
+# se ignoran por patrón por si reaparecen ahí.
 /redaccion/
 /entregas/
 /.obsidian/
 /Resumen.md
 /Notas de bibliografia.md
 /2026-*.md
+/docs/*introduccion*
+/docs/*cap[0-9]*
+/docs/TESIS-*
 
 # Material histórico o temporal que no es fuente vigente
 /tmp/
@@ -77,3 +82,4 @@ AGENTS.md
 # LendingClub: parquets reproducibles via 08_lendingclub/01_descargar.py
 data/lendingclub/*.parquet
 data/lendingclub/salidas/
+tmp_watchdog_llm.sh
