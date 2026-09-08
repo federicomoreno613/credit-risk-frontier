@@ -1,0 +1,11 @@
+modelo_a,config_a,modelo_b,config_b,n_comunes,auc_a,auc_b,delta_auc,p_valor
+tabpfn,tabpfn,xgboost,29vars_optuna,686,0.7747,0.7595,0.0151,0.06146
+tabpfn,tabpfn,logreg,29vars,686,0.7747,0.7518,0.0229,0.05304
+tabpfn,tabpfn,qwen3:8b,tu_form_few8,684,0.777,0.7075,0.0695,0.00021
+tabpfn,tabpfn,gpt-5.5,tu_form_few0,686,0.7747,0.6996,0.075,0.00026
+xgboost,29vars_optuna,logreg,29vars,686,0.7595,0.7518,0.0078,0.53271
+xgboost,29vars_optuna,qwen3:8b,tu_form_few8,684,0.762,0.7075,0.0545,0.00437
+xgboost,29vars_optuna,gpt-5.5,tu_form_few0,686,0.7595,0.6996,0.0599,0.00397
+logreg,29vars,qwen3:8b,tu_form_few8,684,0.7549,0.7075,0.0475,0.0181
+logreg,29vars,gpt-5.5,tu_form_few0,686,0.7518,0.6996,0.0521,0.0132
+qwen3:8b,tu_form_few8,gpt-5.5,tu_form_few0,684,0.7075,0.7027,0.0048,0.78935

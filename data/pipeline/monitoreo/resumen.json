@@ -1,13 +1,14 @@
 {
+  "prompt_variant": "clase_prob_v2",
   "tasa_mora_por_set": {
-    "test": 0.393,
-    "train": 0.7048,
-    "val": 0.7778
+    "test": 0.3805,
+    "train": 0.6869,
+    "val": 0.5007
   },
   "conteos_por_set": {
-    "train": 2940,
-    "test": 631,
-    "val": 630
+    "train": 3232,
+    "val": 699,
+    "test": 686
   },
   "variables_psi_alto": [
     "shops_daily_incomes",
@@ -18,96 +19,175 @@
     "shops_shop_age",
     "shops_initial_capital",
     "utlmag04",
+    "wd81",
     "aepmag01",
     "g051s",
-    "wd81",
     "agg2503",
     "bi21s",
     "wd03",
-    "agg9316",
     "agg308",
-    "at34af",
-    "tel03s",
     "tranbal09",
+    "agg9316",
+    "tel03s",
     "at103s",
-    "shops_monthly_incomes",
-    "tel32s"
+    "at34af"
   ],
   "razonamientos": {
-    "gpt_tu_form_description_few0.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 357,
-      "largo_medio_caracteres": 359
+    "gpt_tu_form_description_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 347,
+      "largo_medio_caracteres": 278
     },
-    "gpt_tu_form_description_full_few0.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 358,
-      "largo_medio_caracteres": 350
+    "gpt_tu_form_description_full_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 324,
+      "largo_medio_caracteres": 256
     },
-    "gpt_tu_form_description_full_think_few0.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 571,
-      "largo_medio_caracteres": 1339
+    "gpt_tu_form_description_full_few16_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 106,
+      "largo_medio_caracteres": 76
     },
-    "gpt_tu_form_description_think_few0.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 554,
-      "largo_medio_caracteres": 1221
+    "gpt_tu_form_description_full_think_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 553,
+      "largo_medio_caracteres": 996
     },
-    "gpt_tu_form_few0.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 362,
-      "largo_medio_caracteres": 341
+    "gpt_tu_form_description_think_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 558,
+      "largo_medio_caracteres": 940
     },
-    "gpt_tu_form_think_few0.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 573,
-      "largo_medio_caracteres": 1299
+    "gpt_tu_form_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 351,
+      "largo_medio_caracteres": 290
     },
-    "qwen_tu_form_description_few0.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 631,
-      "largo_medio_caracteres": 3299
+    "gpt_tu_form_think_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 551,
+      "largo_medio_caracteres": 1001
     },
-    "qwen_tu_form_description_few16.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 631,
-      "largo_medio_caracteres": 2672
+    "qwen_tu_form_description_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 686,
+      "largo_medio_caracteres": 3252
     },
-    "qwen_tu_form_description_few8.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 631,
-      "largo_medio_caracteres": 2808
+    "qwen_tu_form_description_few8_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 686,
+      "largo_medio_caracteres": 2687
     },
-    "qwen_tu_form_description_full_few0.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 631,
-      "largo_medio_caracteres": 3423
+    "qwen_tu_form_description_full_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 686,
+      "largo_medio_caracteres": 3403
     },
-    "qwen_tu_form_description_full_few16.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 631,
-      "largo_medio_caracteres": 2791
+    "qwen_tu_form_description_full_few8_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 686,
+      "largo_medio_caracteres": 2627
     },
-    "qwen_tu_form_description_full_few8.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 631,
-      "largo_medio_caracteres": 2711
+    "qwen_tu_form_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 686,
+      "largo_medio_caracteres": 3182
     },
-    "qwen_tu_form_few0.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 631,
-      "largo_medio_caracteres": 3364
+    "qwen_tu_form_few8_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 686,
+      "largo_medio_caracteres": 2926
     },
-    "qwen_tu_form_few16.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 631,
-      "largo_medio_caracteres": 2859
+    "qwen_tu_form_nothink_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "con_razonamiento": 0,
+      "largo_medio_caracteres": 0
+    }
+  },
+  "costos_y_tiempos_llm": {
+    "gpt_tu_form_description_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 92.1,
+      "duracion_media_s": 8.06,
+      "tokens_input": 513224,
+      "tokens_output": 380680
     },
-    "qwen_tu_form_few8.jsonl": {
-      "casos": 631,
-      "con_razonamiento": 631,
-      "largo_medio_caracteres": 3137
+    "gpt_tu_form_description_full_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 109.1,
+      "duracion_media_s": 9.54,
+      "tokens_input": 544599,
+      "tokens_output": 379407
+    },
+    "gpt_tu_form_description_full_few16_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 88.4,
+      "duracion_media_s": 7.74,
+      "tokens_input": 7422364,
+      "tokens_output": 240657
+    },
+    "gpt_tu_form_description_full_think_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 164.9,
+      "duracion_media_s": 14.42,
+      "tokens_input": 544599,
+      "tokens_output": 603242
+    },
+    "gpt_tu_form_description_think_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 161.9,
+      "duracion_media_s": 14.16,
+      "tokens_input": 513224,
+      "tokens_output": 596941
+    },
+    "gpt_tu_form_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 103.7,
+      "duracion_media_s": 9.07,
+      "tokens_input": 491605,
+      "tokens_output": 380710
+    },
+    "gpt_tu_form_think_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 154.4,
+      "duracion_media_s": 13.5,
+      "tokens_input": 491605,
+      "tokens_output": 605980
+    },
+    "qwen_tu_form_description_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 272.9,
+      "duracion_media_s": 23.86
+    },
+    "qwen_tu_form_description_few8_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 501.7,
+      "duracion_media_s": 43.88
+    },
+    "qwen_tu_form_description_full_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 282.1,
+      "duracion_media_s": 24.67
+    },
+    "qwen_tu_form_description_full_few8_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 492.8,
+      "duracion_media_s": 43.1
+    },
+    "qwen_tu_form_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 298.5,
+      "duracion_media_s": 26.1
+    },
+    "qwen_tu_form_few8_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 585.6,
+      "duracion_media_s": 51.22
+    },
+    "qwen_tu_form_nothink_few0_clase_prob_v2.jsonl": {
+      "casos": 686,
+      "duracion_total_min": 115.3,
+      "duracion_media_s": 10.09
     }
   },
   "costos": {
