@@ -75,7 +75,9 @@ GPT_MODEL = os.environ.get("TESIS_GPT_MODEL", "gpt-5.5")
 # tu_form_description_full = 29 vars + descripción + CUALITATIVAS (config nueva;
 # los dos primeros perfiles no cambian, sus caches siguen válidos).
 PERFILES = ("tu_form", "tu_form_description", "tu_form_description_full")
-SHOTS = (0, 8, 16)  # decisión 2026-08: 32 ejemplos eran demasiados
+# Decisión 2026-09-07: grilla publicada 0/8 (16 descartado en Qwen; el cache
+# GPT few16 existente queda como material de sensibilidad, fuera de la tabla).
+SHOTS = (0, 8)
 # v2 (2026-09): respuesta CLASE + PROBABILIDAD, ejemplos few-shot humanizados y
 # sin anclaje 0/100. El nombre del cache incluye la variante: nunca se mezclan
 # respuestas de prompts distintos en una misma corrida.

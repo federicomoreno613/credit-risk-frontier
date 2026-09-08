@@ -91,6 +91,14 @@ decirlo al comparar familias.
 evidencia de la entrega mostró que 8 ejemplos ya degradaban (concentración de
 puntajes en 0/1). 16 permite estudiar la dosis intermedia sin pagar 32.
 
+**Actualización (2026-09-07).** La grilla publicada se limita a `SHOTS = (0, 8)`
+en los tres perfiles. El few-shot 16 de Qwen se descarta (costo de cómputo sin
+pregunta nueva: la dosis 0→8 ya captura la degradación). GPT few-shot 16
+(perfil full, effort medium) SÍ se corrió y su cache queda guardado
+(`gpt_tu_form_description_full_few16_clase_prob_v2.jsonl`), pero no se publica
+en la tabla principal por ahora; disponible como material de sensibilidad si
+la discusión lo pide.
+
 ## 4. Serialización y perfiles de texto (humanización)
 
 **Decisión.** Paso propio (`03_humanizar.py`): cada crédito se convierte una
@@ -121,6 +129,32 @@ son `descripcion_negocio` (82,8% cobertura, ~64 caracteres, 3.350 únicos),
 rubros), `tipo_credito` (binaria) y `credits_credit_alternative_goal`
 (54,4%, 1.498 únicos). No existe ninguna otra fuente de texto libre; redes
 sociales (~13%) se descartaron por cobertura y por ser cuasi-PII.
+
+**Análisis profundo del texto (2026-09-07).** Reproducible en
+`pipeline/01_preprocesamiento/04_analisis_texto.py` →
+`docs/ANALISIS_TEXTO_CREDITOS.md`. Lectura para la discusión:
+
+1. *La cobertura del texto se movió con el tiempo* (el formulario cambió):
+   `descripcion_negocio` 78% en train vs. 97,8% en test; `objetivo_credito`
+   40,5% vs. 93,4%; `otra_categoria_negocio` 37,6% vs. **0% en test** (en el
+   perfil full esa columna no aporta nada al momento de predecir). Cualquier
+   comparación de perfiles hereda este corrimiento.
+2. *El texto libre es corto y genuino, no plantilla*: descripción mediana de
+   7 palabras (p90 = 23), 96% de textos únicos; lo más repetido son rubros de
+   una palabra ("calzado", "ropa").
+3. *El texto por sí solo NO discrimina en test*: TF-IDF + LogReg train→test
+   da AUC 0,48 (descripción), 0,39 (objetivo), 0,51 (rubro+tipo), 0,46 (todo
+   junto). El rubro sí ordena la mora dentro de train (spa 0,796 vs.
+   bisutería 0,385, base 0,687) pero no transfiere al test — coherente con el
+   corrimiento temporal del §2.
+4. *La ausencia de texto se asocia a mora en train* (sin descripción 0,807
+   vs. con 0,653) pero está confundida con el tiempo (train temprano tiene
+   más mora y menos formulario completo); como indicador en test AUC ≈ 0,50.
+
+Implicancia: si los perfiles con descripción mejoran al LLM, la ganancia no
+puede atribuirse a señal predictiva "clásica" del texto (no la hay aislada);
+habría que discutirla como contexto que modula el uso de las variables
+estructuradas — y al revés, si no mejoran, este análisis lo anticipa.
 
 ## 5. Extracto del dataset original (paso 00)
 
