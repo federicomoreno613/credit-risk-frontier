@@ -244,6 +244,31 @@ zero-shot completo (2 perfiles × 631) ≈ USD 8-9; experimento GPT completo
 (3 perfiles × 3 dosis de ejemplos) ≈ USD 30-35. Se decidió mantener
 `reasoning effort medium` porque el razonamiento es objeto de estudio.
 
+**Costo real de la corrida v2 (medido 2026-09-08).** Las 7 configuraciones
+GPT del experimento final (`gpt-5.5`, prompt `clase_prob_v2`, 686 casos de
+test cada una: 3 perfiles × effort medium, 3 perfiles × effort high, few-shot
+16 en el perfil full) sumaron, según el campo `usage` de los caches JSONL:
+
+| Concepto | Tokens | Precio (USD/M) | USD |
+|---|---|---|---|
+| Entrada | 10,51 M | 5,00 | 52,56 |
+| Entrada cacheada | 0,01 M | 0,50 | 0,01 |
+| Salida (incluye razonamiento) | 3,19 M | 30,00 | 95,63 |
+| **Total registrado en caches** | **13,71 M** | | **≈ 148** |
+
+El gasto observado en el panel de facturación fue ~USD 158 en los días de la
+corrida (2026-09-06/07); la diferencia (~USD 10) corresponde a llamadas que
+no quedaron en cache (reintentos, respuestas inválidas, pruebas de humo), que
+se facturan igual. El driver del costo es la salida a 30 USD/M: cada caso
+genera ~550-880 tokens de razonamiento + respuesta. El estimado previo de
+USD 30-35 correspondía a la corrida de julio con `gpt-5.4` (precios menores)
+y no es comparable. Para la conversión automática en `monitoreo.py`:
+`TESIS_GPT_PRECIO_IN=5`, `TESIS_GPT_PRECIO_OUT=30`.
+
+Contraste para la discusión: la inferencia local de Qwen3-8B tiene costo
+marginal de API nulo (solo tiempo de cómputo, `duracion_s` por caso en los
+mismos caches), a costa de ~2 órdenes de magnitud menos de parámetros.
+
 ## 11. Reproducibilidad y publicación
 
 - Repo público `federicomoreno613/credit-risk-frontier`, rama `master`.
